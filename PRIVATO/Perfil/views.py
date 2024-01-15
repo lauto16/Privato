@@ -109,7 +109,7 @@ def vista_persona(request):
         ids_posts = json.dumps(getIdPosts(posts))
 
     avatar_colores_string = getAvatar(user_buscado)
-
+    
     colores_completos_json = ""
 
     if avatar_colores_string is not None:
@@ -125,7 +125,7 @@ def vista_persona(request):
         peticion = request.POST.get('peticion')
 
         if peticion == "agregar":
-            
+            # agregar amigo
             respuesta_seguir = validacionesSeguimiento(user_a=user_actual,user_b=user_buscado)
 
             # No son amigos
