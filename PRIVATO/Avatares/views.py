@@ -6,9 +6,7 @@ from General.utils import (borrarFondo,
                            comprobarValores,
                            getUser,
                            tieneAvatar,
-                           updateSeguimiento,
-                           updateAmigos,
-                           updatePosts
+                           updatePage
                            )
 
 
@@ -22,9 +20,7 @@ def vista_avatar(request):
 
     user_actual = getUser(request)
 
-    updateSeguimiento(user_actual)
-    updateAmigos(user_actual)
-    updatePosts(user_actual)
+    updatePage(user_actual)  
 
     if request.method == 'POST':
 

@@ -6,14 +6,12 @@ from .utils import (addBusqueda,
                     verifyPassword,
                     getUser,
                     getAvatar,
-                    updateSeguimiento,
-                    updateAmigos,
-                    updatePosts,
                     getNotificaciones,
                     validacionesNotificacion,
                     generarAmistad,
                     eliminarSeguimientos,
-                    eliminarNotificacion
+                    eliminarNotificacion,
+                    updatePage  
                     )
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -29,9 +27,7 @@ def vista_feed(request):
 
     user_actual = getUser(request)
 
-    updateSeguimiento(user_actual)
-    updateAmigos(user_actual)
-    updatePosts(user_actual)
+    updatePage(user_actual)  
     
     avatar_colores_string = getAvatar(user_actual)
     rango = range(1,122)
@@ -120,9 +116,7 @@ def vista_config(request):
     
     user_actual = getUser(request)
 
-    updateSeguimiento(user_actual)
-    updateAmigos(user_actual)
-    updatePosts(user_actual)
+    updatePage(user_actual)  
     
     return render(request, 'config.html')
 

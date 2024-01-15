@@ -499,6 +499,11 @@ def addLike(id_post):
         return False
 
 
+def updatePage(user):
+
+    updateAmigos(user)
+    updatePosts(user)
+    updateSeguimiento(user)
 
 
 

@@ -4,15 +4,13 @@ from General.utils import (userSearcher,
                             getIdPosts, updatePosts,
                             getUser, getPosts,
                             getAvatar, completarColores,
-                            getNumPosts, 
                             validacionesSeguimiento,
                             generarSeguimiento,
-                            updateSeguimiento,
-                            updateAmigos,
                             estadoUser,
                             eliminarAmistad,
                             sonAmigos,
-                            generarNotificacion
+                            generarNotificacion,
+                            updatePage
                             )
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -28,9 +26,7 @@ def vista_perfil(request):
 
     user_actual = getUser(request)
 
-    updateSeguimiento(user_actual)
-    updatePosts(user_actual)
-    updateAmigos(user_actual)
+    updatePage(user_actual)  
 
     posts = getPosts(user_actual)
     ids_posts = json.dumps(getIdPosts(posts))
@@ -99,16 +95,11 @@ def vista_persona(request):
     posts = []
     ids_posts = []
 
-    updateSeguimiento(user_actual)
-    updateAmigos(user_actual)
-    updatePosts(user_actual)
-
     username_busqueda = getLastSearch(user_actual)
     respuesta, user_buscado = userSearcher(username_busqueda)
-    
-    updateAmigos(user_buscado)
-    updatePosts(user_buscado)
-    updateSeguimiento(user_buscado)
+
+    updatePage(user_actual)    
+    updatePage(user_buscado)
     
     estado_seguimiento, color_boton_seguir = estadoUser(user_actual=user_actual, user_page=user_buscado)
 
