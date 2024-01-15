@@ -24,6 +24,8 @@ import json
 @login_required
 def vista_perfil(request):
 
+    print("prueba")
+  
     user_actual = getUser(request)
 
     updatePage(user_actual)  
