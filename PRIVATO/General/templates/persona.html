@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/persona.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+    <body>
+        <div class="container">
+            <header>
+                <nav class="navbar" id="navbar">
+                    <div class="logo">
+                        <strong><a href="/feed/" id="logo">Privato</a></strong>
+                    </div>
+                </nav>
+            </header>
+            <main>
+                <section class="perfil">
+                    <div class="cabecera-perfil">
+                            <div id="avatar-container" class="grid-container" type="submit">                     
+                                {% for i in rango %}
+                                <div id="box{{ i }}" class="grid-item"></div>
+                                {% endfor %}
+                            </div>
+                            <div class="estadisticas">
+                                <p id="username" class="user-stats"><strong>{{ username }}</strong></p>
+                                <p class="user-stats"><strong>{{ num_posts }}</strong> Posts</p>
+                                <p class="user-stats"><strong>{{ amigos }}</strong> Amigos</p>
+                            </div>  
+
+                            <form id="form-agregar" action="" method="post" class="form-agregar">
+                                {% csrf_token %}
+                                <input name="peticion" type="hidden" value="{{ form_agregar }}">
+                                <div class="container-agregar">
+                                    <button class="agregar-btn" id="agregar-btn">
+                                        {{ estado_seguimiento }}
+                                    </button>  
+                                </div>
+                            </form>
+
+                        </form>
+
+                    </div>
+                </section>
+                <section class="posts">
+                    <div class="container-posts">
+                        <!--POST ANTIGUOS-->
+                        <div class="posts-anteriores">
+                            <h1 class="header-post">Posts anteriores</h1>
+                            <div class="container-posts-anteriores">
+                                <input type="hidden" id="url-imagen-like" value="{% static 'img/like.png' %}">
+                                <input type="hidden" id="url-imagen-like-vacio" value="{% static 'img/like_vacio.png' %}">
+                                {% for post in posts %}
+                                    <div class="post-anterior">
+                                        <div class="titulo-fecha">
+                                            <p class="title-post-anterior"><strong>{{ post.title }}</strong></p>
+                                            <p class="fecha-post-anterior">{{ post.fecha }}</p>
+                                        </div>
+                                        <p class="contenido-post-anterior">{{ post.contenido }}</p>
+                                        <div class="likes-comentarios">
+                                            <div class="likes-post-anterior">                                          
+                                                    <div id="boton_like-{{ post.id }}" class="boton-like-comentario" type="submit">
+                                                        <img id="imagen_like-{{ post.id }}" class="imagen-like" src="{% static 'img/like_vacio.png' %}" alt="">
+                                                    </div>
+                                                <div class="mensaje-likes">
+                                                    <p id="p-likes">{{ post.likes }}</p>
+                                                </div>
+                                            </div>                                        
+                                            <div class="comentarios-post-anterior">
+                                                    <div id="boton_comentario-{{ post.id }}" class="boton-like-comentario" type="submit">
+                                                        <img id="imagen_comentario-{{ post.id }}" class="imagen-comentario" src="{% static 'img/comentario_op2.png' %}" alt="">
+                                                    </div>
+                                                <div class="mensaje-comentarios">
+                                                    <p>{{ post.comentarios }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                    </div>
+                </section>
+            </main>
+        </div>                 
+    </body> 
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/persona.js' %}"></script>
+<script>
+    var lista_colores = JSON.parse('{{ colores | escapejs }}');
+    var id_posts = JSON.parse('{{ ids_posts | escapejs }}')
+    rellenarAvatar(lista_colores)
+    colorBoton(id="agregar-btn", color="{{ color_boton_seguir }}")
+</script>
+</html>
+

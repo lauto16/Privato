@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/avatar.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+
+        <header>
+            <div class="logo">
+                <strong><a href="/feed/" id="logo">Privato</a></strong>
+            </div>
+        </header>
+
+        <main>
+            <section>
+                <h1 id="titulo-descripcion">Crea tu avatar, este se utilizara como tu foto de perfil</h1>
+                
+                <div class="avatar">
+                    <div class="grid-container" id="avatar-content">
+                        {% for i in rango_grid %}
+                            <div id="box{{ i }}" class="grid-item" style="background-color: #e9e7e7;"></div>
+                        {% endfor %} 
+                    </div>
+                    
+                    <div class="color-picker">
+                        <input class="color-picker-input" type="color" id="favcolor" name="favcolor" value="#ff0000">
+                    </div>
+                    <div class="rellenador">
+                        <button id="boton-rellenar">
+                            <img id="img-rellenar" src="{% static 'img/rellenar.png' %}" alt="Rellenar">
+                        </button>
+                    </div>
+                    
+                    <form action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% for i in rango %}
+                            <input type="hidden" name="color_{{ i }}" id="color_{{ i }}" value="">
+                        {% endfor %}
+                        <div class="container-boton">
+                            <button type="submit" id="crear-avatar">
+                                <p>Crear</p>  
+                            </button>
+                        </div>
+                    </form>
+                    
+                </div>
+            </section>
+        </main>
+
+    </div>
+
+    <script src="{% static 'js/avatar.js' %}"></script>
+
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/master.css' %}">
+    <title>Privato</title>
+</head>
+<body> 
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1 id="logo">Privato</h1>
+            </div>
+        </header>
+        <main>
+            <section class="descripcion">
+                <div class="container-descripcion">
+                    <h2 id="titulo-descripcion"><strong>¿Que es Privato?</strong></h2>
+                    <p id="descripcion">Privato es una red social que permite hacer posts,
+                         expresar tus ideas y ver que piensan tus amigos, es 100% privada,
+                        esto significa que para ver los posts de tus amigos deberan seguirse
+                    mutuamente</p>
+                </div>
+            </section>
+            <section class="register-login">
+                <div class="container-register-login">
+                    <h3 id="titulo-register-login">Crea una cuenta en Privato</h3>
+                    <p id="p-sign">¿Ya tienes una cuenta? <a id="a-sign" href="/login">Inicia sesion</a></p>
+                    <form class="form-centrado" method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                            
+                        <div class="enviar">
+                            <input class="boton" type="submit" value="Enviar">
+                        </div>
+    
+                    </form>
+
+                    <div class="errores">
+                        {% if not error_bd %}
+                            <p>{{ datos_error }}</p>
+                        {% endif %}
+        
+                        {% if error %}
+                            <div class="lista-errores-div">
+                                <ul class="lista-errores">
+                                    {% for message in error %}
+                                        <li>{{ message }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

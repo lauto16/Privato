@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Silkscreen&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html{
+    font-size: 12px;
+}
+
+body{
+    font-size: 1rem;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+}
+
+.container header{
+    height: 50px;
+}
+
+.container main{
+    height: 100vh;
+}
+
+
+/* LOGO */
+
+.logo{
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+
+#logo{
+    font-family: 'Silkscreen', sans-serif;
+    color: #038554;
+    font-size: 20px;
+    transition: ease 0.5s opacity;
+    width: 8px;
+    text-decoration: none;
+    outline: none;
+}
+
+#logo:hover{
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+#logo:visited{
+    color: #038554;
+}
+
+
+/* AVATAR CREATION */
+
+.rellenador{
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+
+#img-rellenar{
+    height: 30px;
+    aspect-ratio: 1;
+}
+
+
+#boton-rellenar{
+    border: 0px;
+    outline: none;
+    transition: ease 0.5s opacity;
+}
+
+#boton-rellenar:hover{
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(11, 1fr);
+    grid-gap: 0px;
+    width: 330px;
+    margin: 0 auto;
+    margin-top: 10px;
+    background-color: #ffffff;
+}
+  
+.grid-item {
+    height: 30px;
+    width: 30px;
+    border: 1px solid #c5c4c4;
+}
+
+#titulo-descripcion{
+    font-family: 'Silkscreen', sans-serif;
+    font-size: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #03bb85;
+    text-align: center;
+}
+
+.color-picker{
+    height: 40px;
+    width: 330px;
+    background-color: #adadad;
+    margin-top: 10px;
+    margin-left: 5px;
+    border: 0px;
+    
+}
+
+.avatar{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 550px;
+    margin: 0 auto;
+}
+
+.color-picker-input{
+    height: 100%;
+    width: 100%;
+}
+
+#colores-form{
+    display: none;
+    color: transparent;
+}
+
+#crear-avatar{
+    background-color: #038554;
+    color: #fff;
+    font-family: 'Silkscreen', sans-serif;
+    outline: 0;
+    transition: ease 0.5s opacity;
+    height: 30px;
+    width: 70px;
+    border: 0px;
+}
+
+#crear-avatar p{
+    margin-bottom: 4px;
+}
+
+#crear-avatar:hover{
+    opacity: 0.5;
+    cursor: pointer;
+}
+
