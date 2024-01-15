@@ -23,8 +23,6 @@ import json
 
 @login_required
 def vista_perfil(request):
-
-    print("prueba")
   
     user_actual = getUser(request)
 
@@ -127,7 +125,7 @@ def vista_persona(request):
         peticion = request.POST.get('peticion')
 
         if peticion == "agregar":
-            # agregar amigo
+
             respuesta_seguir = validacionesSeguimiento(user_a=user_actual,user_b=user_buscado)
 
             # No son amigos
