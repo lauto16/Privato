@@ -54,6 +54,7 @@
                     <div class="container-posts">
                         <!--POST ANTIGUOS-->
                         <div class="posts-anteriores">
+                            {% if son_amigos %}
                             <h1 class="header-post">Posts anteriores</h1>
                             <div class="container-posts-anteriores">
                                 <input type="hidden" id="url-imagen-like" value="{% static 'img/like.png' %}">
@@ -86,6 +87,11 @@
                                     </div>
                                 {% endfor %}
                             </div>
+                            {% else %}
+                                <p class="header-no-amigos">
+                                    Para ver los posts de <strong id="strong-no-amigos">{{ username }}</strong> debes ser su amigo
+                                </p>
+                            {% endif %}
                         </div>
                         
                     </div>

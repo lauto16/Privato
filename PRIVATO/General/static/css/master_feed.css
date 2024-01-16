@@ -118,6 +118,9 @@ body{
     border-radius: 20%;
 }
 
+
+
+
 .derecha-nav{
     transition: opacity 0.5s ease;
     border: 0;
@@ -185,20 +188,20 @@ body{
 .modal {
     display: none;
     z-index: 1;
-    width: 300px;
-    height: 300px;
+    width: 320px;
+    height: 350px;
     position: absolute;
     left: 50%;
     top: 45%;
     transform: translate(-50%, -50%);
     max-height: 100%;
     overflow-y: auto;
+    border: 0.1px solid #c5c5c5;
   }
   
 .modal-content {
     background-color: #fff;
     padding: 15px;
-    border: 0.1px solid #c5c5c5;
     width: 300px;
     height: 300px;
     font-family: 'Silkscreen', sans-serif;
@@ -207,7 +210,6 @@ body{
 
 .modal-content p {
     font-family: 'Lato', sans-serif;
-    font-size: 10px;
     margin-top: 30px; 
     color: #000;
   }
@@ -236,8 +238,36 @@ body{
 
 
 .title-noti{
-
     font-size: 20px;
+}
+
+.container-noti{
+    display: inline-block;
+
+
+}
+
+.p-notis{
+    float: left;
+    word-wrap: break-word;
+    width: 80%;
+    height: auto;
+    font-size: 14px;
+}
+
+
+.botonera-notis{
+    width: 20%;
+    height: auto;
+    float: right;
+    margin-top: 30px;
+}
+
+#aceptar-noti,
+#denegar-noti{
+    background-color: transparent;
+    outline: none;
+    border: 0px;
 }
 
 .div-errores{

@@ -34,9 +34,7 @@ def vista_perfil(request):
     
     avatar_colores_string = getAvatar(user_actual)
     
-    rango = range(1,122)
-
-
+    rango_avatar = range(1,122)
 
     if avatar_colores_string is not None:
     
@@ -76,7 +74,7 @@ def vista_perfil(request):
         'num_posts':user_actual.posts, 
         'amigos':user_actual.amigos, 
         'colores':colores_completos_json, 
-        'rango':rango,
+        'rango':rango_avatar,
         'posts':posts,
         'form_post':'posteo',
         'form_avatar':'avatar',
@@ -85,13 +83,12 @@ def vista_perfil(request):
     })
 
 
-
 @login_required
 def vista_persona(request):
     
     error = ""
     
-    rango = range(1,122)
+    rango_avatar = range(1,122)
     user_actual = getUser(request)
 
     posts = []
@@ -104,14 +101,14 @@ def vista_persona(request):
     updatePage(user_buscado)
     
     estado_seguimiento, color_boton_seguir = estadoUser(user_actual=user_actual, user_page=user_buscado)
+    son_amigos = sonAmigos(user_a=user_actual, user_b=user_buscado)
 
-    if sonAmigos(user_a=user_actual, user_b=user_buscado):
+    if son_amigos:
 
         posts = getPosts(user_buscado)
         ids_posts = json.dumps(getIdPosts(posts))
 
     avatar_colores_string = getAvatar(user_buscado)
-    
     colores_completos_json = ""
 
     if avatar_colores_string is not None:
@@ -122,7 +119,7 @@ def vista_persona(request):
     if not(respuesta):
         return redirect('vista_feed')
     
-    if request.method == "POST":
+    if request.method == "POST": 
 
         peticion = request.POST.get('peticion')
 
@@ -147,13 +144,14 @@ def vista_persona(request):
         'num_posts':user_buscado.posts,
         'amigos':user_buscado.amigos,
         'colores':colores_completos_json, 
-        'rango':rango,    
+        'rango':rango_avatar,    
         'ids_posts':ids_posts,
         'posts':posts,
         'estado_seguimiento':estado_seguimiento,
         'color_boton_seguir':color_boton_seguir,
+        'error':error,
+        'son_amigos':son_amigos,
         'form_agregar':'agregar',
-        'error':error
     })
 
 

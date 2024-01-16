@@ -49,7 +49,11 @@
 
                             <div class="container-navs">
                                 <button class="derecha-nav" id="noti_btn">
-                                    <img class="imagen-nav-noti" src="{% static 'img/noti_vacia.png' %}" alt="">
+                                    {% if notificaciones is None or notificaciones|length == 0 %}
+                                        <img class="imagen-nav-noti" src="{% static 'img/noti_vacia.png' %}" alt="">
+                                        {% else %}
+                                        <img class="imagen-nav-noti" src="{% static 'img/noti.png' %}" alt="">
+                                    {% endif %}    
                                 </button>
                             </div>
 
@@ -109,21 +113,22 @@
                                 {% for noti in notificaciones %}
                                     <form action="" method="post">
                                         {% csrf_token %}
+                                        <input type="hidden" name="id_noti" value="{{ noti.id }}">
                                         <div class="container-noti">
 
-                                            <p><strong id="strong-noti">{{ noti.username_emisor}}</strong> {{ noti.mensaje }}</p>
-                                            
-                                            <input type="hidden" name="id_noti" value="{{ noti.id }}">
-
-                                            <button type="submit" name="peticion" value="{{ aceptar_notificacion }}">
-                                                
-                                                <img class="imagen-nav" src="{% static 'img/aceptar.png' %}" alt="Aceptar">
-                                            </button>
-
-                                            <button type="submit" name="peticion" value="{{ denegar_notificacion }}">
-                                                <img class="imagen-nav" src="{% static 'img/denegar.png' %}" alt="Denegar">
-                                            </button>
-
+                                            <div class="p-notis">
+                                                <p id="p-contenido-notis"><strong id="strong-noti">{{ noti.username_emisor}}</strong> {{ noti.mensaje }}</p>
+                                            </div>
+    
+                                            <div class="botonera-notis">
+                                                <button id="aceptar-noti" type="submit" name="peticion" value="{{ aceptar_notificacion }}">
+                                                    <img class="imagen-nav" src="{% static 'img/aceptar.png' %}" alt="Aceptar">
+                                                </button>
+    
+                                                <button id="denegar-noti" type="submit" name="peticion" value="{{ denegar_notificacion }}">
+                                                    <img class="imagen-nav" src="{% static 'img/denegar.png' %}" alt="Denegar">
+                                                </button>
+                                            </div>
                                         </div>
                                     </form>
                                 {% endfor %}

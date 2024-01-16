@@ -1,9 +1,6 @@
 from .utils import (addBusqueda,
                     completarColores,
-                    validatePassword,
-                    passwordHashing,
-                    comprobarUser, userSearcher,
-                    verifyPassword,
+                    userSearcher,
                     getUser,
                     getAvatar,
                     getNotificaciones,
@@ -15,9 +12,7 @@ from .utils import (addBusqueda,
                     )
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout
-from .forms import Register, Login
-from .models import Usuario
+from django.contrib.auth import logout
 import json
 
 
@@ -30,10 +25,10 @@ def vista_feed(request):
     error = ""
 
     updatePage(user_actual)  
-    
-    avatar_colores_string = getAvatar(user_actual)
-    rango = range(1,122)
     notificaciones = getNotificaciones(user_actual)
+
+    avatar_colores_string = getAvatar(user_actual)
+    rango_avatar = range(1,122)
 
     if avatar_colores_string is not None:
     
@@ -59,9 +54,9 @@ def vista_feed(request):
 
             busqueda = request.POST.get('input-busqueda')
 
-            respuesta, usuario = userSearcher(username=busqueda)
+            respuesta_busqueda, usuario = userSearcher(username=busqueda)
 
-            if respuesta:
+            if respuesta_busqueda:
                 
                 if usuario.username == user_actual.username:
                     return redirect('vista_perfil') 
@@ -104,15 +99,15 @@ def vista_feed(request):
 
     return render(request, "feed.html", {
         'colores':colores_completos_json, 
+        'rango':rango_avatar,
+        'notificaciones':notificaciones,
+        'error':error,
         'form_cerrar_sesion':'logout', 
         'form_config':'config', 
         'form_buscar':'buscar',
         'form_perfil':'perfil',
         'aceptar_notificacion':'aceptar_notificacion',
-        'denegar_notificacion':'denegar_notificacion',
-        'rango':rango,
-        'notificaciones':notificaciones,
-        'error':error
+        'denegar_notificacion':'denegar_notificacion'
         })
 
 
@@ -130,15 +125,9 @@ def vista_config(request):
 # TO DO -------------------------------------------------------------------------------------------
 """
 - DARLE CSS A LOS BOTONES DE ACEPTAR Y DENEGAR NOTIFICACIONES
-- PERFIL 
-- BUSCAR PERFILES
-    -DENTRO DEL PERFIL POSIBILIDAD DE SEGUIR Y DEJAR DE SEGUIR
-- ELIMINAR AMISTAD
 - FEED QUE MUESTRE LAS ULTIMAS PUBLICACIONES DE TUS AMIGOS
 - CONFIGURACION
     -BORRAR CUENTA
 -CREAR SISTEMA DE COMENTARIOS EN POSTS CON SU MODELO
 -PERMITIR DAR ME GUSTA Y COMENTAR
--MODULARIZAR LOGIN Y REGISTER A OTRA APP
--MANEJO DE ERRORES MEDIANTE MODALES QUE DESAPAREZCAN GRADUALMENTE
 """
