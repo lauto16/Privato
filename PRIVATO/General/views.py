@@ -27,6 +27,8 @@ def vista_feed(request):
 
     user_actual = getUser(request)
 
+    error = ""
+
     updatePage(user_actual)  
     
     avatar_colores_string = getAvatar(user_actual)
@@ -66,9 +68,9 @@ def vista_feed(request):
 
                 addBusqueda(busqueda, user_actual)
                 return redirect('vista_persona')
+            else:
+                error = "No hay usuarios con ese nombre"
 
-            return redirect('vista_feed')
-            
         elif peticion == "perfil":
             return redirect('vista_perfil')
 
@@ -83,8 +85,9 @@ def vista_feed(request):
 
                 eliminarSeguimientos(id_user_a=amistad.id_usuario_a, id_user_b=amistad.id_usuario_b)
                 eliminarNotificacion(notificacion)
+                return redirect('vista_feed')
 
-            return redirect('vista_feed')
+            error = "No se pudo aceptar la notificacion"
 
         elif peticion == "denegar_notificacion":
             
@@ -94,8 +97,9 @@ def vista_feed(request):
             if respuesta_validacion_noti:
                 eliminarSeguimientos(id_user_a=notificacion.id_emisor, id_user_b=notificacion.id_receptor)
                 eliminarNotificacion(notificacion)
+                return redirect('vista_feed')
 
-            return redirect('vista_feed')
+            error = "No se pudo denegar la notificacion"
             
 
     return render(request, "feed.html", {
@@ -107,7 +111,8 @@ def vista_feed(request):
         'aceptar_notificacion':'aceptar_notificacion',
         'denegar_notificacion':'denegar_notificacion',
         'rango':rango,
-        'notificaciones':notificaciones
+        'notificaciones':notificaciones,
+        'error':error
         })
 
 
@@ -123,6 +128,8 @@ def vista_config(request):
 
 def vista_login(request):
 
+    error = ""
+    
     if request.method == "POST":
 
         form = Login(request.POST)
@@ -135,7 +142,7 @@ def vista_login(request):
             resultado, user = verifyPassword(username=username,password=password)
             
             if resultado == 'USER_DOES_NOT_EXISTS' or resultado == False:
-                pass   
+                error = "El usuario o la contraseña no son correctos"   
             
 
             elif resultado == True:
@@ -148,7 +155,7 @@ def vista_login(request):
     else:
         form = Login()    
 
-    return render(request, "login.html", {"form": form})
+    return render(request, "login.html", {"form": form, "error":error})
 
 
 def vista_index(request):
@@ -183,7 +190,7 @@ def vista_index(request):
                             return redirect('vista_login')
                         
                         except:
-                            pass
+                            error.append("No se pudo crear la cuenta")
                         
                 else:
 

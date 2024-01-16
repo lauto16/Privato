@@ -353,3 +353,51 @@ body{
     background-color: transparent;
 }
 
+.div-errores{
+    display: inline-block;
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    width: auto;
+    padding-right: 10px;
+    height: auto;
+    border-radius: 5px;
+    background-color: #f78b94;
+    color: #ffffff;
+    opacity: 0.9;
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#p-errores{
+    margin-top: 3px;
+}
+
+.exclamacion{
+    height: 25px;
+    aspect-ratio: 1;
+    border-radius: 25%;
+    color: rgb(235, 69, 69);
+    background-color: #f36470;
+    float: left;
+    margin-right: 5px;
+    text-align: center;
+}
+
+#p-exclamacion{
+    margin-top: 3px;
+}
+
+@media only screen and (max-width: 768px) {
+    .div-errores {
+        width: 100%;
+        left: 0;
+        transform: none;
+        text-align: center;
+    }
+
+    .exclamacion {
+        float: left; 
+    }
+}

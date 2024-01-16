@@ -47,8 +47,6 @@
                                 </div>
                             </form>
 
-
-
                             <div class="container-navs">
                                 <button class="derecha-nav" id="noti_btn">
                                     <img class="imagen-nav-noti" src="{% static 'img/noti_vacia.png' %}" alt="">
@@ -89,6 +87,12 @@
                 
             </header>
             <main>
+                <div class="div-errores" id="div-errores">
+                    <div class="exclamacion">
+                        <p id="p-exclamacion" >!</p>
+                    </div>
+                    <p id="p-errores"></p>
+                </div>
                 <section>
                     <div class="feed">
                                            
@@ -136,6 +140,7 @@
 <script>
     var lista_colores = JSON.parse('{{ colores | escapejs }}');
     rellenarAvatar(lista_colores)
+    errorHandler("{{ error }}")
 </script>
 </html>
     

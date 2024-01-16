@@ -40,6 +40,12 @@
                 </section>
                 <section class="posts">
                     <div class="container-posts">
+                        <div class="div-errores" id="div-errores">
+                            <div class="exclamacion">
+                                <p id="p-exclamacion" >!</p>
+                            </div>
+                            <p id="p-errores"></p>
+                        </div>
                         <div class="nuevo-post">
                             <form class="form-post" method="post">
                                 <h1 class="header-post">Nueva publicacion</h1>
@@ -61,7 +67,6 @@
                                 </div>
                             </form>
                         </div>
-
                         <!--POST ANTIGUOS-->
                         <div class="posts-anteriores">
                             <h1 class="header-post">Posts anteriores</h1>
@@ -107,6 +112,7 @@
     var lista_colores = JSON.parse('{{ colores | escapejs }}');
     var id_posts = JSON.parse('{{ ids_posts | escapejs }}')
     rellenarAvatar(lista_colores)
+    errorHandler("{{ error }}")
 </script>
 </html>
 

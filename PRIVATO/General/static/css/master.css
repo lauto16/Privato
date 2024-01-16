@@ -184,6 +184,13 @@ input[type="text"]:focus{
 
 }
 
+#error{
+    margin-top: 20px;
+    color: #f78b94;
+    font-size: 14px;
+    font-family: 'Lato', sans-serif;
+}
+
 .errorlist{
     display: none;
     color: transparent;

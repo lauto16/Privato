@@ -46,7 +46,7 @@ def vista_avatar(request):
                         avatar_actual.delete()
 
                     Avatar.objects.create(nombre_usuario=user_actual.username, array_colores=valores_comprimidos)
-                    return redirect('vista_feed')
+                    return redirect('vista_perfil')
                 
                 except:
                     error = "No se pudo crear el avatar, intentelo de nuevo"

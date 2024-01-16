@@ -11,6 +11,41 @@ function rellenarAvatar(lista_colores){
     }
 }
 
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+async function errorHandler(error){
+  const div_errores = document.getElementById("div-errores")
+  const p_errores = document.getElementById("p-errores")
+
+  if (error){
+
+    div_errores.setAttribute('style', 'display:inline-block')
+    p_errores.setAttribute('style', 'display:inline-block')
+    p_errores.textContent = error
+
+    await sleep(3000)
+
+    $( "#div-errores" ).fadeOut( "slow", function() {
+      div_errores.setAttribute('style', 'display:none')
+      p_errores.setAttribute('style', 'display:none')
+    });
+
+
+  }
+  else{
+    div_errores.setAttribute('style', 'display:none')
+    p_errores.setAttribute('style', 'display:none')
+  }
+
+  
+  
+
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     var divEnviar = document.getElementById('avatar-container');
     var formulario = document.getElementById('form-perfil');

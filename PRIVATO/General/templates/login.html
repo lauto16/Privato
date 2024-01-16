@@ -29,6 +29,9 @@
                         </div>
     
                     </form>
+                    {% if error %}
+                        <p id="error">{{ error }}</p>
+                    {% endif %}
                 </div>
             </section>
         </main>

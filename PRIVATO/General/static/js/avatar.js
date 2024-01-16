@@ -49,7 +49,6 @@ function recoverColors(){
 
 
 const boton_rellenar = document.getElementById("boton-rellenar")
-
 boton_rellenar.addEventListener('click', function(){
   rellenarTodo(colorPickerInput.value)
 });

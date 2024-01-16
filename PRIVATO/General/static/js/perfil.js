@@ -3,8 +3,37 @@ const form_avatar = document.getElementById('form_avatar');
 const input = document.getElementById("textarea-post")
 const contadorChars = document.getElementById("contador-caracteres")
 const title = document.getElementById("title") 
-//const input_like = document.getElementById("url-imagen-like")
-//const input_like_vacio = document.getElementById("url-imagen-like-vacio")
+
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+async function errorHandler(error){
+  const div_errores = document.getElementById("div-errores")
+  const p_errores = document.getElementById("p-errores")
+
+  if (error){
+
+    div_errores.setAttribute('style', 'display:inline-block')
+    p_errores.setAttribute('style', 'display:inline-block')
+    p_errores.textContent = error
+
+    await sleep(3000)
+
+    $( "#div-errores" ).fadeOut( "slow", function() {
+      div_errores.setAttribute('style', 'display:none')
+      p_errores.setAttribute('style', 'display:none')
+    });
+
+
+  }
+  else{
+    div_errores.setAttribute('style', 'display:none')
+    p_errores.setAttribute('style', 'display:none')
+  }
+}
 
 
 function cambiar_imagen(id, src1, src2) {

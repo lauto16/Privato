@@ -20,10 +20,11 @@ from .models import Post
 import json
 
 
-
 @login_required
 def vista_perfil(request):
-  
+
+    error = ""
+
     user_actual = getUser(request)
 
     updatePage(user_actual)  
@@ -63,12 +64,10 @@ def vista_perfil(request):
                     try:
                         Post.objects.create(id_usuario=user_actual.id, title=title, contenido=content, likes=0, comentarios=0)
                     except:
-                        # No se pudo crear el post, manejar el error
                         pass
 
-                updatePosts(user_actual)
                 return redirect('vista_perfil')
-
+            
         elif peticion == "avatar":
             return redirect('vista_avatar')
 
@@ -82,13 +81,16 @@ def vista_perfil(request):
         'form_post':'posteo',
         'form_avatar':'avatar',
         'ids_posts':ids_posts,
+        'error':error
     })
 
 
 
 @login_required
 def vista_persona(request):
-
+    
+    error = ""
+    
     rango = range(1,122)
     user_actual = getUser(request)
 
@@ -150,7 +152,8 @@ def vista_persona(request):
         'posts':posts,
         'estado_seguimiento':estado_seguimiento,
         'color_boton_seguir':color_boton_seguir,
-        'form_agregar':'agregar'
+        'form_agregar':'agregar',
+        'error':error
     })
 
 

@@ -44,6 +44,12 @@
 
                     </div>
                 </section>
+                <div class="div-errores" id="div-errores">
+                    <div class="exclamacion">
+                        <p id="p-exclamacion" >!</p>
+                    </div>
+                    <p id="p-errores"></p>
+                </div>
                 <section class="posts">
                     <div class="container-posts">
                         <!--POST ANTIGUOS-->
@@ -93,6 +99,7 @@
     var lista_colores = JSON.parse('{{ colores | escapejs }}');
     var id_posts = JSON.parse('{{ ids_posts | escapejs }}')
     rellenarAvatar(lista_colores)
+    errorHandler("{{ error }}")
     colorBoton(id="agregar-btn", color="{{ color_boton_seguir }}")
 </script>
 </html>
