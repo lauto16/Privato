@@ -27,7 +27,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'General',
     'Avatares',
-    'Perfil'
+    'Perfil',
+    'Auth'
 ]
 
 MIDDLEWARE = [
