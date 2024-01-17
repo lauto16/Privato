@@ -272,7 +272,6 @@ body{
 .title-post-anterior,
 .contenido-post-anterior,
 .fecha-post-anterior,
-.likes-post-anterior,
 .comentarios-post-anterior{
     word-wrap: break-word;
 }
@@ -300,34 +299,27 @@ body{
 }
 
 
-.likes-comentarios{
+.comentarios{
     font-family: 'Lato', sans-serif;
     display: inline-block;
     width: 70%;
     color: #176134;
     font-size: 16px;
+    
 }
 
-.likes-post-anterior{
-    float: left;
-    margin-right: 1px;
-    display: flex;
+.boton-comentario{
+    outline: none;
+    border: 0;
+    background-color: transparent;
+    transition: ease opacity 0.2s;
 }
 
-
-.imagen-like{
-    height: 13px;
-    aspect-ratio: 1;
-    margin-left: 3px;
-    margin-bottom: 1px;
+.boton-comentario:hover{
+    cursor: pointer;
+    opacity: 0.5;
 }
 
-
-.mensaje-likes{
-    margin-left: 7px;
-    margin-right: 7px;
-    font-size: 13px;
-}
 
 .comentarios-post-anterior{
     float: left;
@@ -347,7 +339,7 @@ body{
     font-size: 13px;
 }
 
-.boton-like-comentario{
+.boton-comentario{
     outline: none;
     border: 0;
     background-color: transparent;

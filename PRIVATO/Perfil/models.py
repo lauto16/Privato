@@ -5,7 +5,6 @@ class Post(models.Model):
     title = models.CharField(max_length=82)
     contenido = models.CharField(max_length=952)
     fecha = models.DateTimeField(auto_now_add=True)
-    likes = models.IntegerField()
     comentarios = models.IntegerField()
 
 

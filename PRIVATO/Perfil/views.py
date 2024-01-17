@@ -60,7 +60,7 @@ def vista_perfil(request):
                 if title != "":
 
                     try:
-                        Post.objects.create(id_usuario=user_actual.id, title=title, contenido=content, likes=0, comentarios=0)
+                        Post.objects.create(id_usuario=user_actual.id, title=title, contenido=content, comentarios=0)
                     except:
                         pass
 

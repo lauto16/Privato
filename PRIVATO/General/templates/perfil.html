@@ -78,25 +78,21 @@
                                             <p class="fecha-post-anterior">{{ post.fecha }}</p>
                                         </div>
                                         <p class="contenido-post-anterior">{{ post.contenido }}</p>
-                                        <div class="likes-comentarios">
-                                            <div class="likes-post-anterior">                                          
-                                                    <div id="boton_like-{{ post.id }}" class="boton-like-comentario" type="submit">
-                                                        <img id="imagen_like-{{ post.id }}" class="imagen-like" src="{% static 'img/like_vacio.png' %}" alt="">
-                                                    </div>
-                                                <div class="mensaje-likes">
-                                                    <p id="p-likes">{{ post.likes }}</p>
-                                                </div>
-                                            </div>                                        
+                                        <div class="comentarios">
                                             <div class="comentarios-post-anterior">
-                                                    <div id="boton_comentario-{{ post.id }}" class="boton-like-comentario" type="submit">
-                                                        <img id="imagen_comentario-{{ post.id }}" class="imagen-comentario" src="{% static 'img/comentario_op2.png' %}" alt="">
-                                                    </div>
+
+                                                <div id="boton_comentario-{{ post.id }}" class="boton-comentario" type="submit">
+                                                    <img id="imagen_comentario-{{ post.id }}" class="imagen-comentario" src="{% static 'img/comentario_op2.png' %}" alt="">
+                                                </div>
+
                                                 <div class="mensaje-comentarios">
                                                     <p>{{ post.comentarios }}</p>
                                                 </div>
+
                                             </div>
-                                        </div>
+                                        </div>                                        
                                     </div>
+                                
                                 {% endfor %}
                             </div>
                         </div>
