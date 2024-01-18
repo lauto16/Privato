@@ -1,11 +1,9 @@
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-3pfp^^l=_%lhw*uweu6+fs6wsg2k$ww_93bo!k9qkw9388zk)t'
@@ -28,7 +26,7 @@ INSTALLED_APPS = [
     'General',
     'Avatares',
     'Perfil',
-    'Auth'
+    'Auth',
 ]
 
 MIDDLEWARE = [
@@ -46,7 +44,7 @@ ROOT_URLCONF = 'PRIVATO.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["/home/lauty_/Desktop/PROYECTOS/PRIVATO/PRIVATO/General/templates/"],
+        'DIRS': [os.path.join(BASE_DIR, "General/templates/")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -71,7 +69,7 @@ DATABASES = {
         'NAME': 'Privato',
         'USER': 'root',
         'PASSWORD': 'lauty1234',
-        'HOST':'localhost',
+        'HOST': 'localhost',
         'PORT': ''
     }
 }
@@ -111,7 +109,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = '/home/lauty_/Desktop/PROYECTOS/PRIVATO/PRIVATO/General/static/'
+STATIC_URL = os.path.join(BASE_DIR, 'General/static/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

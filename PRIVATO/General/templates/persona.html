@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/persona.css' %}">
@@ -7,92 +8,97 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-    <body>
-        <div class="container">
-            <header>
-                <nav class="navbar" id="navbar">
-                    <div class="logo">
-                        <strong><a href="/feed/" id="logo">Privato</a></strong>
-                    </div>
-                </nav>
-            </header>
-            <main>
-                <section class="perfil">
-                    <div class="cabecera-perfil">
-                            <div id="avatar-container" class="grid-container" type="submit">                     
-                                {% for i in rango %}
-                                <div id="box{{ i }}" class="grid-item"></div>
-                                {% endfor %}
-                            </div>
-                            <div class="estadisticas">
-                                <p id="username" class="user-stats"><strong>{{ username }}</strong></p>
-                                <p class="user-stats"><strong>{{ num_posts }}</strong> Posts</p>
-                                <p class="user-stats"><strong>{{ amigos }}</strong> Amigos</p>
-                            </div>  
 
-                            <form id="form-agregar" action="" method="post" class="form-agregar">
-                                {% csrf_token %}
-                                <input name="peticion" type="hidden" value="{{ form_agregar }}">
-                                <div class="container-agregar">
-                                    <button class="agregar-btn" id="agregar-btn">
-                                        {{ estado_seguimiento }}
-                                    </button>  
-                                </div>
-                            </form>
-
-                        </form>
-
-                    </div>
-                </section>
-                <div class="div-errores" id="div-errores">
-                    <div class="exclamacion">
-                        <p id="p-exclamacion" >!</p>
-                    </div>
-                    <p id="p-errores"></p>
+<body>
+    <div class="container">
+        <header>
+            <nav class="navbar" id="navbar">
+                <div class="logo">
+                    <strong><a href="/feed/" id="logo">Privato</a></strong>
                 </div>
-                <section class="posts">
-                    <div class="container-posts">
-                        <!--POST ANTIGUOS-->
-                        <div class="posts-anteriores">
-                            {% if son_amigos %}
-                            <h1 class="header-post">Posts anteriores</h1>
-                            <div class="container-posts-anteriores">
-                               {% for post in posts %}
-                                    <div class="post-anterior">
-                                        <div class="titulo-fecha">
-                                            <p class="title-post-anterior"><strong>{{ post.title }}</strong></p>
-                                            <p class="fecha-post-anterior">{{ post.fecha }}</p>
-                                        </div>
-                                        <p class="contenido-post-anterior">{{ post.contenido }}</p>
-                                        <div class="comentarios">
-                                           
-                                            <div class="comentarios-post-anterior">
+            </nav>
+        </header>
+        <main>
+            <section class="perfil">
+                <div class="cabecera-perfil">
+                    <div id="avatar-container" class="grid-container" type="submit">
+                        {% for i in rango %}
+                        <div id="box{{ i }}" class="grid-item"></div>
+                        {% endfor %}
+                    </div>
+                    <div class="estadisticas">
+                        <p id="username" class="user-stats"><strong>{{ username }}</strong></p>
+                        <p class="user-stats"><strong>{{ num_posts }}</strong> Posts</p>
+                        <p class="user-stats"><strong>{{ amigos }}</strong> Amigos</p>
+                    </div>
 
-                                                <div id="boton_comentario-{{ post.id }}" class="boton-comentario" type="submit">
-                                                    <img id="imagen_comentario-{{ post.id }}" class="imagen-comentario" src="{% static 'img/comentario_op2.png' %}" alt="">
-                                                </div>
+                    <form id="form-agregar" action="" method="post" class="form-agregar">
+                        {% csrf_token %}
+                        <input name="peticion" type="hidden" value="{{ form_agregar }}">
+                        <div class="container-agregar">
+                            <button class="agregar-btn" id="agregar-btn">
+                                {{ estado_seguimiento }}
+                            </button>
+                        </div>
+                    </form>
 
-                                                <div class="mensaje-comentarios">
-                                                    <p>{{ post.comentarios }}</p>
-                                                </div>
+                    </form>
 
-                                            </div>                                        
+                </div>
+            </section>
+            <div class="div-errores" id="div-errores">
+                <div class="exclamacion">
+                    <p id="p-exclamacion">!</p>
+                </div>
+                <p id="p-errores"></p>
+            </div>
+            <section class="posts">
+                <div class="container-posts">
+                    <!--POST ANTIGUOS-->
+                    <div class="posts-anteriores">
+                        {% if son_amigos %}
+                        <h1 class="header-post">Posts anteriores</h1>
+                        <div class="container-posts-anteriores">
+                            {% for post in posts %}
+                            <div class="post-anterior">
+                                <div class="titulo-fecha">
+                                    <p class="title-post-anterior"><strong>{{ post.title }}</strong></p>
+                                    <p class="fecha-post-anterior">{{ post.fecha }}</p>
+                                </div>
+                                <p class="contenido-post-anterior">{{ post.contenido }}</p>
+                                <div class="comentarios">
+
+                                    <div class="comentarios-post-anterior">
+                                        <form action="" method="post" id="form-comentarios">
+                                            {% csrf_token %}
+                                            <input value="{{ form_comentarios }}" name="peticion" type="hidden">
+                                            <div id="boton_comentario-{{ post.id }}" class="boton-comentario"
+                                                type="submit">
+                                                <img id="imagen_comentario-{{ post.id }}" class="imagen-comentario"
+                                                    src="{% static 'img/comentario_op2.png' %}" alt="">
+                                            </div>
+                                        </form>
+                                        <div class="mensaje-comentarios">
+                                            <p>{{ post.comentarios }}</p>
                                         </div>
                                     </div>
-                                {% endfor %}
+                                </div>
                             </div>
-                            {% else %}
-                                <p class="header-no-amigos">
-                                    Para ver los posts de <strong id="strong-no-amigos">{{ username }}</strong> debes ser su amigo
-                                </p>
-                            {% endif %}
+                            {% endfor %}
                         </div>
-                        
+                        {% else %}
+                        <p class="header-no-amigos">
+                            Para ver los posts de <strong id="strong-no-amigos">{{ username }}</strong> debes ser su
+                            amigo
+                        </p>
+                        {% endif %}
                     </div>
-                </section>
-            </main>
-        </div>                 
-    </body> 
+
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
 <script src="{% static 'js/jquery.js' %}"></script>
 <script src="{% static 'js/persona.js' %}"></script>
 <script>
@@ -100,7 +106,8 @@
     var id_posts = JSON.parse('{{ ids_posts | escapejs }}')
     rellenarAvatar(lista_colores)
     errorHandler("{{ error }}")
-    colorBoton(id="agregar-btn", color="{{ color_boton_seguir }}")
+    colorBoton(id = "agregar-btn", color = "{{ color_boton_seguir }}")
+    comentarEventsListeners()
 </script>
-</html>
 
+</html>

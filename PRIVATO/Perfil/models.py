@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Post(models.Model):
     id_usuario = models.IntegerField()
     title = models.CharField(max_length=82)
@@ -19,7 +20,8 @@ class Seguimiento(models.Model):
     id_receptor = models.IntegerField()
 
     def __str__(self):
-        r = "El usuario: " + str(self.id_seguidor) + " sigue a " + str(self.id_receptor)
+        r = "El usuario: " + str(self.id_seguidor) + \
+            " sigue a " + str(self.id_receptor)
         return r
 
 
@@ -27,9 +29,17 @@ class Amistad(models.Model):
     id_usuario_a = models.IntegerField()
     id_usuario_b = models.IntegerField()
 
+
 class Notificacion(models.Model):
     username_emisor = models.TextField()
     id_emisor = models.IntegerField()
     id_receptor = models.IntegerField()
     mensaje = models.TextField()
+    fecha = models.DateTimeField(auto_now_add=True)
+
+
+class Comentario(models.Model):
+    post_id = models.IntegerField()
+    username = models.CharField(max_length=30)
+    contenido = models.TextField()
     fecha = models.DateTimeField(auto_now_add=True)

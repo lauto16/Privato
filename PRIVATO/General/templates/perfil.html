@@ -78,10 +78,15 @@
                                 <div class="comentarios">
                                     <div class="comentarios-post-anterior">
 
-                                        <div id="boton_comentario-{{ post.id }}" class="boton-comentario" type="submit">
-                                            <img id="imagen_comentario-{{ post.id }}" class="imagen-comentario"
-                                                src="{% static 'img/comentario_op2.png' %}" alt="">
-                                        </div>
+                                        <form action="" method="post" id="form-comentarios">
+                                            {% csrf_token %}
+
+                                            <input value="{{ form_comentarios }}" name="peticion" type="hidden">
+                                            <button id="boton_comentario-{{ post.id }}" class="boton-comentario">
+                                                <img id="imagen_comentario-{{ post.id }}" class="imagen-comentario"
+                                                    src="{% static 'img/comentario_op2.png' %}" alt="">
+                                            </button>
+                                        </form>
 
                                         <div class="mensaje-comentarios">
                                             <p>{{ post.comentarios }}</p>
@@ -108,22 +113,32 @@
     function agregarNuevoPost(data) {
 
         var nuevoPostHTML = `<div class="post-anterior">` +
-            `<p class="title-post-anterior"><strong>` + data.post_title + `</strong></p` +
-            `<p class="fecha-post-anterior">Fecha actual</p>` +
+            `<p class="title-post-anterior"><strong>` + data.post_title + `</strong></p>` +
+            `<p class="fecha-post-anterior">` + data.post_fecha + `</p>` +
             `<p class="contenido-post-anterior">` + data.post_contenido + `</p>` +
             `<div class="comentarios">` +
-            `<div class="comentarios-post-anterior">` +
-            `<div class="boton-comentario" type="submit">` +
-            `<img class="imagen-comentario src="{% static 'img/comentario_op2.png' %}" alt="">` +
-            `</div>` +
-            `<div class="mensaje-comentarios">` +
-            `<p>` + data.post_comentarios + `</p>` +
-            `</div>` +
-            `</div > ` +
+            `<div class="comentarios-post-anterior">
+
+                    <form action="" method="post" id="form-comentarios">
+                        {% csrf_token %}
+                    <input value="{{ form_comentarios }}" name="peticion" type="hidden">` +
+
+            `<button id=` + `'boton_comentario-` + data.post_id.toString() + `'` + `class="boton-comentario">` +
+            `<img id=` + `'imagen_comentario-` + data.post_id + `'` + `class="imagen-comentario"
+                src="{% static 'img/comentario_op2.png' %}" alt="">
+            </button>
+                </form >
+
+            <div class="mensaje-comentarios">
+                <p>{{ post.comentarios }}</p>
+            </div>` +
+
             `</div > ` +
             `</div > `;
 
         $("#contenedor-posts").prepend(nuevoPostHTML);
+        comentarEventsListeners()
+
     }
 
 
@@ -131,6 +146,9 @@
     var id_posts = JSON.parse('{{ ids_posts | escapejs }}')
     rellenarAvatar(lista_colores)
     errorHandler("{{ error }}")
+    comentarEventsListeners()
+
+
 </script>
 
 </html>

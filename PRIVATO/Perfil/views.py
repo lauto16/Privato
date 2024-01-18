@@ -1,7 +1,6 @@
 from General.utils import (userSearcher,
-                           addLike,
                            getLastSearch,
-                           getIdPosts, updatePosts,
+                           getIdPosts,
                            getUser, getPosts,
                            getAvatar, completarColores,
                            validacionesSeguimiento,
@@ -10,13 +9,18 @@ from General.utils import (userSearcher,
                            eliminarAmistad,
                            sonAmigos,
                            generarNotificacion,
-                           updatePage
+                           updatePage,
+                           validarTitulo,
+                           formatFecha,
+                           getComentarios,
+                           validacionComentarios
                            )
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from General.forms import Posting
 from .models import Post
+from html import escape
 import json
 
 
@@ -57,25 +61,42 @@ def vista_perfil(request):
                 title = form.cleaned_data['title']
                 content = form.cleaned_data['content']
 
-                if title != "":
+                if validarTitulo(title=title):
+
+                    title_filtered = escape(title)
+                    content_filtered = escape(content)
 
                     try:
                         new_post = Post.objects.create(
-                            id_usuario=user_actual.id, title=title, contenido=content, comentarios=0)
+                            id_usuario=user_actual.id, title=title_filtered, contenido=content_filtered, comentarios=0)
 
-                        new_post_title = new_post.title
-                        new_post_contenido = new_post.contenido
-                        new_post_comentarios = new_post.comentarios
+                        fecha_formateada = formatFecha(fecha=new_post.fecha)
 
-                        response_data = {'post_title': new_post_title,
-                                         'post_contenido': new_post_contenido,
-                                         'post_comentarios': new_post_comentarios
+                        response_data = {'post_title': new_post.title,
+                                         'post_contenido': new_post.contenido,
+                                         'post_comentarios': new_post.comentarios,
+                                         'post_fecha': fecha_formateada,
+                                         'post_id': new_post.id
                                          }
 
                         return JsonResponse(response_data)
 
                     except Exception as e:
                         print(e)
+
+        elif peticion == "comentarios":
+
+            id_post = request.POST.get('id_post', None)
+
+            comentarios_post = "No se encontraron comentarios en esta publicacion "
+
+            if validacionComentarios(id_post=id_post, user_actual=user_actual, user_buscado=None, action='perfil'):
+
+                comentarios_post = getComentarios(id_post=id_post)
+
+            response_data = {'comentarios': comentarios_post}
+
+            return JsonResponse(response_data)
 
         elif peticion == "avatar":
             return redirect('vista_avatar')
@@ -89,11 +110,12 @@ def vista_perfil(request):
         'colores': colores_completos_json,
         'rango': rango_avatar,
         'posts': posts,
-        'form_post': 'posteo',
-        'form_avatar': 'avatar',
         'ids_posts': ids_posts,
         'error': error,
-        'form': form
+        'form': form,
+        'form_post': 'posteo',
+        'form_avatar': 'avatar',
+        'form_comentarios': 'comentarios'
     })
 
 
@@ -155,6 +177,20 @@ def vista_persona(request):
 
             return redirect('vista_persona')
 
+        elif peticion == "comentarios":
+
+            id_post = request.POST.get('id_post', None)
+
+            comentarios_post = "No se encontraron comentarios en esta publicacion "
+
+            if validacionComentarios(id_post=id_post, user_actual=user_actual, user_buscado=user_buscado, action='persona'):
+
+                comentarios_post = getComentarios(id_post=id_post)
+
+            response_data = {'comentarios': comentarios_post}
+
+            return JsonResponse(response_data)
+
     return render(request, 'persona.html', {
         'username': user_buscado.username,
         'num_posts': user_buscado.posts,
@@ -168,4 +204,5 @@ def vista_persona(request):
         'error': error,
         'son_amigos': son_amigos,
         'form_agregar': 'agregar',
+        'form_comentarios': 'comentarios'
     })

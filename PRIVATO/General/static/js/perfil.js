@@ -6,6 +6,12 @@ const input = document.getElementById("id_content")
 const boton_crear_post = document.getElementById('save-post-btn')
 
 
+function extraerIdPost(id_comentario) {
+  var id_post = id_comentario.slice(id_comentario.lastIndexOf('-') + 1);
+  return id_post
+}
+
+
 function getCookie(name) {
 
   let cookieValue = null;
@@ -24,11 +30,18 @@ function getCookie(name) {
 }
 
 
-function crearPost() {
+function verComentarios(event) {
 
-  var form = new FormData(document.getElementById('form-post'))
+  event.preventDefault()
 
-  // envio de datos al server
+  var id_comentario = (event.target.id.toString())
+
+  var id_post = id_comentario.slice((id_comentario.lastIndexOf('-')) + 1);
+
+  var form = new FormData(document.getElementById('form-comentarios'))
+
+  form.append("id_post", id_post);
+
   fetch('./', {
 
     method: "POST",
@@ -38,7 +51,32 @@ function crearPost() {
     },
   })
 
-    // recibimiento de datos del servidor
+    .then(response => response.json())
+    .then(data => {
+
+      if (data) {
+        console.log(data)
+      }
+    })
+    .catch(error => {
+      console.log(error)
+    });
+
+}
+
+
+function crearPost() {
+
+  var form = new FormData(document.getElementById('form-post'))
+
+  fetch('./', {
+
+    method: "POST",
+    body: form,
+    headers: {
+      "X-CSRFToken": getCookie('csrftoken'),
+    },
+  })
 
     .then(response => response.json())
     .then(data => {
@@ -52,7 +90,9 @@ function crearPost() {
     })
 
     .catch(error => {
-      errorHandler(error = "El post debe contener un titulo")
+      console.log(error)
+      errorHandler(error = "Error al subir el post, intentalo de nuevo")
+
     });
 
 }
@@ -87,7 +127,6 @@ async function errorHandler(error) {
     p_errores.setAttribute('style', 'display:none')
   }
 }
-
 
 
 function rellenarAvatar(lista_colores) {
@@ -194,8 +233,13 @@ avatar_container.addEventListener('click', function () {
 });
 
 
+function comentarEventsListeners() {
+  var botones = document.querySelectorAll('.boton-comentario');
 
+  botones.forEach(function (boton) {
+    boton.addEventListener('click', verComentarios);
+  });
 
-
+}
 
 
