@@ -1,20 +1,20 @@
 from General.utils import (userSearcher,
-                            addLike,
-                            getLastSearch,
-                            getIdPosts, updatePosts,
-                            getUser, getPosts,
-                            getAvatar, completarColores,
-                            validacionesSeguimiento,
-                            generarSeguimiento,
-                            estadoUser,
-                            eliminarAmistad,
-                            sonAmigos,
-                            generarNotificacion,
-                            updatePage
-                            )
+                           addLike,
+                           getLastSearch,
+                           getIdPosts, updatePosts,
+                           getUser, getPosts,
+                           getAvatar, completarColores,
+                           validacionesSeguimiento,
+                           generarSeguimiento,
+                           estadoUser,
+                           eliminarAmistad,
+                           sonAmigos,
+                           generarNotificacion,
+                           updatePage
+                           )
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from General.models import Usuario
+from django.http import JsonResponse
 from General.forms import Posting
 from .models import Post
 import json
@@ -27,29 +27,29 @@ def vista_perfil(request):
 
     user_actual = getUser(request)
 
-    updatePage(user_actual)  
+    updatePage(user_actual)
 
     posts = getPosts(user_actual)
     ids_posts = json.dumps(getIdPosts(posts))
-    
+
     avatar_colores_string = getAvatar(user_actual)
-    
-    rango_avatar = range(1,122)
+
+    rango_avatar = range(1, 122)
 
     if avatar_colores_string is not None:
-    
+
         colores_completos = completarColores(avatar_colores_string)
         colores_completos_json = json.dumps(colores_completos)
 
     else:
         return redirect('vista_avatar')
-    
+
     if request.method == "POST":
 
         peticion = request.POST.get("peticion")
 
         if peticion == "posteo":
-           
+
             form = Posting(request.POST)
 
             if form.is_valid():
@@ -60,35 +60,49 @@ def vista_perfil(request):
                 if title != "":
 
                     try:
-                        Post.objects.create(id_usuario=user_actual.id, title=title, contenido=content, comentarios=0)
-                    except:
-                        pass
+                        new_post = Post.objects.create(
+                            id_usuario=user_actual.id, title=title, contenido=content, comentarios=0)
 
-                return redirect('vista_perfil')
-            
+                        new_post_title = new_post.title
+                        new_post_contenido = new_post.contenido
+                        new_post_comentarios = new_post.comentarios
+
+                        response_data = {'post_title': new_post_title,
+                                         'post_contenido': new_post_contenido,
+                                         'post_comentarios': new_post_comentarios
+                                         }
+
+                        return JsonResponse(response_data)
+
+                    except Exception as e:
+                        print(e)
+
         elif peticion == "avatar":
             return redirect('vista_avatar')
 
+    form = Posting()
+
     return render(request, "perfil.html", {
-        'username':user_actual.username, 
-        'num_posts':user_actual.posts, 
-        'amigos':user_actual.amigos, 
-        'colores':colores_completos_json, 
-        'rango':rango_avatar,
-        'posts':posts,
-        'form_post':'posteo',
-        'form_avatar':'avatar',
-        'ids_posts':ids_posts,
-        'error':error
+        'username': user_actual.username,
+        'num_posts': user_actual.posts,
+        'amigos': user_actual.amigos,
+        'colores': colores_completos_json,
+        'rango': rango_avatar,
+        'posts': posts,
+        'form_post': 'posteo',
+        'form_avatar': 'avatar',
+        'ids_posts': ids_posts,
+        'error': error,
+        'form': form
     })
 
 
 @login_required
 def vista_persona(request):
-    
+
     error = ""
-    
-    rango_avatar = range(1,122)
+
+    rango_avatar = range(1, 122)
     user_actual = getUser(request)
 
     posts = []
@@ -97,10 +111,11 @@ def vista_persona(request):
     username_busqueda = getLastSearch(user_actual)
     respuesta, user_buscado = userSearcher(username_busqueda)
 
-    updatePage(user_actual)    
+    updatePage(user_actual)
     updatePage(user_buscado)
-    
-    estado_seguimiento, color_boton_seguir = estadoUser(user_actual=user_actual, user_page=user_buscado)
+
+    estado_seguimiento, color_boton_seguir = estadoUser(
+        user_actual=user_actual, user_page=user_buscado)
     son_amigos = sonAmigos(user_a=user_actual, user_b=user_buscado)
 
     if son_amigos:
@@ -115,17 +130,18 @@ def vista_persona(request):
 
         colores_completos = completarColores(avatar_colores_string)
         colores_completos_json = json.dumps(colores_completos)
-    
-    if not(respuesta):
+
+    if not (respuesta):
         return redirect('vista_feed')
-    
-    if request.method == "POST": 
+
+    if request.method == "POST":
 
         peticion = request.POST.get('peticion')
 
         if peticion == "agregar":
 
-            respuesta_seguir = validacionesSeguimiento(user_a=user_actual,user_b=user_buscado)
+            respuesta_seguir = validacionesSeguimiento(
+                user_a=user_actual, user_b=user_buscado)
 
             # No son amigos
             if respuesta_seguir:
@@ -139,23 +155,17 @@ def vista_persona(request):
 
             return redirect('vista_persona')
 
-    return render(request, 'persona.html',{
-        'username':user_buscado.username,
-        'num_posts':user_buscado.posts,
-        'amigos':user_buscado.amigos,
-        'colores':colores_completos_json, 
-        'rango':rango_avatar,    
-        'ids_posts':ids_posts,
-        'posts':posts,
-        'estado_seguimiento':estado_seguimiento,
-        'color_boton_seguir':color_boton_seguir,
-        'error':error,
-        'son_amigos':son_amigos,
-        'form_agregar':'agregar',
+    return render(request, 'persona.html', {
+        'username': user_buscado.username,
+        'num_posts': user_buscado.posts,
+        'amigos': user_buscado.amigos,
+        'colores': colores_completos_json,
+        'rango': rango_avatar,
+        'ids_posts': ids_posts,
+        'posts': posts,
+        'estado_seguimiento': estado_seguimiento,
+        'color_boton_seguir': color_boton_seguir,
+        'error': error,
+        'son_amigos': son_amigos,
+        'form_agregar': 'agregar',
     })
-
-
-
-
-
-

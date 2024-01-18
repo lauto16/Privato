@@ -1,8 +1,61 @@
 const avatar_container = document.getElementById('avatar-container');
 const form_avatar = document.getElementById('form_avatar');
-const input = document.getElementById("textarea-post")
 const contadorChars = document.getElementById("contador-caracteres")
-const title = document.getElementById("title") 
+const title = document.getElementById("id_title")
+const input = document.getElementById("id_content")
+const boton_crear_post = document.getElementById('save-post-btn')
+
+
+function getCookie(name) {
+
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      // Does this cookie string begin with the name we want?
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
+
+function crearPost() {
+
+  var form = new FormData(document.getElementById('form-post'))
+
+  // envio de datos al server
+  fetch('./', {
+
+    method: "POST",
+    body: form,
+    headers: {
+      "X-CSRFToken": getCookie('csrftoken'),
+    },
+  })
+
+    // recibimiento de datos del servidor
+
+    .then(response => response.json())
+    .then(data => {
+
+      if (data) {
+        title.value = ""
+        input.value = ""
+        contadorChars.textContent = "0/950"
+        agregarNuevoPost(data)
+      }
+    })
+
+    .catch(error => {
+      errorHandler(error = "El post debe contener un titulo")
+    });
+
+}
 
 
 function sleep(ms) {
@@ -10,11 +63,11 @@ function sleep(ms) {
 }
 
 
-async function errorHandler(error){
+async function errorHandler(error) {
   const div_errores = document.getElementById("div-errores")
   const p_errores = document.getElementById("p-errores")
 
-  if (error){
+  if (error) {
 
     div_errores.setAttribute('style', 'display:inline-block')
     p_errores.setAttribute('style', 'display:inline-block')
@@ -22,14 +75,14 @@ async function errorHandler(error){
 
     await sleep(3000)
 
-    $( "#div-errores" ).fadeOut( "slow", function() {
+    $("#div-errores").fadeOut("slow", function () {
       div_errores.setAttribute('style', 'display:none')
       p_errores.setAttribute('style', 'display:none')
     });
 
 
   }
-  else{
+  else {
     div_errores.setAttribute('style', 'display:none')
     p_errores.setAttribute('style', 'display:none')
   }
@@ -37,15 +90,15 @@ async function errorHandler(error){
 
 
 
-function rellenarAvatar(lista_colores){
+function rellenarAvatar(lista_colores) {
   for (let i = 1; i <= 121; i++) {
-      
-      const id_box_avatar = `box${i}`;
-      const box_avatar = document.getElementById(id_box_avatar) 
 
-      color = 'background-color:' + lista_colores[i - 1] + ';'
-      box_avatar.setAttribute("style", color)
-      
+    const id_box_avatar = `box${i}`;
+    const box_avatar = document.getElementById(id_box_avatar)
+
+    color = 'background-color:' + lista_colores[i - 1] + ';'
+    box_avatar.setAttribute("style", color)
+
   }
 }
 
@@ -65,70 +118,84 @@ function rgbStringToHex(rgbString) {
   let hexColor = `#${redHex}${greenHex}${blueHex}`;
 
   return hexColor
-  
+
 }
 
 
-function countChars(element){
+function countChars(element) {
   chars = element.value
   return [chars.length, chars]
 }
 
 
-title.addEventListener('input', function(event) {
+title.addEventListener('input', function (event) {
 
   let lista_vars = countChars(title)
   cantidad_chars = lista_vars[0]
   chars = lista_vars[1]
 
-  if (cantidad_chars > 80){
-    let sinSobrante = chars.substring(0,80); 
+  if (cantidad_chars > 80) {
+    let sinSobrante = chars.substring(0, 80);
     title.value = sinSobrante
   }
 
 });
 
 
-input.addEventListener('input', function(event) {
+input.addEventListener('input', function (event) {
 
   let lista_vars = countChars(input)
   cantidad_chars = lista_vars[0]
   chars = lista_vars[1]
 
-  if (cantidad_chars <= 950){
+  if (cantidad_chars <= 950) {
     let string_limit_chars = cantidad_chars.toString() + "/950"
 
-    let componenteA = parseInt(cantidad_chars / (950/255))
-    let componenteB = parseInt(cantidad_chars / (950/3))
+    let componenteA = parseInt(cantidad_chars / (950 / 255))
+    let componenteB = parseInt(cantidad_chars / (950 / 3))
     let componenteC = componenteB
-  
+
     let color_rgb = `(${componenteA},${componenteB},${componenteC})`
-    let color_hex = rgbStringToHex(color_rgb) 
+    let color_hex = rgbStringToHex(color_rgb)
     propiedad_color = "color:" + color_hex + ";"
-  
+
     contadorChars.textContent = string_limit_chars
     contadorChars.setAttribute("style", propiedad_color)
   }
 
-  else{
+  else {
     contadorChars.textContent = "950/950"
-    let sinSobrante = chars.substring(0,950); 
+    let sinSobrante = chars.substring(0, 950);
     input.value = sinSobrante
   }
 
 });
 
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   var divEnviar = document.getElementById('avatar-container');
   var formulario = document.getElementById('form-perfil');
 
-  divEnviar.addEventListener('click', function() {
-    formulario.submit(); 
+  divEnviar.addEventListener('click', function () {
+    formulario.submit();
   });
+
 });
 
 
-avatar_container.addEventListener('click', function() {
+boton_crear_post.addEventListener('click', function (event) {
+  event.preventDefault()
+  crearPost()
+});
+
+
+avatar_container.addEventListener('click', function () {
   form_avatar.submit();
 });
+
+
+
+
+
+
+

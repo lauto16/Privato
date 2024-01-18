@@ -3,35 +3,35 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@200&display=swap');
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-html{
+html {
     font-size: 12px;
 }
 
-body{
+body {
     font-size: 1rem;
     background-color: #dfdfdf;
 }
 
-.container{
+.container {
     display: flex;
     flex-direction: column;
     width: 100%;
     background-color: #dfdfdf;
 }
 
-.container main{
+.container main {
     height: 100vh;
     width: 100%;
     display: inline-block;
 }
 
-.container header{
+.container header {
     height: 40px;
     width: 100%;
     display: inline-block;
@@ -43,14 +43,14 @@ body{
 
 /* LOGO */
 
-.logo{
+.logo {
     margin-left: 10px;
     margin-top: 5px;
     width: 70px;
 }
 
 
-#logo{
+#logo {
     font-family: 'Silkscreen', sans-serif;
     color: #038554;
     font-size: 20px;
@@ -60,12 +60,12 @@ body{
     outline: none;
 }
 
-#logo:hover{
+#logo:hover {
     cursor: pointer;
     opacity: 0.5;
 }
 
-#logo:visited{
+#logo:visited {
     color: #038554;
 }
 
@@ -74,9 +74,9 @@ body{
 
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(11, 1fr); 
-    grid-gap: 0px; 
-    width: 90%; 
+    grid-template-columns: repeat(11, 1fr);
+    grid-gap: 0px;
+    width: 90%;
     aspect-ratio: 1;
     margin-right: 2%;
     margin-left: 5%;
@@ -88,11 +88,11 @@ body{
     transition: ease 0.5s opacity;
 }
 
-.grid-container:hover{
+.grid-container:hover {
     opacity: 0.5;
 }
 
-#mensaje-avatar{
+#mensaje-avatar {
     display: none;
     position: absolute;
     background-color: #f9f9f9;
@@ -105,16 +105,16 @@ body{
     font-size: 10px;
 }
 
-.grid-container:hover + #mensaje-avatar {
+.grid-container:hover+#mensaje-avatar {
     display: block;
 }
 
 
 .grid-item {
-    background-color: #dddcdc; 
+    background-color: #dddcdc;
 }
 
-.posts{
+.posts {
     float: right;
     width: 88%;
     background-color: #dfdfdf;
@@ -124,7 +124,7 @@ body{
 
 /* PERFIL */
 
-.perfil{
+.perfil {
     height: 100%;
     float: left;
     width: 12%;
@@ -133,7 +133,7 @@ body{
     margin-top: 45px;
 }
 
-.cabecera-perfil{
+.cabecera-perfil {
     display: inline-block;
     height: 100%;
     width: 100%;
@@ -142,7 +142,7 @@ body{
 
 /* USER */
 
-.user-stats{
+.user-stats {
     font-family: 'Lato', sans-serif;
     color: #03bb85;
     font-size: 1.5vw;
@@ -152,14 +152,14 @@ body{
 }
 
 
-.estadisticas{
+.estadisticas {
     margin-top: 5%;
     width: 100%;
     text-align: center;
 }
 
 
-#username{
+#username {
     font-family: 'Silkscreen', sans-serif;
     font-size: 1.6vw;
     word-wrap: break-word;
@@ -178,7 +178,7 @@ body{
     margin-left: 10px;
 }
 
-.contenido-input {
+#id_content {
     height: 120px;
     width: 500px;
     border: 1px solid #dddbdb;
@@ -203,10 +203,10 @@ body{
 }
 
 .form-group {
-    margin-bottom: 7px; 
+    margin-bottom: 7px;
 }
 
-.header-post{
+.header-post {
     font-family: 'Silkscreen', sans-serif;
     font-size: 15px;
     color: #038554;
@@ -215,16 +215,15 @@ body{
 
 
 .boton-add-post,
-.title-post,
-.contenido-input,
-.contador-caracteres
-{
+#id_title,
+#id_content,
+.contador-caracteres {
     font-size: 12px;
     font-family: 'Lato', sans-serif;
 
 }
 
-.title-post{
+#id_title {
     outline: 0;
     border: 1px solid #dddbdb;
     height: 20px;
@@ -232,9 +231,10 @@ body{
     border-radius: 5px;
     overflow: auto;
     padding: 4px;
+    margin-bottom: 5px;
 }
 
-.boton-add-post{
+.boton-add-post {
     background-color: #038554;
     color: #fff;
     font-family: 'Silkscreen', sans-serif;
@@ -246,14 +246,14 @@ body{
     font-size: 11px;
 }
 
-.boton-add-post:hover{
+.boton-add-post:hover {
     opacity: 0.5;
     cursor: pointer;
 }
 
 /* POSTS ANTERIORES */
 
-.posts-anteriores{
+.posts-anteriores {
     width: 75%;
     margin-left: 20px;
     margin-right: 18px;
@@ -262,7 +262,7 @@ body{
     padding-bottom: 5px;
 }
 
-.post-anterior{
+.post-anterior {
     margin-bottom: 20px;
     padding: 15px;
     border: 1px solid #cfcdcd;
@@ -272,61 +272,64 @@ body{
 .title-post-anterior,
 .contenido-post-anterior,
 .fecha-post-anterior,
-.comentarios-post-anterior{
+.comentarios-post-anterior {
     word-wrap: break-word;
 }
 
-.titulo-fecha{
+.titulo-fecha {
     font-family: 'Lato', sans-serif;
     margin-bottom: 18px;
 }
 
-.fecha-post-anterior{
+.fecha-post-anterior {
+    font-family: 'Lato', sans-serif;
     color: #a5a5a5;
     font-size: 13px;
     margin-top: 2px;
 }
 
-.title-post-anterior{
+.title-post-anterior {
     font-size: 18px;
     color: #176134;
+    font-family: 'Lato', sans-serif;
+
 }
 
-.contenido-post-anterior{
+.contenido-post-anterior {
     font-family: 'Kanit', sans-serif;
     margin-bottom: 10px;
     font-size: 17px;
 }
 
 
-.comentarios{
+.comentarios {
     font-family: 'Lato', sans-serif;
     display: inline-block;
     width: 70%;
     color: #176134;
     font-size: 16px;
-    
+
 }
 
-.boton-comentario{
+.boton-comentario {
     outline: none;
     border: 0;
     background-color: transparent;
     transition: ease opacity 0.2s;
 }
 
-.boton-comentario:hover{
+.boton-comentario:hover {
     cursor: pointer;
     opacity: 0.5;
 }
 
 
-.comentarios-post-anterior{
+.comentarios-post-anterior {
     float: left;
     display: flex;
 }
 
-.imagen-comentario{
+.imagen-comentario {
     height: 15px;
     aspect-ratio: 1;
     margin-left: 3px;
@@ -334,18 +337,18 @@ body{
 }
 
 
-.mensaje-comentarios{
+.mensaje-comentarios {
     margin-left: 7px;
     font-size: 13px;
 }
 
-.boton-comentario{
+.boton-comentario {
     outline: none;
     border: 0;
     background-color: transparent;
 }
 
-.div-errores{
+.div-errores {
     display: inline-block;
     font-family: 'Lato', sans-serif;
     font-size: 13px;
@@ -362,11 +365,11 @@ body{
     transform: translate(-50%, -50%);
 }
 
-#p-errores{
+#p-errores {
     margin-top: 3px;
 }
 
-.exclamacion{
+.exclamacion {
     height: 25px;
     aspect-ratio: 1;
     border-radius: 25%;
@@ -377,7 +380,7 @@ body{
     text-align: center;
 }
 
-#p-exclamacion{
+#p-exclamacion {
     margin-top: 3px;
 }
 
@@ -390,6 +393,6 @@ body{
     }
 
     .exclamacion {
-        float: left; 
+        float: left;
     }
 }
