@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/master_feed.css' %}">
@@ -7,145 +8,155 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-    <body>
-        <div class="container">
-            <header>
 
-                <div class="logo">
-                    <strong><a href="/feed/" id="logo">Privato</a></strong>
-                </div>
-                <div class="container-navbar">
-                    <nav class="navbar" id="navbar">
-                    
-                        <div class="derecha">
+<body>
+    <div class="container">
+        <header>
+
+            <div class="logo">
+                <strong><a href="/feed/" id="logo">Privato</a></strong>
+            </div>
+            <div class="container-navbar">
+                <nav class="navbar" id="navbar">
+
+                    <div class="derecha">
 
 
 
-                            <div class="container-navs-usuario">
-                                <form id="form-perfil" action="" method="post">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="peticion" value="{{ form_perfil }}">
-                                </form>
-                                <div id="avatar-container" class="grid-container">
-                                    
-                                    {% for i in rango %}
-                                    <div id="box{{ i }}" class="grid-item"></div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-
-                            
-
-                            <form id="form-buscar" action="" method="post" class="form-nav">
+                        <div class="container-navs-usuario">
+                            <form id="form-perfil" action="" method="post">
                                 {% csrf_token %}
-                                <input name="peticion" type="hidden" value="{{ form_buscar }}">
-                                <div class="container-nav-buscar">
-                                    <input class="izquierda-nav-buscar" name="input-busqueda" type="text" placeholder="Buscar perfil">
-                                    <button class="derecha-nav-buscar" id="buscar-btn">
-                                        <img class="imagen-nav" src="{% static 'img/buscar.png' %}" alt="">
-                                    </button>  
-                                </div>
+                                <input type="hidden" name="peticion" value="{{ form_perfil }}">
                             </form>
+                            <div id="avatar-container" class="grid-container">
 
-                            <div class="container-navs">
-                                <button class="derecha-nav" id="noti_btn">
-                                    {% if notificaciones is None or notificaciones|length == 0 %}
-                                        <img class="imagen-nav-noti" src="{% static 'img/noti_vacia.png' %}" alt="">
-                                        {% else %}
-                                        <img class="imagen-nav-noti" src="{% static 'img/noti.png' %}" alt="">
-                                    {% endif %}    
+                                {% for i in rango %}
+                                <div id="box{{ i }}" class="grid-item"></div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+
+
+                        <form id="form-buscar" action="" method="post" class="form-nav">
+                            {% csrf_token %}
+                            <input name="peticion" type="hidden" value="{{ form_buscar }}">
+                            <div class="container-nav-buscar">
+                                <input class="izquierda-nav-buscar" name="input-busqueda" type="text"
+                                    placeholder="Buscar perfil">
+                                <button class="derecha-nav-buscar" id="buscar-btn">
+                                    <img class="imagen-nav" src="{% static 'img/buscar.png' %}" alt="">
                                 </button>
                             </div>
+                        </form>
 
-                            
-
-                            <form action="" method="post" class="form-nav-config">
-
-                                {% csrf_token %}
-                                <input name="peticion" type="hidden" value="{{ form_config }}">
-                                <div class="container-navs">
-                                    <button class="derecha-nav" type="submit">
-                                        <img class="imagen-nav" src="{% static 'img/config.png' %}" alt="">
-                                    </button>  
-                                </div>
-                            </form>
-
-
-
-                            <form action="" method="post" class="form-nav">
-
-                                {% csrf_token %}
-                                <input name="peticion" type="hidden" value="{{ form_cerrar_sesion }}">
-                                <div class="container-navs">
-                                    <button class="derecha-nav" id="salir-nav-der" type="submit">
-                                        <img class="imagen-nav" src="{% static 'img/salir.png' %}" alt="">
-                                    </button>  
-                                </div>
-                            </form>
+                        <div class="container-navs">
+                            <button class="derecha-nav" id="noti_btn">
+                                {% if notificaciones is None or notificaciones|length == 0 %}
+                                <img class="imagen-nav-noti" src="{% static 'img/noti_vacia.png' %}" alt="">
+                                {% else %}
+                                <img class="imagen-nav-noti" src="{% static 'img/noti.png' %}" alt="">
+                                {% endif %}
+                            </button>
                         </div>
+
+
+
+                        <form action="" method="post" class="form-nav-config">
+
+                            {% csrf_token %}
+                            <input name="peticion" type="hidden" value="{{ form_config }}">
+                            <div class="container-navs">
+                                <button class="derecha-nav" type="submit">
+                                    <img class="imagen-nav" src="{% static 'img/config.png' %}" alt="">
+                                </button>
+                            </div>
+                        </form>
+
+
+
+                        <form action="" method="post" class="form-nav">
+
+                            {% csrf_token %}
+                            <input name="peticion" type="hidden" value="{{ form_cerrar_sesion }}">
+                            <div class="container-navs">
+                                <button class="derecha-nav" id="salir-nav-der" type="submit">
+                                    <img class="imagen-nav" src="{% static 'img/salir.png' %}" alt="">
+                                </button>
+                            </div>
+                        </form>
+                    </div>
 
 
 
                 </nav>
-                </div>
-                
-            </header>
-            <main>
-                <div class="div-errores" id="div-errores">
-                    <div class="exclamacion">
-                        <p id="p-exclamacion" >!</p>
-                    </div>
-                    <p id="p-errores"></p>
-                </div>
-                <section>
-                    <div class="feed">
-                                           
-                    </div>
-                </section>
-                <section>
-                    <div class="modal" id="modal">
-                        <div class="modal-content">
-                          <span class="close">&times;</span>
-                          <h2 id="title-noti">Notificaciones</h2>
-                          {% if notificaciones is None or notificaciones|length == 0 %}
-                          <p>No hay notificaciones recientes</p>
-                            {% else %}
-                                {% for noti in notificaciones %}
-                                    <form action="" method="post">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="id_noti" value="{{ noti.id }}">
-                                        <div class="container-noti">
+            </div>
 
-                                            <div class="p-notis">
-                                                <p id="p-contenido-notis"><strong id="strong-noti">{{ noti.username_emisor}}</strong> {{ noti.mensaje }}</p>
-                                            </div>
-    
-                                            <div class="botonera-notis">
-                                                <button id="aceptar-noti" type="submit" name="peticion" value="{{ aceptar_notificacion }}">
-                                                    <img class="imagen-nav" src="{% static 'img/aceptar.png' %}" alt="Aceptar">
-                                                </button>
-    
-                                                <button id="denegar-noti" type="submit" name="peticion" value="{{ denegar_notificacion }}">
-                                                    <img class="imagen-nav" src="{% static 'img/denegar.png' %}" alt="Denegar">
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                {% endfor %}
-                            {% endif %}
+        </header>
+        <main>
+            <div class="div-errores" id="div-errores">
+                <div class="exclamacion">
+                    <p id="p-exclamacion">!</p>
+                </div>
+                <p id="p-errores"></p>
+            </div>
+            <section>
+                <div class="feed">
 
-                        </div>
-                      </div>
-                </section>
-            </main>
-        </div>
-    </body>
+                </div>
+            </section>
+            <section>
+                <div class="modal" id="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2 id="title-noti">Notificaciones</h2>
+                        <p id="no-notis"></p>
+                        {% if notificaciones is None or notificaciones|length == 0 %}
+                        <p>No hay notificaciones recientes</p>
+                        {% else %}
+                        {% for noti in notificaciones %}
+                        <form action="" method="post" id="form_noti-{{ noti.id }}">
+                            {% csrf_token %}
+                            <div class="container-noti">
+
+                                <div class="p-notis">
+                                    <p id="p-contenido-notis"><strong id="strong-noti">{{noti.username_emisor}}</strong>
+                                        {{ noti.mensaje }}</p>
+                                </div>
+
+                                <input type="hidden" name="peticion" value="{{ notificacion }}">
+
+                                <div class="botonera-notis">
+                                    <button id="aceptar_noti-{{ noti.id }}" type="submit" name="peticion"
+                                        value="{{ aceptar_notificacion }}" class="aceptar-noti">
+                                        <img id="imagen_aceptar_noti-{{ noti.id }}" class="imagen-nav"
+                                            src="{% static 'img/aceptar.png' %}" alt="Aceptar">
+                                    </button>
+
+                                    <button id="denegar_noti-{{ noti.id }}" type="submit" name="peticion"
+                                        value="{{ denegar_notificacion }}" class="denegar-noti">
+                                        <img id="imagen_denegar_noti-{{ noti.id }}" class="imagen-nav"
+                                            src="{% static 'img/denegar.png' %}" alt="Denegar">
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        {% endfor %}
+                        {% endif %}
+
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
 <script src="{% static 'js/jquery.js' %}"></script>
 <script src="{% static 'js/feed.js' %}"></script>
 <script>
     var lista_colores = JSON.parse('{{ colores | escapejs }}');
     rellenarAvatar(lista_colores)
     errorHandler("{{ error }}")
+    notificacionesAddEvent()
 </script>
+
 </html>
-    

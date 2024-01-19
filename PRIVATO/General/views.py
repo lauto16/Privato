@@ -13,6 +13,7 @@ from .utils import (addBusqueda,
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
+from django.http import JsonResponse
 import json
 
 
@@ -67,37 +68,57 @@ def vista_feed(request):
         elif peticion == "perfil":
             return redirect('vista_perfil')
 
-        elif peticion == "aceptar_notificacion":
+        elif peticion == "notificacion":
 
-            id_noti = request.POST.get('id_noti')
-            respuesta_validacion_noti, notificacion = validacionesNotificacion(
-                id_noti=id_noti, user_actual=user_actual)
+            id_noti = request.POST.get('id_noti', None)
+            action_noti = request.POST.get('action_noti', None)
 
-            if respuesta_validacion_noti:
+            if action_noti == 'aceptar_noti':
 
-                amistad = generarAmistad(
-                    id_user_a=notificacion.id_emisor, id_user_b=notificacion.id_receptor)
+                print("Aceptando notificacion ", id_noti)
 
-                eliminarSeguimientos(
-                    id_user_a=amistad.id_usuario_a, id_user_b=amistad.id_usuario_b)
-                eliminarNotificacion(notificacion)
-                return redirect('vista_feed')
+                respuesta_validacion_noti, notificacion = validacionesNotificacion(
+                    id_noti=id_noti, user_actual=user_actual)
 
-            error = "No se pudo aceptar la notificacion"
+                if respuesta_validacion_noti:
 
-        elif peticion == "denegar_notificacion":
+                    amistad = generarAmistad(
+                        id_user_a=notificacion.id_emisor, id_user_b=notificacion.id_receptor)
 
-            id_noti = request.POST.get('id_noti')
-            respuesta_validacion_noti, notificacion = validacionesNotificacion(
-                id_noti=id_noti, user_actual=user_actual)
+                    eliminarSeguimientos(
+                        id_user_a=amistad.id_usuario_a, id_user_b=amistad.id_usuario_b)
 
-            if respuesta_validacion_noti:
-                eliminarSeguimientos(
-                    id_user_a=notificacion.id_emisor, id_user_b=notificacion.id_receptor)
-                eliminarNotificacion(notificacion)
-                return redirect('vista_feed')
+                    eliminarNotificacion(notificacion)
 
-            error = "No se pudo denegar la notificacion"
+                    response_data = {'success': True, 'id_noti': id_noti}
+
+                else:
+                    response_data = {'success': False}
+
+                return JsonResponse(response_data)
+
+            elif action_noti == 'denegar_noti':
+
+                print("Denegando notificacion ", id_noti)
+
+                id_noti = request.POST.get('id_noti')
+
+                respuesta_validacion_noti, notificacion = validacionesNotificacion(
+                    id_noti=id_noti, user_actual=user_actual)
+
+                if respuesta_validacion_noti:
+
+                    eliminarSeguimientos(
+                        id_user_a=notificacion.id_emisor, id_user_b=notificacion.id_receptor)
+
+                    eliminarNotificacion(notificacion)
+
+                    response_data = {'success': True, 'id_noti': id_noti}
+
+                else:
+                    response_data = {'success': False}
+
+                return JsonResponse(response_data)
 
     return render(request, "feed.html", {
         'colores': colores_completos_json,
@@ -108,8 +129,7 @@ def vista_feed(request):
         'form_config': 'config',
         'form_buscar': 'buscar',
         'form_perfil': 'perfil',
-        'aceptar_notificacion': 'aceptar_notificacion',
-        'denegar_notificacion': 'denegar_notificacion'
+        'notificacion': 'notificacion'
     })
 
 

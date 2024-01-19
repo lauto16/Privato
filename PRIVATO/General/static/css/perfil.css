@@ -180,7 +180,7 @@ body {
 
 #id_content {
     height: 120px;
-    width: 500px;
+    width: 70%;
     border: 1px solid #dddbdb;
     border-radius: 5px;
     overflow: auto;
@@ -393,7 +393,68 @@ body {
         text-align: center;
     }
 
+    .modal-comentarios {
+        display: none;
+        z-index: 1;
+        width: 70%;
+        height: 550px;
+        position: fixed;
+        left: 50%;
+        top: 45%;
+        transform: translate(-50%, -50%);
+        max-height: 100%;
+        overflow-y: auto;
+        border: 0.1px solid #c5c5c5;
+        background-color: #fff;
+    }
+
     .exclamacion {
         float: left;
     }
+}
+
+/* MODAL COMENTARIOS */
+
+.modal-comentarios {
+    display: none;
+    z-index: 1;
+    width: 70%;
+    height: 550px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    max-height: 100%;
+    overflow-y: auto;
+    border: 0.1px solid #c5c5c5;
+    background-color: #fff;
+}
+
+.modal-comentarios-content {
+    background-color: #fff;
+    width: 300px;
+    height: 300px;
+    padding: 15px;
+    font-family: 'Silkscreen', sans-serif;
+    color: #038554;
+}
+
+.modal-comentarios-content p {
+    font-family: 'Lato', sans-serif;
+    margin-top: 30px;
+    color: #000;
+}
+
+.close {
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+    font-family: 'Silkscreen', sans-serif;
+    margin-top: 3px;
+    margin-right: 3px;
+    float: right;
+}
+
+.close:hover {
+    color: #000;
 }

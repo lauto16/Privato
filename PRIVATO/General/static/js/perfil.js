@@ -4,12 +4,30 @@ const contadorChars = document.getElementById("contador-caracteres")
 const title = document.getElementById("id_title")
 const input = document.getElementById("id_content")
 const boton_crear_post = document.getElementById('save-post-btn')
+const modal = document.getElementById('modal-comentarios');
+const closeModal = document.getElementById('close-comentarios');
 
 
-function extraerIdPost(id_comentario) {
-  var id_post = id_comentario.slice(id_comentario.lastIndexOf('-') + 1);
-  return id_post
+closeModal.onclick = function () {
+  modal.style.display = 'none';
+  blurBackground(action = "unblur")
 }
+
+
+window.onclick = function (event) {
+  if (event.target === modal) {
+    modal.style.display = 'none';
+    blurBackground(action = "unblur")
+  }
+}
+
+
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    modal.style.display = 'none';
+    blurBackground(action = "unblur")
+  }
+});
 
 
 function getCookie(name) {
@@ -27,6 +45,56 @@ function getCookie(name) {
     }
   }
   return cookieValue;
+}
+
+
+async function blurBackground(action) {
+  container = document.getElementById('container')
+
+  if (action == "blur") {
+    for (let i = 0; i < 100; i++) {
+      await sleep(0.05)
+      property_blur = 'filter: blur(' + parseInt(i / 10).toString() + 'px);'
+      container.setAttribute('style', property_blur);
+
+    }
+  }
+
+  else if (action == "unblur") {
+    container.setAttribute('style', 'filter: blur("0px")')
+  }
+}
+
+
+function cargarComentarios(data) {
+
+  if (data.esDiccionario == true) {
+
+    var lista_comentarios = data.comentarios
+
+    Object.keys(lista_comentarios).forEach(function (clave) {
+
+      var usuario = lista_comentarios[clave][0];
+      var contenido = lista_comentarios[clave][1];
+      var fecha = lista_comentarios[clave][2];
+
+      html_comentario = `<div class="comentario">
+        <p class="usuario-comentario">
+          <strong>` + usuario + `</strong>
+        </p>
+        <p class="fecha-comentario">` + fecha + `</p>
+        <p class="contenido-comentario">` + contenido + `</p>
+      </div>`
+
+      $("#container-comentario").prepend(html_comentario);
+
+    });
+  }
+  else {
+    p_no_coments = document.getElementById('no-coments')
+    p_no_coments.textContent = "No se encontraron comentarios en el post"
+  }
+
 }
 
 
@@ -55,7 +123,20 @@ function verComentarios(event) {
     .then(data => {
 
       if (data) {
-        console.log(data)
+
+        cargarComentarios(data)
+
+        blurBackground(action = "blur")
+
+        if (modal.style.display == 'block') {
+          modal.style.display = 'none'
+        }
+
+        else {
+          modal.style.display = 'block'
+          blurBackground(action = "unblur")
+        }
+
       }
     })
     .catch(error => {
@@ -154,7 +235,7 @@ function rgbStringToHex(rgbString) {
   let greenHex = green.toString(16).padStart(2, '0');
   let blueHex = blue.toString(16).padStart(2, '0');
 
-  let hexColor = `#${redHex}${greenHex}${blueHex}`;
+  let hexColor = `#${redHex}${greenHex}${blueHex} `;
 
   return hexColor
 
@@ -194,7 +275,7 @@ input.addEventListener('input', function (event) {
     let componenteB = parseInt(cantidad_chars / (950 / 3))
     let componenteC = componenteB
 
-    let color_rgb = `(${componenteA},${componenteB},${componenteC})`
+    let color_rgb = `(${componenteA}, ${componenteB}, ${componenteC})`
     let color_hex = rgbStringToHex(color_rgb)
     propiedad_color = "color:" + color_hex + ";"
 
@@ -238,6 +319,7 @@ function comentarEventsListeners() {
 
   botones.forEach(function (boton) {
     boton.addEventListener('click', verComentarios);
+
   });
 
 }

@@ -10,7 +10,25 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="modal-comentarios" id="modal-comentarios">
+        <span id="close-comentarios" class="close">&times;</span>
+
+        <div class="modal-comentarios-content">
+            <h2 id="title-comentarios">Comentarios</h2>
+            <p id="no-coments"></p>
+            <div class="container-comentario" id="container-comentario">
+                <div class="comentario">
+                    <p class="usuario-comentario">
+                        <strong></strong>
+                    </p>
+                    <p class="contenido-comentario">
+                    </p>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+    <div id="container" class="container">
         <header>
             <nav class="navbar" id="navbar">
                 <div class="logo">
@@ -109,7 +127,6 @@
 
 <script>
 
-
     function agregarNuevoPost(data) {
 
         var nuevoPostHTML = `<div class="post-anterior">` +
@@ -124,7 +141,7 @@
                     <input value="{{ form_comentarios }}" name="peticion" type="hidden">` +
 
             `<button id=` + `'boton_comentario-` + data.post_id.toString() + `'` + `class="boton-comentario">` +
-            `<img id=` + `'imagen_comentario-` + data.post_id + `'` + `class="imagen-comentario"
+            `<img id=` + `'imagen_comentario-` + data.post_id.toString() + `'` + `class="imagen-comentario"
                 src="{% static 'img/comentario_op2.png' %}" alt="">
             </button>
                 </form >
@@ -147,7 +164,6 @@
     rellenarAvatar(lista_colores)
     errorHandler("{{ error }}")
     comentarEventsListeners()
-
 
 </script>
 

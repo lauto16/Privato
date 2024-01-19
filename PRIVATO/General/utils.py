@@ -548,8 +548,10 @@ def getComentarios(id_post):
         comentarios_post = list(Comentario.objects.filter(
             post_id=id_post).order_by('-fecha'))
     except:
-        print("Algo salio mal")
-        return
+        return "No se encontraron comentarios", False
+
+    if len(comentarios_post) == 0:
+        return "No se encontraron comentarios en el post", False
 
     comentarios_post_dict = {}
 
@@ -563,7 +565,7 @@ def getComentarios(id_post):
 
         ]
 
-    return comentarios_post_dict
+    return comentarios_post_dict, True
 
 
 def validacionComentarios(id_post, user_actual, user_buscado, action):
@@ -586,3 +588,10 @@ def validacionComentarios(id_post, user_actual, user_buscado, action):
                 return False
 
         return False
+
+
+def cambiarFechaPost(posts):
+    for post in posts:
+        post.fecha = formatFecha(post.fecha)
+
+    return posts

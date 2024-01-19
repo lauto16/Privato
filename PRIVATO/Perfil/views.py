@@ -13,7 +13,8 @@ from General.utils import (userSearcher,
                            validarTitulo,
                            formatFecha,
                            getComentarios,
-                           validacionComentarios
+                           validacionComentarios,
+                           cambiarFechaPost
                            )
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -33,7 +34,7 @@ def vista_perfil(request):
 
     updatePage(user_actual)
 
-    posts = getPosts(user_actual)
+    posts = cambiarFechaPost(getPosts(user_actual))
     ids_posts = json.dumps(getIdPosts(posts))
 
     avatar_colores_string = getAvatar(user_actual)
@@ -88,13 +89,16 @@ def vista_perfil(request):
 
             id_post = request.POST.get('id_post', None)
 
-            comentarios_post = "No se encontraron comentarios en esta publicacion "
+            esDiccionario = False
+            comentarios_post = "No se encontraron comentarios en el post"
 
             if validacionComentarios(id_post=id_post, user_actual=user_actual, user_buscado=None, action='perfil'):
 
-                comentarios_post = getComentarios(id_post=id_post)
+                comentarios_post, esDiccionario = getComentarios(
+                    id_post=id_post)
 
-            response_data = {'comentarios': comentarios_post}
+            response_data = {'comentarios': comentarios_post,
+                             'esDiccionario': esDiccionario}
 
             return JsonResponse(response_data)
 
@@ -141,8 +145,7 @@ def vista_persona(request):
     son_amigos = sonAmigos(user_a=user_actual, user_b=user_buscado)
 
     if son_amigos:
-
-        posts = getPosts(user_buscado)
+        posts = cambiarFechaPost(getPosts(user_buscado))
         ids_posts = json.dumps(getIdPosts(posts))
 
     avatar_colores_string = getAvatar(user_buscado)
@@ -181,13 +184,16 @@ def vista_persona(request):
 
             id_post = request.POST.get('id_post', None)
 
-            comentarios_post = "No se encontraron comentarios en esta publicacion "
+            esDiccionario = False
+            comentarios_post = "No se encontraron comentarios en el post"
 
             if validacionComentarios(id_post=id_post, user_actual=user_actual, user_buscado=user_buscado, action='persona'):
 
-                comentarios_post = getComentarios(id_post=id_post)
+                comentarios_post, esDiccionario = getComentarios(
+                    id_post=id_post)
 
-            response_data = {'comentarios': comentarios_post}
+            response_data = {'comentarios': comentarios_post,
+                             'esDiccionario': esDiccionario}
 
             return JsonResponse(response_data)
 
