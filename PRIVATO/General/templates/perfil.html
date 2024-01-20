@@ -16,9 +16,26 @@
         <div class="modal-comentarios-content">
             <h2 id="title-comentarios">Comentarios</h2>
             <p id="no-coments"></p>
-            <div class="container-comentario" id="container-comentario">
+            <div class="container-comentario" id="container-comentario"></div>
+            <div class="comentar">
+                <form action="" method="post" id="form-enviar-comentario">
+                    {% csrf_token %}
+                    <div class="enviar-comentario" id="enviar-comentario">
+
+                        <input type="hidden" name="id_post_comentar" id="id_post_coment">
+                        <input type="hidden" name="peticion" value="{{ form_comentar }}">
+
+                        <textarea name="input-comentario" id="textarea-comentario" cols="10" rows="2"
+                            placeholder="Agregar comentario"></textarea>
+
+                        <button type="submit" id="boton-enviar-comentario">
+                            <strong>Enviar</strong>
+                        </button>
+
+                    </div>
+
+                </form>
             </div>
-            </form>
         </div>
     </div>
     <div id="container" class="container">
@@ -122,38 +139,45 @@
 
     function agregarNuevoPost(data) {
 
-        var nuevoPostHTML = `<div class="post-anterior">` +
-            `<p class="title-post-anterior"><strong>` + data.post_title + `</strong></p>` +
-            `<p class="fecha-post-anterior">` + data.post_fecha + `</p>` +
-            `<p class="contenido-post-anterior">` + data.post_contenido + `</p>` +
-            `<div class="comentarios">` +
-            `<div class="comentarios-post-anterior">
+        if (data.success == true) {
+
+            var nuevoPostHTML = `<div class="post-anterior">` +
+                `<p class="title-post-anterior"><strong>` + data.post_title + `</strong></p>` +
+                `<p class="fecha-post-anterior">` + data.post_fecha + `</p>` +
+                `<p class="contenido-post-anterior">` + data.post_contenido + `</p>` +
+                `<div class="comentarios">` +
+                `<div class="comentarios-post-anterior">
 
                     <form action="" method="post" id="form-comentarios">
                         {% csrf_token %}
                     <input value="{{ form_comentarios }}" name="peticion" type="hidden">` +
 
-            `<button id=` + `'boton_comentario-` + data.post_id.toString() + `'` + `class="boton-comentario">` +
-            `<img id=` + `'imagen_comentario-` + data.post_id.toString() + `'` + `class="imagen-comentario"
+                `<button id=` + `'boton_comentario-` + data.post_id.toString() + `'` + `class="boton-comentario">` +
+                `<img id=` + `'imagen_comentario-` + data.post_id.toString() + `'` + `class="imagen-comentario"
                 src="{% static 'img/comentario_op2.png' %}" alt="">
             </button>
                 </form >
 
             <div class="mensaje-comentarios">
-                <p>{{ post.comentarios }}</p>
+                <p>` + data.post_comentarios.toString() + `</p>
             </div>` +
 
-            `</div > ` +
-            `</div > `;
+                `</div > ` +
+                `</div > `;
 
-        $("#contenedor-posts").prepend(nuevoPostHTML);
-        comentarEventsListeners()
+            $("#contenedor-posts").prepend(nuevoPostHTML);
+            comentarEventsListeners()
+        }
+        else {
+            errorHandler(error = data.reason)
+        }
+
 
     }
 
-
     var lista_colores = JSON.parse('{{ colores | escapejs }}');
     var id_posts = JSON.parse('{{ ids_posts | escapejs }}')
+
     rellenarAvatar(lista_colores)
     errorHandler("{{ error }}")
     comentarEventsListeners()

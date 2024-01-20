@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     {% load static %}
     <meta charset="UTF-8">
@@ -7,7 +8,8 @@
     <link rel="stylesheet" href="{% static 'css/master.css' %}">
     <title>Privato</title>
 </head>
-<body> 
+
+<body>
     <div class="container">
         <header>
             <div class="logo">
@@ -19,9 +21,9 @@
                 <div class="container-descripcion">
                     <h2 id="titulo-descripcion"><strong>¿Que es Privato?</strong></h2>
                     <p id="descripcion">Privato es una red social que permite hacer posts,
-                         expresar tus ideas y ver que piensan tus amigos, es 100% privada,
+                        expresar tus ideas y ver que piensan tus amigos, es 100% privada,
                         esto significa que para ver los posts de tus amigos deberan seguirse
-                    mutuamente</p>
+                        mutuamente.</p>
                 </div>
             </section>
             <section class="register-login">
@@ -31,26 +33,26 @@
                     <form class="form-centrado" method="post">
                         {% csrf_token %}
                         {{ form.as_p }}
-                            
+
                         <div class="enviar">
                             <input class="boton" type="submit" value="Enviar">
                         </div>
-    
+
                     </form>
 
                     <div class="errores">
                         {% if not error_bd %}
-                            <p>{{ datos_error }}</p>
+                        <p>{{ datos_error }}</p>
                         {% endif %}
-        
+
                         {% if error %}
-                            <div class="lista-errores-div">
-                                <ul class="lista-errores">
-                                    {% for message in error %}
-                                        <li>{{ message }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
+                        <div class="lista-errores-div">
+                            <ul class="lista-errores">
+                                {% for message in error %}
+                                <li>{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
                         {% endif %}
                     </div>
                 </div>
@@ -58,4 +60,5 @@
         </main>
     </div>
 </body>
+
 </html>

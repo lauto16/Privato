@@ -1,33 +1,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Silkscreen&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geologica:wght@200&display=swap');
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-html{
+html {
     font-size: 12px;
 }
 
 
-body{
+body {
     font-size: 1rem;
 }
 
-.container{
+.container {
     display: flex;
     flex-direction: column;
 }
 
-.container header{
+.container header {
     height: 80px;
 }
 
-.container main{
+.container main {
     height: 100vh;
     background-color: #dbdbdb;
 }
@@ -36,7 +34,7 @@ body{
 
 /* LOGO */
 
-#logo{
+#logo {
     margin-top: 25px;
     text-align: center;
     font-family: 'Silkscreen', sans-serif;
@@ -45,17 +43,17 @@ body{
 
 /* DESCRIPCION */
 
-.descripcion{
+.descripcion {
     display: flex;
     flex-direction: column;
 }
 
-.container-descripcion{
+.container-descripcion {
     width: 400px;
     height: 500px;
     padding-left: 10px;
     padding-right: 10px;
-    font-family: 'Lato', sans-serif;
+    font-family: 'Geologica', sans-serif;
     font-size: 16px;
     align-self: center;
     text-align: center;
@@ -64,7 +62,7 @@ body{
 }
 
 
-#titulo-descripcion{
+#titulo-descripcion {
     font-family: 'Silkscreen', sans-serif;
     font-size: 20px;
     margin-top: 20px;
@@ -76,21 +74,21 @@ body{
 
 /* REGISTER Y LOGIN*/
 
-.register-login{
+.register-login {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     background-color: #ffffff;
     width: 100%;
     margin-top: 100px;
 }
 
 
-.container-register-login{
+.container-register-login {
     width: 400px;
     height: 500px;
     padding-left: 10px;
     padding-right: 10px;
-    font-family: 'Lato', sans-serif;
+    font-family: 'Geologica', sans-serif;
     font-size: 16px;
     align-self: center;
     text-align: center;
@@ -100,15 +98,15 @@ body{
 }
 
 
-#titulo-register-login{
+#titulo-register-login {
     font-family: 'Silkscreen', sans-serif;
     font-size: 20px;
     margin-bottom: 20px;
-    color:#03bb85;
+    color: #03bb85;
 }
 
 
-.form-centrado{
+.form-centrado {
     text-align: center;
 }
 
@@ -125,11 +123,11 @@ input[type="password"] {
     outline: none;
     padding-left: 5px;
     padding-right: 5px;
-    font-family: 'Lato', sans-serif;
-    
+    font-family: 'Geologica', sans-serif;
+
 }
 
-input[type="text"]:focus{
+input[type="text"]:focus {
     background-color: #c4fcf6;
 }
 
@@ -152,7 +150,7 @@ input[type="text"]:focus{
     font-size: 15px;
     margin-top: 10px;
     font-size: 14px;
-    font-family: 'Lato', sans-serif;
+    font-family: 'Geologica', sans-serif;
     margin-bottom: 10px;
 }
 
@@ -160,17 +158,17 @@ input[type="text"]:focus{
     font-size: 15px;
     text-decoration: none;
     color: #32918a;
-    
+
 }
 
-.lista-errores{
+.lista-errores {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
 
-.lista-errores-div{
+.lista-errores-div {
     display: table;
     margin-left: auto;
     margin-right: auto;
@@ -178,21 +176,20 @@ input[type="text"]:focus{
     text-align: center;
 }
 
-.errores{
+.errores {
     margin-top: 20px;
     color: #f78b94;
 
 }
 
-#error{
+#error {
     margin-top: 20px;
     color: #f78b94;
     font-size: 14px;
-    font-family: 'Lato', sans-serif;
+    font-family: 'Geologica', sans-serif;
 }
 
-.errorlist{
+.errorlist {
     display: none;
     color: transparent;
 }
-

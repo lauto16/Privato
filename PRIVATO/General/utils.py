@@ -6,6 +6,7 @@ import bcrypt
 
 # NOTIFICACIONES ------------------------------------------------
 
+
 def eliminarNotificacionesRelacion(user_actual, user_relacion):
     """ 
     Elimina todas las notificaciones entre dos usuarios
@@ -47,6 +48,7 @@ def validacionesNotificacion(id_noti, user_actual):
 
     except:
         return False, None
+
 
 # SEGUIMIENTO ---------------------------------------------------
 
@@ -445,6 +447,7 @@ def comprimirColores(lista):
 
 # UPDATERS -----------------------------------------------------
 
+
 def updateSeguimiento(user_actual):
     try:
         solicitudes_enviadas = list(
@@ -516,9 +519,18 @@ def updatePage(user):
 # POSTS --------------------------------------------------------
 
 
-def validarTitulo(title):
+def crearPost(id_usuario, title, contenido, comentarios):
+    try:
+        post = Post.objects.create(
+            id_usuario=id_usuario, title=title, contenido=contenido, comentarios=comentarios)
+        return True, post
+    except:
+        return False, None
 
-    for char in title:
+
+def validarInput(input):
+
+    for char in input:
         if char != " ":
             return True
 
@@ -544,16 +556,17 @@ def formatFecha(fecha):
 
 def getComentarios(id_post):
 
+    comentarios_post_dict = {}
+    comentarios_post_dict['id_post'] = id_post
+
     try:
         comentarios_post = list(Comentario.objects.filter(
             post_id=id_post).order_by('-fecha'))
     except:
-        return "No se encontraron comentarios", False
+        return comentarios_post_dict, False
 
     if len(comentarios_post) == 0:
-        return "No se encontraron comentarios en el post", False
-
-    comentarios_post_dict = {}
+        return comentarios_post_dict, False
 
     for i in range(len(comentarios_post)):
         dict_key = 'coment' + str(i)
@@ -588,6 +601,47 @@ def validacionComentarios(id_post, user_actual, user_buscado, action):
                 return False
 
         return False
+
+
+def validacionesComentar(user_actual, user_buscado, id_post, action):
+
+    if action == "persona":
+
+        if sonAmigos(user_a=user_actual, user_b=user_buscado):
+
+            try:
+                Post.objects.get(id=id_post, id_usuario=user_buscado.id)
+                return True
+            except:
+                return False
+
+        else:
+            return False
+
+    if action == "perfil":
+
+        try:
+            print(id_post)
+            print(user_actual.id)
+            Post.objects.get(id=id_post, id_usuario=user_actual.id)
+            return True
+        except:
+            return False
+
+
+def crearComentario(id_post, user, contenido):
+
+    comentario = None
+
+    try:
+
+        comentario = Comentario.objects.create(
+            post_id=id_post, username=user.username, contenido=contenido)
+
+        return True, comentario
+
+    except:
+        return False, comentario
 
 
 def cambiarFechaPost(posts):

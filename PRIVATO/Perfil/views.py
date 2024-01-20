@@ -10,11 +10,14 @@ from General.utils import (userSearcher,
                            sonAmigos,
                            generarNotificacion,
                            updatePage,
-                           validarTitulo,
+                           validarInput,
                            formatFecha,
                            getComentarios,
                            validacionComentarios,
-                           cambiarFechaPost
+                           cambiarFechaPost,
+                           validacionesComentar,
+                           crearComentario,
+                           crearPost
                            )
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -62,28 +65,30 @@ def vista_perfil(request):
                 title = form.cleaned_data['title']
                 content = form.cleaned_data['content']
 
-                if validarTitulo(title=title):
+                if validarInput(input=title):
 
                     title_filtered = escape(title)
                     content_filtered = escape(content)
 
-                    try:
-                        new_post = Post.objects.create(
-                            id_usuario=user_actual.id, title=title_filtered, contenido=content_filtered, comentarios=0)
+                    respuesta_crear_post, new_post = crearPost(
+                        id_usuario=user_actual.id, title=title_filtered, contenido=content_filtered, comentarios=0)
+
+                    if respuesta_crear_post:
 
                         fecha_formateada = formatFecha(fecha=new_post.fecha)
 
-                        response_data = {'post_title': new_post.title,
+                        response_data = {'success': True,
+                                         'post_title': new_post.title,
                                          'post_contenido': new_post.contenido,
                                          'post_comentarios': new_post.comentarios,
                                          'post_fecha': fecha_formateada,
                                          'post_id': new_post.id
                                          }
+                    else:
+                        response_data = {'success': False,
+                                         'reason': "Error al crear el post"}
 
-                        return JsonResponse(response_data)
-
-                    except Exception as e:
-                        print(e)
+                return JsonResponse(response_data)
 
         elif peticion == "comentarios":
 
@@ -99,6 +104,45 @@ def vista_perfil(request):
 
             response_data = {'comentarios': comentarios_post,
                              'esDiccionario': esDiccionario}
+
+            return JsonResponse(response_data)
+
+        elif peticion == "comentar":
+
+            id_post = request.POST.get("id_post_comentar")
+            contenido_comentario = request.POST.get("input-comentario")
+
+            if validacionesComentar(user_actual=user_actual, user_buscado=None, id_post=id_post, action="perfil") and validarInput(input=contenido_comentario):
+
+                respuesta_crear_comentario, comentario = crearComentario(id_post=id_post, user=user_actual,
+                                                                         contenido=contenido_comentario)
+                if respuesta_crear_comentario:
+
+                    response_data = {
+                        'success': True,
+                        'reason': None,
+                        'username': user_actual.username,
+                        'fecha': formatFecha(comentario.fecha),
+                        'content': escape(contenido_comentario)
+                    }
+
+                else:
+                    response_data = {
+                        'success': False,
+                        'username': None,
+                        'fecha': None,
+                        'reason': "No se pudo crear el comentario",
+                        'content': ""
+                    }
+
+            else:
+                response_data = {
+                    'success': False,
+                    'username': None,
+                    'fecha': None,
+                    'reason': "No se pudo agregar el comentario",
+                    'content': ""
+                }
 
             return JsonResponse(response_data)
 
@@ -119,7 +163,8 @@ def vista_perfil(request):
         'form': form,
         'form_post': 'posteo',
         'form_avatar': 'avatar',
-        'form_comentarios': 'comentarios'
+        'form_comentarios': 'comentarios',
+        'form_comentar': 'comentar'
     })
 
 
@@ -197,6 +242,45 @@ def vista_persona(request):
 
             return JsonResponse(response_data)
 
+        elif peticion == "comentar":
+
+            id_post = request.POST.get("id_post_comentar")
+            contenido_comentario = request.POST.get("input-comentario")
+
+            if validacionesComentar(user_actual=user_actual, user_buscado=user_buscado, id_post=id_post, action="persona") and validarInput(input=contenido_comentario):
+
+                respuesta_crear_comentario, comentario = crearComentario(id_post=id_post, user=user_actual,
+                                                                         contenido=contenido_comentario)
+                if respuesta_crear_comentario:
+
+                    response_data = {
+                        'success': True,
+                        'reason': None,
+                        'username': user_actual.username,
+                        'fecha': formatFecha(comentario.fecha),
+                        'content': escape(contenido_comentario)
+                    }
+
+                else:
+                    response_data = {
+                        'success': False,
+                        'username': None,
+                        'fecha': None,
+                        'reason': "No se pudo crear el comentario",
+                        'content': ""
+                    }
+
+            else:
+                response_data = {
+                    'success': False,
+                    'username': None,
+                    'fecha': None,
+                    'reason': "No se pudo agregar el comentario",
+                    'content': ""
+                }
+
+            return JsonResponse(response_data)
+
     return render(request, 'persona.html', {
         'username': user_buscado.username,
         'num_posts': user_buscado.posts,
@@ -210,5 +294,6 @@ def vista_persona(request):
         'error': error,
         'son_amigos': son_amigos,
         'form_agregar': 'agregar',
-        'form_comentarios': 'comentarios'
+        'form_comentarios': 'comentarios',
+        'form_comentar': 'comentar'
     })

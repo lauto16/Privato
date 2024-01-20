@@ -1,3 +1,7 @@
+const modal = document.getElementById('modal');
+const openModal = document.getElementById('noti_btn');
+const closeModal = document.getElementsByClassName('close')[0];
+
 
 function rellenarAvatar(lista_colores) {
   for (let i = 1; i <= 121; i++) {
@@ -45,45 +49,6 @@ async function errorHandler(error) {
 
 
 }
-
-
-document.addEventListener('DOMContentLoaded', function () {
-  var divEnviar = document.getElementById('avatar-container');
-  var formulario = document.getElementById('form-perfil');
-
-  divEnviar.addEventListener('click', function () {
-    formulario.submit();
-  });
-});
-
-
-const modal = document.getElementById('modal');
-const openModal = document.getElementById('noti_btn');
-const closeModal = document.getElementsByClassName('close')[0];
-
-
-openModal.onclick = function () {
-  modal.style.display = 'block';
-}
-
-
-closeModal.onclick = function () {
-  modal.style.display = 'none';
-}
-
-
-window.onclick = function (event) {
-  if (event.target === modal) {
-    modal.style.display = 'none';
-  }
-}
-
-
-document.addEventListener('keydown', function (event) {
-  if (event.key === 'Escape') {
-    modal.style.display = 'none';
-  }
-});
 
 
 function getCookie(name) {
@@ -218,3 +183,37 @@ function notificacionesAddEvent() {
   });
 
 }
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  var divEnviar = document.getElementById('avatar-container');
+  var formulario = document.getElementById('form-perfil');
+
+  divEnviar.addEventListener('click', function () {
+    formulario.submit();
+  });
+});
+
+
+openModal.onclick = function () {
+  modal.style.display = 'block';
+}
+
+
+closeModal.onclick = function () {
+  modal.style.display = 'none';
+}
+
+
+window.onclick = function (event) {
+  if (event.target === modal) {
+    modal.style.display = 'none';
+  }
+}
+
+
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    modal.style.display = 'none';
+  }
+});

@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Silkscreen&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geologica:wght@200&display=swap');
 
 
 * {
@@ -210,7 +209,7 @@ body {
 }
 
 .modal-content p {
-    font-family: 'Lato', sans-serif;
+    font-family: 'Geologica', sans-serif;
     margin-top: 30px;
     color: #000;
 }
@@ -280,7 +279,7 @@ body {
 
 .div-errores {
     display: inline-block;
-    font-family: 'Lato', sans-serif;
+    font-family: 'Geologica', sans-serif;
     font-size: 13px;
     width: auto;
     padding-right: 10px;

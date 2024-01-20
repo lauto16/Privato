@@ -6,29 +6,7 @@ const input = document.getElementById("id_content")
 const boton_crear_post = document.getElementById('save-post-btn')
 const modal = document.getElementById('modal-comentarios');
 const closeModal = document.getElementById('close-comentarios');
-
-
-closeModal.onclick = function () {
-  modal.style.display = 'none';
-  blurBackground(action = "unblur")
-}
-
-
-window.onclick = function (event) {
-  if (event.target === modal) {
-    modal.style.display = 'none';
-    blurBackground(action = "unblur")
-  }
-}
-
-
-document.addEventListener('keydown', function (event) {
-  if (event.key === 'Escape') {
-    modal.style.display = 'none';
-    blurBackground(action = "unblur")
-    $("#container-comentario").innerHTML = ""
-  }
-});
+const boton_enviar_comentario = document.getElementById("boton-enviar-comentario")
 
 
 function getCookie(name) {
@@ -68,11 +46,73 @@ async function blurBackground(action) {
 }
 
 
+function agregarComentario(data) {
+
+  if (data.success == true) {
+
+    html_comentario = `
+    <div class="comentario">
+
+    <p class="fecha-comentario">` + data.fecha + `</p>  
+    <p class="contenido-comentario">
+    <strong class="strong-usuario-comentario">` + data.username + `:  ` + `</strong>`
+      + data.content +
+      `</p>
+    </div>`
+
+    $("#container-comentario").prepend(html_comentario);
+    p_no_coments = document.getElementById('no-coments')
+    textarea_input = document.getElementById("textarea-comentario")
+    p_no_coments.textContent = ""
+    textarea_input.value = ""
+  }
+
+  else {
+    blurBackground(action = "unblur")
+    modal.style.display = 'none';
+    errorHandler(error = data.reason)
+  }
+}
+
+
+function enviarComentario(event) {
+
+  event.preventDefault()
+
+  var form = new FormData(document.getElementById('form-enviar-comentario'))
+
+  fetch('./', {
+
+    method: "POST",
+    body: form,
+    headers: {
+      "X-CSRFToken": getCookie('csrftoken'),
+    },
+  })
+
+    .then(response => response.json())
+    .then(data => {
+
+      if (data) {
+
+        agregarComentario(data)
+
+      }
+    })
+    .catch(error => {
+      errorHandler(error = "No se pudo enviar el comentario")
+    });
+
+}
+
+
 function cargarComentarios(data) {
 
   document.getElementById('container-comentario').innerHTML = ""
+  id_post_input = document.getElementById('id_post_coment')
 
   p_no_coments = document.getElementById('no-coments')
+
 
   if (data.esDiccionario == true) {
 
@@ -82,27 +122,34 @@ function cargarComentarios(data) {
 
     Object.keys(lista_comentarios).forEach(function (clave) {
 
-      var usuario = lista_comentarios[clave][0];
-      var contenido = lista_comentarios[clave][1];
-      var fecha = lista_comentarios[clave][2];
+      if (clave != 'id_post') {
 
-      html_comentario = `
-      <div class="comentario">
+        var usuario = lista_comentarios[clave][0];
+        var contenido = lista_comentarios[clave][1];
+        var fecha = lista_comentarios[clave][2];
 
-      <p class="fecha-comentario">` + fecha + `</p>  
-      <p class="contenido-comentario">
-      <strong class="strong-usuario-comentario">` + usuario + `:  ` + `</strong>`
-        + contenido +
-        `</p>
-      </div>`
+        html_comentario = `
+        <div class="comentario">
+  
+        <p class="fecha-comentario">` + fecha + `</p>  
+        <p class="contenido-comentario">
+        <strong class="strong-usuario-comentario">` + usuario + `:  ` + `</strong>`
+          + contenido +
+          `</p>
+        </div>`
 
-      $("#container-comentario").prepend(html_comentario);
+        $("#container-comentario").prepend(html_comentario);
+      }
 
     });
+
   }
   else {
     p_no_coments.textContent = "No se encontraron comentarios en el post"
+
   }
+
+  id_post_input.value = data.comentarios['id_post']
 
 }
 
@@ -180,7 +227,6 @@ function crearPost() {
     })
 
     .catch(error => {
-      console.log(error)
       errorHandler(error = "Error al subir el post, intentalo de nuevo")
 
     });
@@ -257,6 +303,17 @@ function countChars(element) {
 }
 
 
+function comentarEventsListeners() {
+  var botones = document.querySelectorAll('.boton-comentario');
+
+  botones.forEach(function (boton) {
+    boton.addEventListener('click', verComentarios);
+
+  });
+
+}
+
+
 title.addEventListener('input', function (event) {
 
   let lista_vars = countChars(title)
@@ -323,14 +380,29 @@ avatar_container.addEventListener('click', function () {
 });
 
 
-function comentarEventsListeners() {
-  var botones = document.querySelectorAll('.boton-comentario');
+boton_enviar_comentario.addEventListener('click', enviarComentario)
 
-  botones.forEach(function (boton) {
-    boton.addEventListener('click', verComentarios);
 
-  });
-
+closeModal.onclick = function () {
+  modal.style.display = 'none';
+  blurBackground(action = "unblur")
 }
+
+
+window.onclick = function (event) {
+  if (event.target === modal) {
+    modal.style.display = 'none';
+    blurBackground(action = "unblur")
+  }
+}
+
+
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    modal.style.display = 'none';
+    blurBackground(action = "unblur")
+    $("#container-comentario").innerHTML = ""
+  }
+});
 
 

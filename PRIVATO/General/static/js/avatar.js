@@ -1,4 +1,6 @@
 const colorPickerInput = document.getElementById('favcolor');
+const boton_rellenar = document.getElementById("boton-rellenar")
+const crear_avatar = document.getElementById("crear-avatar")
 colorPickerInput.value = "#038554"
 
 
@@ -17,11 +19,11 @@ function rgbStringToHex(rgbString) {
   let hexColor = `#${redHex}${greenHex}${blueHex}`;
 
   return hexColor
-  
+
 }
 
 
-function rellenarTodo(color){
+function rellenarTodo(color) {
 
   for (let i = 1; i <= 121; i++) {
     const boxId = `box${i}`;
@@ -33,7 +35,7 @@ function rellenarTodo(color){
 }
 
 
-function recoverColors(){
+function recoverColors() {
 
   valores_colores = []
 
@@ -48,17 +50,16 @@ function recoverColors(){
 }
 
 
-const boton_rellenar = document.getElementById("boton-rellenar")
-boton_rellenar.addEventListener('click', function(){
+boton_rellenar.addEventListener('click', function () {
   rellenarTodo(colorPickerInput.value)
 });
 
 
-const crear_avatar = document.getElementById("crear-avatar")
-crear_avatar.addEventListener('click', function() {
-  
+
+crear_avatar.addEventListener('click', function () {
+
   colors = recoverColors()
-  
+
   for (let i = 0; i <= 120; i++) {
 
     const input_id = 'color_' + i.toString();
@@ -70,28 +71,28 @@ crear_avatar.addEventListener('click', function() {
 
 
 let selectedColor = colorPickerInput.value + ";"
-colorPickerInput.addEventListener('input', function() {
+colorPickerInput.addEventListener('input', function () {
   selectedColor = colorPickerInput.value;
   colorPickerInput.setAttribute('value', selectedColor);
 });
 
 
 for (let i = 1; i <= 121; i++) {
-    const boxId = `box${i}`;
-    const boxElement = document.getElementById(boxId);
-  
-    if (boxElement) {
+  const boxId = `box${i}`;
+  const boxElement = document.getElementById(boxId);
 
-      boxElement.addEventListener('click', function() {
-        let color = "background-color:" + selectedColor
-        boxElement.setAttribute("style", color)
-      });
+  if (boxElement) {
 
-      boxElement.addEventListener('contextmenu', function(event) {
-        event.preventDefault();
-        let color = "background-color: #e9e7e7;"
-        boxElement.setAttribute("style", color)
+    boxElement.addEventListener('click', function () {
+      let color = "background-color:" + selectedColor
+      boxElement.setAttribute("style", color)
+    });
 
-      });
+    boxElement.addEventListener('contextmenu', function (event) {
+      event.preventDefault();
+      let color = "background-color: #e9e7e7;"
+      boxElement.setAttribute("style", color)
+
+    });
   }
 }
