@@ -52,9 +52,15 @@ async function blurBackground(action) {
 
 function cargarComentarios(data) {
 
+  document.getElementById('container-comentario').innerHTML = ""
+
+  p_no_coments = document.getElementById('no-coments')
+
   if (data.esDiccionario == true) {
 
     var lista_comentarios = data.comentarios
+
+    p_no_coments.textContent = ""
 
     Object.keys(lista_comentarios).forEach(function (clave) {
 
@@ -62,12 +68,14 @@ function cargarComentarios(data) {
       var contenido = lista_comentarios[clave][1];
       var fecha = lista_comentarios[clave][2];
 
-      html_comentario = `<div class="comentario">
-        <p class="usuario-comentario">
-          <strong>` + usuario + `</strong>
-        </p>
-        <p class="fecha-comentario">` + fecha + `</p>
-        <p class="contenido-comentario">` + contenido + `</p>
+      html_comentario = `
+      <div class="comentario">
+
+      <p class="fecha-comentario">` + fecha + `</p>  
+      <p class="contenido-comentario">
+      <strong class="strong-usuario-comentario">` + usuario + `:  ` + `</strong>`
+        + contenido +
+        `</p>
       </div>`
 
       $("#container-comentario").prepend(html_comentario);
@@ -75,7 +83,6 @@ function cargarComentarios(data) {
     });
   }
   else {
-    p_no_coments = document.getElementById('no-coments')
     p_no_coments.textContent = "No se encontraron comentarios en el post"
   }
 
