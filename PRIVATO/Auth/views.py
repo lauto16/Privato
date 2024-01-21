@@ -1,13 +1,14 @@
-from General.utils import (
-                    validatePassword,
-                    passwordHashing,
-                    comprobarUser,
-                    verifyPassword,
-                    )
+from Auth.auth_utils import (
+    validatePassword,
+    passwordHashing,
+    comprobarUser,
+    verifyPassword,
+)
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from General.forms import Register, Login
 from General.models import Usuario
+
 
 def vista_index(request):
 
@@ -37,15 +38,16 @@ def vista_index(request):
 
                         try:
                             password = passwordHashing(password)
-                            Usuario.objects.create(username=usuario, email=email, password=password, posts=0, amigos=0)
+                            Usuario.objects.create(
+                                username=usuario, email=email, password=password, posts=0, amigos=0)
                             return redirect('vista_login')
-                        
+
                         except:
                             error.append("No se pudo crear la cuenta")
-                        
+
                 else:
 
-                    return render(request, "index.html", {"form": form, "error": error, 'error_bd':respuesta, "datos_error": reason})
+                    return render(request, "index.html", {"form": form, "error": error, 'error_bd': respuesta, "datos_error": reason})
 
             else:
                 error.append("Las contraseñas no son iguales")
@@ -56,37 +58,34 @@ def vista_index(request):
     else:
         form = Register()
 
-    return render(request, "index.html", {"form": form, "error": error, 'error_bd':respuesta, "datos_error": reason})
+    return render(request, "index.html", {"form": form, "error": error, 'error_bd': respuesta, "datos_error": reason})
 
 
 def vista_login(request):
 
     error = ""
-    
+
     if request.method == "POST":
 
         form = Login(request.POST)
 
         if form.is_valid():
-            
+
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            
-            resultado, user = verifyPassword(username=username,password=password)
-            
+
+            resultado, user = verifyPassword(
+                username=username, password=password)
+
             if resultado == 'USER_DOES_NOT_EXISTS' or resultado == False:
-                error = "El usuario o la contraseña no son correctos"   
-            
+                error = "El usuario o la contraseña no son correctos"
 
             elif resultado == True:
-            
+
                 login(request, user)
                 return redirect('vista_feed')
 
-
-
     else:
-        form = Login()    
+        form = Login()
 
-    return render(request, "login.html", {"form": form, "error":error})
-
+    return render(request, "login.html", {"form": form, "error": error})

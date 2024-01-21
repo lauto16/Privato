@@ -24,3 +24,13 @@ class Posting(forms.Form):
         attrs={'placeholder': 'Titulo de la publicacion'}))
     content = forms.CharField(required=False, label="", max_length=952, widget=forms.Textarea(
         attrs={'placeholder': '¿Que quieres compartir hoy?'}))
+
+
+class Comentar(forms.Form):
+    content_comentario = forms.CharField(required=False, label="", max_length=952, widget=forms.Textarea(
+        attrs={'placeholder': 'Agregar comentario', 'id': 'textarea-comentario', 'cols': "10", 'rows': "2"}))
+
+
+class Busqueda(forms.Form):
+    input_busqueda = forms.CharField(required=False, label="", max_length=952, widget=forms.TextInput(
+        attrs={'placeholder': 'Buscar perfil', 'id': 'textarea-comentario', 'class': "izquierda-nav-buscar"}))

@@ -1,6 +1,9 @@
 const modal = document.getElementById('modal');
 const openModal = document.getElementById('noti_btn');
 const closeModal = document.getElementsByClassName('close')[0];
+const boton_cancelar_cerrar_sesion = document.getElementById('boton-cancelar-cerrar-sesion')
+const boton_cerrar_sesion = document.getElementById('salir-nav-der')
+const modal_cerrar_sesion = document.getElementById('modal-cerrar-sesion')
 
 
 function rellenarAvatar(lista_colores) {
@@ -185,6 +188,18 @@ function notificacionesAddEvent() {
 }
 
 
+function modalCerrarSesion(event) {
+  event.preventDefault()
+  modal_cerrar_sesion.style.display = "block"
+}
+
+
+function cerrarModal(event) {
+  event.preventDefault()
+  modal_cerrar_sesion.style.display = 'none';
+}
+
+
 document.addEventListener('DOMContentLoaded', function () {
   var divEnviar = document.getElementById('avatar-container');
   var formulario = document.getElementById('form-perfil');
@@ -202,6 +217,7 @@ openModal.onclick = function () {
 
 closeModal.onclick = function () {
   modal.style.display = 'none';
+  modal_cerrar_sesion.style.display = 'none';
 }
 
 
@@ -217,3 +233,9 @@ document.addEventListener('keydown', function (event) {
     modal.style.display = 'none';
   }
 });
+
+
+boton_cancelar_cerrar_sesion.addEventListener('click', cerrarModal)
+
+
+boton_cerrar_sesion.addEventListener('click', modalCerrarSesion)

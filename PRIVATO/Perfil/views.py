@@ -17,13 +17,14 @@ from General.utils import (userSearcher,
                            cambiarFechaPost,
                            validacionesComentar,
                            crearComentario,
-                           crearPost
+                           crearPost,
+                           validacionesEliminarPost,
+                           eliminarPost
                            )
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
-from General.forms import Posting
-from .models import Post
+from General.forms import Posting, Comentar
 from html import escape
 import json
 
@@ -58,12 +59,12 @@ def vista_perfil(request):
 
         if peticion == "posteo":
 
-            form = Posting(request.POST)
+            form_post = Posting(request.POST)
 
-            if form.is_valid():
+            if form_post.is_valid():
 
-                title = form.cleaned_data['title']
-                content = form.cleaned_data['content']
+                title = form_post.cleaned_data['title']
+                content = form_post.cleaned_data['content']
 
                 if validarInput(input=title):
 
@@ -109,39 +110,64 @@ def vista_perfil(request):
 
         elif peticion == "comentar":
 
-            id_post = request.POST.get("id_post_comentar")
-            contenido_comentario = request.POST.get("input-comentario")
+            form_comentar = Comentar(request.POST)
 
-            if validacionesComentar(user_actual=user_actual, user_buscado=None, id_post=id_post, action="perfil") and validarInput(input=contenido_comentario):
+            if form_comentar.is_valid():
 
-                respuesta_crear_comentario, comentario = crearComentario(id_post=id_post, user=user_actual,
-                                                                         contenido=contenido_comentario)
-                if respuesta_crear_comentario:
+                id_post = escape(request.POST.get("id_post_comentar"))
+                contenido_comentario = escape(
+                    form_comentar.cleaned_data['content_comentario'])
+
+                if validacionesComentar(user_actual=user_actual, user_buscado=None, id_post=id_post, action="perfil") and validarInput(input=contenido_comentario):
+
+                    respuesta_crear_comentario, comentario = crearComentario(id_post=id_post, user=user_actual,
+                                                                             contenido=contenido_comentario)
+                    if respuesta_crear_comentario:
+
+                        response_data = {
+                            'success': True,
+                            'username': user_actual.username,
+                            'fecha': formatFecha(comentario.fecha),
+                            'content': contenido_comentario
+                        }
+
+                    else:
+                        response_data = {
+                            'success': False,
+                            'reason': "No se pudo crear el comentario",
+                        }
+
+                else:
+                    response_data = {
+                        'success': False,
+                        'reason': "No se pudo agregar el comentario",
+                    }
+
+                return JsonResponse(response_data)
+
+        elif peticion == "eliminar_post":
+
+            id_post = request.POST.get('id_post')
+
+            if validacionesEliminarPost(id_post=id_post, user_actual=user_actual):
+
+                if eliminarPost(id_post=id_post):
 
                     response_data = {
                         'success': True,
-                        'reason': None,
-                        'username': user_actual.username,
-                        'fecha': formatFecha(comentario.fecha),
-                        'content': escape(contenido_comentario)
+                        'id_post': id_post
                     }
 
                 else:
                     response_data = {
                         'success': False,
-                        'username': None,
-                        'fecha': None,
-                        'reason': "No se pudo crear el comentario",
-                        'content': ""
+                        'reason': "No se pudo eliminar el post"
                     }
 
             else:
                 response_data = {
                     'success': False,
-                    'username': None,
-                    'fecha': None,
-                    'reason': "No se pudo agregar el comentario",
-                    'content': ""
+                    'reason': "No se pudo eliminar el post"
                 }
 
             return JsonResponse(response_data)
@@ -149,7 +175,8 @@ def vista_perfil(request):
         elif peticion == "avatar":
             return redirect('vista_avatar')
 
-    form = Posting()
+    form_post = Posting()
+    form_comentar = Comentar()
 
     return render(request, "perfil.html", {
         'username': user_actual.username,
@@ -160,11 +187,13 @@ def vista_perfil(request):
         'posts': posts,
         'ids_posts': ids_posts,
         'error': error,
-        'form': form,
+        'form_add_post': form_post,
+        'form_add_comentario': form_comentar,
         'form_post': 'posteo',
         'form_avatar': 'avatar',
         'form_comentarios': 'comentarios',
-        'form_comentar': 'comentar'
+        'form_comentar': 'comentar',
+        'form_eliminar_post': 'eliminar_post'
     })
 
 
@@ -244,8 +273,13 @@ def vista_persona(request):
 
         elif peticion == "comentar":
 
-            id_post = request.POST.get("id_post_comentar")
-            contenido_comentario = request.POST.get("input-comentario")
+            form_comentar = Comentar(request.POST)
+
+            if form_comentar.is_valid():
+
+                id_post = escape(request.POST.get("id_post_comentar"))
+                contenido_comentario = escape(
+                    form_comentar.cleaned_data['content_comentario'])
 
             if validacionesComentar(user_actual=user_actual, user_buscado=user_buscado, id_post=id_post, action="persona") and validarInput(input=contenido_comentario):
 
@@ -281,6 +315,8 @@ def vista_persona(request):
 
             return JsonResponse(response_data)
 
+    form_comentar = Comentar()
+
     return render(request, 'persona.html', {
         'username': user_buscado.username,
         'num_posts': user_buscado.posts,
@@ -292,6 +328,7 @@ def vista_persona(request):
         'estado_seguimiento': estado_seguimiento,
         'color_boton_seguir': color_boton_seguir,
         'error': error,
+        'form_add_comentario': form_comentar,
         'son_amigos': son_amigos,
         'form_agregar': 'agregar',
         'form_comentarios': 'comentarios',

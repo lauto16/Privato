@@ -10,6 +10,29 @@
 </head>
 
 <body>
+    <div class="modal-cerrar-sesion" id="modal-cerrar-sesion">
+        <div class="modal-cerrar-sesion-content">
+            <span class="close">&times;</span>
+            <form action="" method="post" class="form-nav">
+                {% csrf_token %}
+                <input name="peticion" type="hidden" value="{{ form_cerrar_sesion }}">
+                <p id="p-cerrar-sesion"><strong>¿Seguro que deseas cerrar tu sesion?</strong></p>
+                <div class="botonera-cerrar-sesion">
+                    <div class="botones-botonera">
+                        <button id="boton-cancelar-cerrar-sesion">
+                            <strong>Cancelar</strong>
+                        </button>
+                        <button id="boton-cerrar-sesion" type="submit">
+                            <strong>Cerrar sesion</strong>
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+
     <div class="container">
         <header>
 
@@ -42,8 +65,7 @@
                             {% csrf_token %}
                             <input name="peticion" type="hidden" value="{{ form_buscar }}">
                             <div class="container-nav-buscar">
-                                <input class="izquierda-nav-buscar" name="input-busqueda" type="text"
-                                    placeholder="Buscar perfil">
+                                {{ form_add_busqueda.as_p }}
                                 <button class="derecha-nav-buscar" id="buscar-btn">
                                     <img class="imagen-nav" src="{% static 'img/buscar.png' %}" alt="">
                                 </button>
@@ -75,17 +97,12 @@
 
 
 
-                        <form action="" method="post" class="form-nav">
 
-                            {% csrf_token %}
-                            <input name="peticion" type="hidden" value="{{ form_cerrar_sesion }}">
-                            <div class="container-navs">
-                                <button class="derecha-nav" id="salir-nav-der" type="submit">
-                                    <img class="imagen-nav" src="{% static 'img/salir.png' %}" alt="">
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+                        <div class="container-navs-salir">
+                            <button class="derecha-nav" id="salir-nav-der">
+                                <img class="imagen-nav" src="{% static 'img/salir.png' %}" alt="">
+                            </button>
+                        </div>
 
 
 

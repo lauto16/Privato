@@ -178,6 +178,25 @@ body {
     margin-left: 10px;
 }
 
+.boton-eliminar-post {
+    background-color: transparent;
+    outline: none;
+    border: 0px;
+    transition: ease opacity 0.3s;
+    float: right;
+}
+
+.boton-eliminar-post:hover {
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.imagen-eliminar-post {
+    height: 16px;
+    aspect-ratio: 1;
+
+}
+
 #id_content {
     height: 120px;
     width: 70%;

@@ -239,6 +239,18 @@ function sleep(ms) {
 }
 
 
+async function cerrarPost(id) {
+  id = id.slice(1)
+  post = document.getElementById(id)
+  for (let i = post.offsetWidth; i > 0; i--) {
+    await sleep(0.01)
+    size_width = (i).toString() + 'px'
+    post.style.width = size_width
+
+  }
+}
+
+
 async function errorHandler(error) {
   const div_errores = document.getElementById("div-errores")
   const p_errores = document.getElementById("p-errores")
@@ -303,6 +315,42 @@ function countChars(element) {
 }
 
 
+function eliminarPost(event) {
+
+  event.preventDefault()
+
+  var id_boton_eliminar = (event.target.id.toString())
+
+  var id_post = id_boton_eliminar.slice((id_boton_eliminar.lastIndexOf('-')) + 1);
+
+  var form = new FormData(document.getElementById('form-eliminar-post'))
+
+  form.append("id_post", id_post);
+
+  fetch('./', {
+
+    method: "POST",
+    body: form,
+    headers: {
+      "X-CSRFToken": getCookie('csrftoken'),
+    },
+  })
+
+    .then(response => response.json())
+    .then(data => {
+
+      if (data) {
+
+        eliminarHTMLPost(data)
+
+      }
+    })
+    .catch(error => {
+      console.log(error)
+    });
+}
+
+
 function comentarEventsListeners() {
   var botones = document.querySelectorAll('.boton-comentario');
 
@@ -311,6 +359,17 @@ function comentarEventsListeners() {
 
   });
 
+}
+
+
+function eliminarPostsEventsListeners() {
+  var botones_eliminar = document.querySelectorAll('.boton-eliminar-post');
+
+  botones_eliminar.forEach(function (boton) {
+
+    boton.addEventListener('click', eliminarPost);
+
+  });
 }
 
 

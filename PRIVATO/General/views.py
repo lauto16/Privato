@@ -14,6 +14,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.http import JsonResponse
+from .forms import Busqueda
+from html import escape
 import json
 
 
@@ -51,19 +53,24 @@ def vista_feed(request):
 
         elif peticion == "buscar":
 
-            busqueda = request.POST.get('input-busqueda')
+            form_add_busqueda = Busqueda(request.POST)
 
-            respuesta_busqueda, usuario = userSearcher(username=busqueda)
+            if form_add_busqueda.is_valid():
 
-            if respuesta_busqueda:
+                busqueda = escape(
+                    form_add_busqueda.cleaned_data['input_busqueda'])
 
-                if usuario.username == user_actual.username:
-                    return redirect('vista_perfil')
+                respuesta_busqueda, usuario = userSearcher(username=busqueda)
 
-                addBusqueda(busqueda, user_actual)
-                return redirect('vista_persona')
-            else:
-                error = "No hay usuarios con ese nombre"
+                if respuesta_busqueda:
+
+                    if usuario.username == user_actual.username:
+                        return redirect('vista_perfil')
+
+                    addBusqueda(busqueda, user_actual)
+                    return redirect('vista_persona')
+                else:
+                    error = "No hay usuarios con ese nombre"
 
         elif peticion == "perfil":
             return redirect('vista_perfil')
@@ -120,11 +127,14 @@ def vista_feed(request):
 
                 return JsonResponse(response_data)
 
+    form_add_busqueda = Busqueda()
+
     return render(request, "feed.html", {
         'colores': colores_completos_json,
         'rango': rango_avatar,
         'notificaciones': notificaciones,
         'error': error,
+        'form_add_busqueda': form_add_busqueda,
         'form_cerrar_sesion': 'logout',
         'form_config': 'config',
         'form_buscar': 'buscar',
@@ -141,14 +151,3 @@ def vista_config(request):
     updatePage(user_actual)
 
     return render(request, 'config.html')
-
-
-# TO DO -------------------------------------------------------------------------------------------
-"""
-- DARLE CSS A LOS BOTONES DE ACEPTAR Y DENEGAR NOTIFICACIONES
-- FEED QUE MUESTRE LAS ULTIMAS PUBLICACIONES DE TUS AMIGOS
-- CONFIGURACION
-    -BORRAR CUENTA
--CREAR SISTEMA DE COMENTARIOS EN POSTS CON SU MODELO
--PERMITIR DAR ME GUSTA Y COMENTAR
-"""

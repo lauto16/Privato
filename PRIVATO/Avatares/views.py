@@ -14,13 +14,13 @@ from General.utils import (borrarFondo,
 def vista_avatar(request):
 
     rango = range(121)
-    rango_grid = range(1,122)
+    rango_grid = range(1, 122)
     valores_colores = []
     error = ""
 
     user_actual = getUser(request)
 
-    updatePage(user_actual)  
+    updatePage(user_actual)
 
     if request.method == 'POST':
 
@@ -29,11 +29,10 @@ def vista_avatar(request):
             valor_input = request.POST.get(nombre_input)
             valores_colores.append(valor_input)
 
-
         valores_colores = borrarFondo(valores_colores)
-        valores_comprimidos = comprimirColores(valores_colores) 
+        valores_comprimidos = comprimirColores(valores_colores)
         respuesta = comprobarValores(valores_comprimidos)
-        
+
         if respuesta:
 
             if user_actual.username != None:
@@ -41,13 +40,14 @@ def vista_avatar(request):
                 try:
 
                     respuesta_avatar, avatar_actual = tieneAvatar(user_actual)
-                    
+
                     if respuesta_avatar:
                         avatar_actual.delete()
 
-                    Avatar.objects.create(nombre_usuario=user_actual.username, array_colores=valores_comprimidos)
+                    Avatar.objects.create(
+                        nombre_usuario=user_actual.username, array_colores=valores_comprimidos)
                     return redirect('vista_perfil')
-                
+
                 except:
                     error = "No se pudo crear el avatar, intentelo de nuevo"
 
@@ -57,4 +57,4 @@ def vista_avatar(request):
         else:
             error = "No se pudo crear el avatar, intentelo de nuevo"
 
-    return render(request, 'avatar.html', {'rango_grid':rango_grid,'rango':rango, 'error':error})
+    return render(request, 'avatar.html', {'rango_grid': rango_grid, 'rango': rango, 'error': error})
