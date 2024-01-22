@@ -160,6 +160,22 @@ def verificarSeguimiento(user_a, user_b):
         return False
 
 
+def getListaAmigos(user_actual):
+
+    lista_amigos = []
+
+    try:
+        lista_amigos_a = list(Amistad.objects.filter(
+            id_usuario_a=user_actual.id))
+        lista_amigos_b = list(Amistad.objects.filter(
+            id_usuario_b=user_actual.id))
+        lista_amigos = lista_amigos_a + lista_amigos_b
+    except:
+        pass
+
+    return lista_amigos
+
+
 def sonAmigos(user_a, user_b):
 
     try:
@@ -569,6 +585,44 @@ def validacionesEliminarPost(id_post, user_actual):
         return True
     except:
         return False
+
+
+def getFriendsPosts(lista_amigos, user_actual):
+    """
+    Recopila en un dict los ultimos 3 posts de todos los amigos del usuario
+    """
+
+    posts_amigos = {'success': True}
+    lista_posts_amigo_dict = []
+
+    for amigo in lista_amigos:
+
+        try:
+            if amigo.id_usuario_a == user_actual.id:
+                id_amigo = amigo.id_usuario_b
+            else:
+                id_amigo = amigo.id_usuario_a
+
+            lista_posts_amigo = list(
+                Post.objects.filter(id_usuario=id_amigo).order_by('-fecha'))
+
+            user_amigo = Usuario.objects.get(id=id_amigo)
+
+            # cantidad de posts del amigo
+            for i in range(3):
+                try:
+                    lista_posts_amigo_dict.append(
+                        lista_posts_amigo[i].title)
+                except:
+                    pass
+
+            posts_amigos[user_amigo.username] = lista_posts_amigo_dict
+            lista_posts_amigo_dict = []
+
+        except:
+            pass
+
+    return posts_amigos
 
 
 def eliminarPost(id_post):

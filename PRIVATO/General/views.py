@@ -8,7 +8,9 @@ from .utils import (addBusqueda,
                     generarAmistad,
                     eliminarSeguimientos,
                     eliminarNotificacion,
-                    updatePage
+                    updatePage,
+                    getListaAmigos,
+                    getFriendsPosts
                     )
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -27,6 +29,8 @@ def vista_feed(request):
     error = ""
 
     updatePage(user_actual)
+    lista_amigos = getListaAmigos(user_actual)
+    posts_amigos = json.dumps(getFriendsPosts(lista_amigos, user_actual))
     notificaciones = getNotificaciones(user_actual)
 
     avatar_colores_string = getAvatar(user_actual)
@@ -47,9 +51,6 @@ def vista_feed(request):
         if peticion == "logout":
             logout(request)
             return redirect('vista_login')
-
-        elif peticion == "config":
-            return redirect('vista_config')
 
         elif peticion == "buscar":
 
@@ -135,8 +136,8 @@ def vista_feed(request):
         'notificaciones': notificaciones,
         'error': error,
         'form_add_busqueda': form_add_busqueda,
+        'posts_amigos': posts_amigos,
         'form_cerrar_sesion': 'logout',
-        'form_config': 'config',
         'form_buscar': 'buscar',
         'form_perfil': 'perfil',
         'notificacion': 'notificacion'

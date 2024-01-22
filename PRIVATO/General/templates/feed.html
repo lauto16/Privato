@@ -84,19 +84,6 @@
 
 
 
-                        <form action="" method="post" class="form-nav-config">
-
-                            {% csrf_token %}
-                            <input name="peticion" type="hidden" value="{{ form_config }}">
-                            <div class="container-navs">
-                                <button class="derecha-nav" type="submit">
-                                    <img class="imagen-nav" src="{% static 'img/config.png' %}" alt="">
-                                </button>
-                            </div>
-                        </form>
-
-
-
 
                         <div class="container-navs-salir">
                             <button class="derecha-nav" id="salir-nav-der">
@@ -117,11 +104,6 @@
                 </div>
                 <p id="p-errores"></p>
             </div>
-            <section>
-                <div class="feed">
-
-                </div>
-            </section>
             <section>
                 <div class="modal" id="modal">
                     <div class="modal-content">
@@ -164,12 +146,47 @@
                     </div>
                 </div>
             </section>
+            <section class="feed">
+                <div class="container-feed">
+                    <div class="container-posts-anteriores">
+                        <!--{% for post in posts_amigos %}
+                        <div class="post-anterior">
+                            <div class="titulo-fecha">
+                                <p class="username-post"></p>
+                                <p class="title-post-anterior"><strong>{{ post.title }}</strong></p>
+                                <p class="fecha-post-anterior">{{ post.fecha }}</p>
+                            </div>
+                            <p class="contenido-post-anterior">{{ post.contenido }}</p>
+                            <div class="comentarios">
+
+                                <div class="comentarios-post-anterior">
+                                    <form action="" method="post" id="form-comentarios">
+                                        {% csrf_token %}
+                                        <input value="{{ form_comentarios }}" name="peticion" type="hidden">
+                                        <div id="boton_comentario-{{ post.id }}" class="boton-comentario" type="submit">
+                                            <img id="imagen_comentario-{{ post.id }}" class="imagen-comentario"
+                                                src="{% static 'img/comentario_op2.png' %}" alt="">
+                                        </div>
+                                    </form>
+                                    <div class="mensaje-comentarios">
+                                        <p>{{ post.comentarios }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}-->
+                    </div>
+            </section>
         </main>
     </div>
 </body>
 <script src="{% static 'js/jquery.js' %}"></script>
 <script src="{% static 'js/feed.js' %}"></script>
 <script>
+
+    var posts_amigos = {{ posts_amigos| safe}}
+    // logica para agregar los posts a el feed
+
     var lista_colores = JSON.parse('{{ colores | escapejs }}');
     rellenarAvatar(lista_colores)
     errorHandler("{{ error }}")
