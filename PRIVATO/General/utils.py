@@ -1,5 +1,5 @@
 from General.models import Usuario
-from Avatares.models import Avatar
+from Avatares.models import Avatar, AvatarImg
 from Perfil.models import Post, Busqueda, Notificacion, Amistad, Seguimiento, Comentario
 
 
@@ -286,6 +286,21 @@ def getNotificaciones(user_actual):
 
 
 # AVATARES -----------------------------------------------------
+
+def crearAvatarImg(path, user_actual):
+    try:
+        AvatarImg.objects.get(usuario=user_actual, src_imagen=path)
+    except:
+        AvatarImg.objects.create(usuario=user_actual, src_imagen=path)
+
+
+def crearAvatar(user_actual, valores_comprimidos):
+    try:
+        Avatar.objects.create(
+            nombre_usuario=user_actual.username, array_colores=valores_comprimidos)
+        return True
+    except:
+        return False
 
 
 def getAvatar(user_actual):
