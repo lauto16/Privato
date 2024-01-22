@@ -1,5 +1,3 @@
-const avatar_container = document.getElementById("avatar-container");
-const form_avatar = document.getElementById("form_avatar");
 const input = document.getElementById("textarea-post")
 const contadorChars = document.getElementById("contador-caracteres")
 const title = document.getElementById("title")
@@ -276,19 +274,6 @@ async function errorHandler(error) {
   else {
     div_errores.setAttribute('style', 'display:none')
     p_errores.setAttribute('style', 'display:none')
-  }
-}
-
-
-function rellenarAvatar(lista_colores) {
-  for (let i = 1; i <= 121; i++) {
-
-    const id_box_avatar = `box${i}`;
-    const box_avatar = document.getElementById(id_box_avatar)
-
-    color = 'background-color:' + lista_colores[i - 1] + ';'
-    box_avatar.setAttribute("style", color)
-
   }
 }
 

@@ -56,12 +56,7 @@
                     <form id="form_avatar" action="" method="post">
                         <input type="hidden" value="{{ form_avatar }}" name="peticion">
                         {% csrf_token %}
-                        <div id="avatar-container" class="grid-container" type="submit">
-
-                            {% for i in rango %}
-                            <div id="box{{ i }}" class="grid-item"></div>
-                            {% endfor %}
-                        </div>
+                        <img src="{{ avatar }}" class="avatar-imagen" id="avatar-imagen" alt="">
                         <div id="mensaje-avatar">Cambiar avatar</div>
                         <div class="estadisticas">
                             <p id="username" class="user-stats"><strong>{{ username }}</strong></p>
@@ -213,10 +208,8 @@
     }
 
 
-    var lista_colores = JSON.parse('{{ colores | escapejs }}');
     var id_posts = JSON.parse('{{ ids_posts | escapejs }}')
 
-    rellenarAvatar(lista_colores)
     errorHandler("{{ error }}")
     comentarEventsListeners()
     eliminarPostsEventsListeners()

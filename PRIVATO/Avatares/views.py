@@ -27,8 +27,9 @@ def vista_avatar(request):
     user_actual = getUser(request)
     updatePage(user_actual)
 
-    path_user_img = "General/media/avatares/" + user_actual.username + ".jpg"
-    path_imgs = os.path.join(BASE_DIR, path_user_img)
+    path_imgs = "avatares/" + user_actual.username + ".jpg"
+    path_imgs_completo = "/home/lauty_/Desktop/PROYECTOS/PRIVATO/PRIVATO/General/media/avatares/" + \
+        user_actual.username + ".jpg"
 
     if request.method == 'POST':
 
@@ -57,7 +58,7 @@ def vista_avatar(request):
                         lista_colores = getAvatar(user_actual=user_actual)
 
                         respuesta_crear_img = crearImg(array_colores=formatColores(lista_colores), color_base=(
-                            hex_to_rgb('e9e7e7')), path=path_imgs)
+                            hex_to_rgb('e9e7e7')), path=path_imgs_completo)
 
                         if respuesta_crear_img:
 

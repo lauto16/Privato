@@ -1,9 +1,11 @@
 const modal = document.getElementById('modal');
 const openModal = document.getElementById('noti_btn');
-const closeModal = document.getElementsByClassName('close')[0];
+const closeModal = document.getElementById('close-notis')
 const boton_cancelar_cerrar_sesion = document.getElementById('boton-cancelar-cerrar-sesion')
 const boton_cerrar_sesion = document.getElementById('salir-nav-der')
 const modal_cerrar_sesion = document.getElementById('modal-cerrar-sesion')
+const enviarPerfil = document.getElementById('avatar-imagen');
+const form_perfil = document.getElementById('form-perfil');
 
 
 function rellenarAvatar(lista_colores) {
@@ -200,13 +202,8 @@ function cerrarModal(event) {
 }
 
 
-document.addEventListener('DOMContentLoaded', function () {
-  var divEnviar = document.getElementById('avatar-container');
-  var formulario = document.getElementById('form-perfil');
-
-  divEnviar.addEventListener('click', function () {
-    formulario.submit();
-  });
+enviarPerfil.addEventListener('click', function () {
+  form_perfil.submit();
 });
 
 

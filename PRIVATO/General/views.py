@@ -10,7 +10,8 @@ from .utils import (addBusqueda,
                     eliminarNotificacion,
                     updatePage,
                     getListaAmigos,
-                    getFriendsPosts
+                    getFriendsPosts,
+                    getAvatarImg
                     )
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -34,15 +35,12 @@ def vista_feed(request):
     notificaciones = getNotificaciones(user_actual)
 
     avatar_colores_string = getAvatar(user_actual)
-    rango_avatar = range(1, 122)
 
-    if avatar_colores_string is not None:
+    if avatar_colores_string is None:
 
-        colores_completos = completarColores(avatar_colores_string)
-        colores_completos_json = json.dumps(colores_completos)
-
-    else:
         return redirect('vista_avatar')
+
+    avatar_img = getAvatarImg(user_actual=user_actual)
 
     if request.method == "POST":
 
@@ -131,8 +129,7 @@ def vista_feed(request):
     form_add_busqueda = Busqueda()
 
     return render(request, "feed.html", {
-        'colores': colores_completos_json,
-        'rango': rango_avatar,
+        'avatar': avatar_img.src_imagen.url if avatar_img else '',
         'notificaciones': notificaciones,
         'error': error,
         'form_add_busqueda': form_add_busqueda,

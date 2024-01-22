@@ -51,12 +51,7 @@
                                 {% csrf_token %}
                                 <input type="hidden" name="peticion" value="{{ form_perfil }}">
                             </form>
-                            <div id="avatar-container" class="grid-container">
-
-                                {% for i in rango %}
-                                <div id="box{{ i }}" class="grid-item"></div>
-                                {% endfor %}
-                            </div>
+                            <img src="{{ avatar }}" class="avatar-imagen" id="avatar-imagen" alt="">
                         </div>
 
 
@@ -107,7 +102,7 @@
             <section>
                 <div class="modal" id="modal">
                     <div class="modal-content">
-                        <span class="close">&times;</span>
+                        <span id="close-notis" class="close">&times;</span>
                         <h2 id="title-noti">Notificaciones</h2>
                         <p id="no-notis"></p>
                         {% if notificaciones is None or notificaciones|length == 0 %}
@@ -185,10 +180,9 @@
 <script>
 
     var posts_amigos = {{ posts_amigos| safe}}
+
     // logica para agregar los posts a el feed
 
-    var lista_colores = JSON.parse('{{ colores | escapejs }}');
-    rellenarAvatar(lista_colores)
     errorHandler("{{ error }}")
     notificacionesAddEvent()
 </script>

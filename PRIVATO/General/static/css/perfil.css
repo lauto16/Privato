@@ -72,24 +72,20 @@ body {
 
 /* AVATAR */
 
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(11, 1fr);
-    grid-gap: 0px;
+.avatar-imagen {
     width: 90%;
     aspect-ratio: 1;
     margin-right: 2%;
     margin-left: 5%;
-    margin-top: 20px;
-    background-color: #e9e7e7;
+    margin-top: 10px;
     border: 2px solid #9b9b9b;
     padding: 1px;
-    cursor: pointer;
     transition: ease 0.5s opacity;
 }
 
-.grid-container:hover {
+.avatar-imagen:hover {
     opacity: 0.5;
+    cursor: pointer;
 }
 
 #mensaje-avatar {
@@ -105,14 +101,10 @@ body {
     font-size: 10px;
 }
 
-.grid-container:hover+#mensaje-avatar {
+.avatar-imagen:hover+#mensaje-avatar {
     display: block;
 }
 
-
-.grid-item {
-    background-color: #dddcdc;
-}
 
 .posts {
     float: right;

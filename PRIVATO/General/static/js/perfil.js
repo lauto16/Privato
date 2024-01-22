@@ -1,4 +1,3 @@
-const avatar_container = document.getElementById('avatar-container');
 const form_avatar = document.getElementById('form_avatar');
 const contadorChars = document.getElementById("contador-caracteres")
 const title = document.getElementById("id_title")
@@ -7,7 +6,7 @@ const boton_crear_post = document.getElementById('save-post-btn')
 const modal = document.getElementById('modal-comentarios');
 const closeModal = document.getElementById('close-comentarios');
 const boton_enviar_comentario = document.getElementById("boton-enviar-comentario")
-
+const enviarAvatar = document.getElementById('avatar-imagen');
 
 function getCookie(name) {
 
@@ -277,19 +276,6 @@ async function errorHandler(error) {
 }
 
 
-function rellenarAvatar(lista_colores) {
-  for (let i = 1; i <= 121; i++) {
-
-    const id_box_avatar = `box${i}`;
-    const box_avatar = document.getElementById(id_box_avatar)
-
-    color = 'background-color:' + lista_colores[i - 1] + ';'
-    box_avatar.setAttribute("style", color)
-
-  }
-}
-
-
 function rgbStringToHex(rgbString) {
 
   let [red, green, blue] = rgbString.match(/\d+/g);
@@ -417,24 +403,13 @@ input.addEventListener('input', function (event) {
 });
 
 
-document.addEventListener('DOMContentLoaded', function () {
-  var divEnviar = document.getElementById('avatar-container');
-  var formulario = document.getElementById('form-perfil');
-
-  divEnviar.addEventListener('click', function () {
-    formulario.submit();
-  });
-
-});
-
-
 boton_crear_post.addEventListener('click', function (event) {
   event.preventDefault()
   crearPost()
 });
 
 
-avatar_container.addEventListener('click', function () {
+enviarAvatar.addEventListener('click', function () {
   form_avatar.submit();
 });
 

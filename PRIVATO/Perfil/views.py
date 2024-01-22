@@ -19,7 +19,8 @@ from General.utils import (userSearcher,
                            crearComentario,
                            crearPost,
                            validacionesEliminarPost,
-                           eliminarPost
+                           eliminarPost,
+                           getAvatarImg
                            )
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -43,15 +44,11 @@ def vista_perfil(request):
 
     avatar_colores_string = getAvatar(user_actual)
 
-    rango_avatar = range(1, 122)
+    if avatar_colores_string is None:
 
-    if avatar_colores_string is not None:
-
-        colores_completos = completarColores(avatar_colores_string)
-        colores_completos_json = json.dumps(colores_completos)
-
-    else:
         return redirect('vista_avatar')
+
+    avatar_img = getAvatarImg(user_actual)
 
     if request.method == "POST":
 
@@ -182,8 +179,7 @@ def vista_perfil(request):
         'username': user_actual.username,
         'num_posts': user_actual.posts,
         'amigos': user_actual.amigos,
-        'colores': colores_completos_json,
-        'rango': rango_avatar,
+        'avatar': avatar_img.src_imagen.url if avatar_img else '',
         'posts': posts,
         'ids_posts': ids_posts,
         'error': error,
@@ -222,13 +218,7 @@ def vista_persona(request):
         posts = cambiarFechaPost(getPosts(user_buscado))
         ids_posts = json.dumps(getIdPosts(posts))
 
-    avatar_colores_string = getAvatar(user_buscado)
-    colores_completos_json = ""
-
-    if avatar_colores_string is not None:
-
-        colores_completos = completarColores(avatar_colores_string)
-        colores_completos_json = json.dumps(colores_completos)
+    avatar_img = getAvatarImg(user_actual=user_buscado)
 
     if not (respuesta):
         return redirect('vista_feed')
@@ -321,8 +311,7 @@ def vista_persona(request):
         'username': user_buscado.username,
         'num_posts': user_buscado.posts,
         'amigos': user_buscado.amigos,
-        'colores': colores_completos_json,
-        'rango': rango_avatar,
+        'avatar': avatar_img.src_imagen.url if avatar_img else '',
         'ids_posts': ids_posts,
         'posts': posts,
         'estado_seguimiento': estado_seguimiento,

@@ -53,11 +53,7 @@
         <main>
             <section class="perfil">
                 <div class="cabecera-perfil">
-                    <div id="avatar-container" class="grid-container" type="submit">
-                        {% for i in rango %}
-                        <div id="box{{ i }}" class="grid-item"></div>
-                        {% endfor %}
-                    </div>
+                    <img src="{{ avatar }}" class="avatar-imagen" id="avatar-imagen" alt="">
                     <div class="estadisticas">
                         <p id="username" class="user-stats"><strong>{{ username }}</strong></p>
                         <p id="num-posts" class="user-stats"><strong>{{ num_posts }}</strong> Posts</p>
@@ -129,9 +125,7 @@
 <script src="{% static 'js/jquery.js' %}"></script>
 <script src="{% static 'js/persona.js' %}"></script>
 <script>
-    var lista_colores = JSON.parse('{{ colores | escapejs }}');
     var id_posts = JSON.parse('{{ ids_posts | escapejs }}')
-    rellenarAvatar(lista_colores)
     errorHandler("{{ error }}")
     colorBoton(id = "agregar-btn", color = "{{ color_boton_seguir }}")
     comentarEventsListeners()

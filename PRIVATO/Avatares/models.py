@@ -8,5 +8,9 @@ class Avatar(models.Model):
 
 
 class AvatarImg(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    src_imagen = models.TextField()
+    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
+    src_imagen = models.ImageField(
+        upload_to='avatares/', blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.usuario.username} - Avatar"

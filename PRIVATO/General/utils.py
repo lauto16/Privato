@@ -287,11 +287,25 @@ def getNotificaciones(user_actual):
 
 # AVATARES -----------------------------------------------------
 
+
+def getAvatarImg(user_actual):
+    try:
+        avatar = AvatarImg.objects.get(usuario=user_actual)
+        return avatar
+    except:
+        return None
+
+
 def crearAvatarImg(path, user_actual):
     try:
-        AvatarImg.objects.get(usuario=user_actual, src_imagen=path)
+        nuevo_avatar = AvatarImg(usuario=user_actual)
+
+        nuevo_avatar.src_imagen.name = path
+
+        nuevo_avatar.save()
+
     except:
-        AvatarImg.objects.create(usuario=user_actual, src_imagen=path)
+        pass
 
 
 def crearAvatar(user_actual, valores_comprimidos):
