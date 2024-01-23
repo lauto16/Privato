@@ -1,3 +1,5 @@
+const modalComentarios = document.getElementById("modal-comentarios");
+const closeModalComentarios = document.getElementById("close-comentarios");
 const modal = document.getElementById('modal');
 const openModal = document.getElementById('noti_btn');
 const closeModal = document.getElementById('close-notis')
@@ -6,6 +8,109 @@ const boton_cerrar_sesion = document.getElementById('salir-nav-der')
 const modal_cerrar_sesion = document.getElementById('modal-cerrar-sesion')
 const enviarPerfil = document.getElementById('avatar-imagen');
 const form_perfil = document.getElementById('form-perfil');
+const boton_enviar_comentario = document.getElementById("boton-enviar-comentario")
+
+
+
+
+async function blurBackground(action) {
+  container = document.getElementById('container')
+
+  if (action == "blur") {
+    for (let i = 0; i < 100; i++) {
+      await sleep(0.05)
+      property_blur = 'filter: blur(' + parseInt(i / 10).toString() + 'px);'
+      container.setAttribute('style', property_blur);
+
+    }
+  }
+
+  else if (action == "unblur") {
+    container.setAttribute('style', 'filter: blur("0px")')
+  }
+}
+
+
+function verComentarios(event) {
+
+  event.preventDefault()
+
+  var id_comentario = (event.target.id.toString())
+
+  var id_post = id_comentario.slice((id_comentario.lastIndexOf('-')) + 1);
+
+  var form = new FormData(document.getElementById('form-comentarios'))
+
+  form.append("id_post", id_post);
+
+  fetch('./', {
+
+    method: "POST",
+    body: form,
+    headers: {
+      "X-CSRFToken": getCookie('csrftoken'),
+    },
+  })
+
+    .then(response => response.json())
+    .then(data => {
+
+      if (data) {
+
+        cargarComentarios(data)
+
+        blurBackground(action = "blur")
+
+        if (modalComentarios.style.display == 'block') {
+          modalComentarios.style.display = 'none'
+        }
+
+        else {
+          modalComentarios.style.display = 'block'
+          blurBackground(action = "unblur")
+        }
+
+      }
+    })
+    .catch(error => {
+      console.log(error)
+    });
+
+}
+
+
+function enviarComentario(event) {
+
+  event.preventDefault()
+
+  var form = new FormData(document.getElementById('form-enviar-comentario'))
+
+  fetch('./', {
+
+    method: "POST",
+    body: form,
+    headers: {
+      "X-CSRFToken": getCookie('csrftoken'),
+    },
+  })
+
+    .then(response => response.json())
+    .then(data => {
+
+      if (data) {
+
+        agregarComentario(data)
+
+      }
+    })
+    .catch(error => {
+      console.log(error)
+      blurBackground(action = "unblur")
+      modalComentarios.style.display = 'none'
+      errorHandler(error = "No se pudo enviar el comentario")
+    });
+
+}
 
 
 function rellenarAvatar(lista_colores) {
@@ -189,6 +294,10 @@ function notificacionesAddEvent() {
 
 }
 
+closeModalComentarios.onclick = function () {
+  modalComentarios.style.display = 'none';
+  blurBackground(action = "unblur")
+}
 
 function modalCerrarSesion(event) {
   event.preventDefault()
@@ -232,7 +341,30 @@ document.addEventListener('keydown', function (event) {
 });
 
 
+function comentarEventsListeners() {
+  var botones = document.querySelectorAll('.boton-comentario');
+
+  botones.forEach(function (boton) {
+    boton.addEventListener('click', verComentarios);
+  });
+
+}
+
+
+boton_enviar_comentario.addEventListener('click', enviarComentario)
+
+
 boton_cancelar_cerrar_sesion.addEventListener('click', cerrarModal)
 
 
 boton_cerrar_sesion.addEventListener('click', modalCerrarSesion)
+
+
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    modalComentarios.style.display = 'none';
+    blurBackground(action = "unblur")
+    $("#container-comentario").innerHTML = ""
+  }
+});
+

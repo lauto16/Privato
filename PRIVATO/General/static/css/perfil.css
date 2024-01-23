@@ -442,8 +442,8 @@ body {
 
 .container-general-comentario {
     display: inline-flex;
-    width: 100%;
-    max-width: 100%;
+    width: 95%;
+    max-width: 90%;
 }
 
 .contenedor-avatar-comentario {

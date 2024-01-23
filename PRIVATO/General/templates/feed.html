@@ -10,6 +10,12 @@
 </head>
 
 <body>
+    <div class="div-errores" id="div-errores">
+        <div class="exclamacion">
+            <p id="p-exclamacion">!</p>
+        </div>
+        <p id="p-errores"></p>
+    </div>
     <div class="modal-cerrar-sesion" id="modal-cerrar-sesion">
         <div class="modal-cerrar-sesion-content">
             <span class="close">&times;</span>
@@ -33,7 +39,33 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="modal-comentarios" id="modal-comentarios">
+
+        <div class="modal-comentarios-content">
+            <span id="close-comentarios" class="close">&times;</span>
+            <h2 id="title-comentarios">Comentarios</h2>
+            <p id="no-coments"></p>
+            <div class="container-comentario" id="container-comentario"></div>
+            <div class="comentar">
+                <form action="" method="post" id="form-enviar-comentario">
+                    {% csrf_token %}
+                    {{ form_add_comentario.as_p }}
+                    <div class="enviar-comentario" id="enviar-comentario">
+
+                        <input type="hidden" name="id_post_comentar" id="id_post_coment">
+                        <input type="hidden" name="peticion" value="{{ form_comentar }}">
+
+                        <button type="submit" id="boton-enviar-comentario">
+                            <strong>Enviar</strong>
+                        </button>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="container">
         <header>
 
             <div class="logo">
@@ -93,12 +125,6 @@
 
         </header>
         <main>
-            <div class="div-errores" id="div-errores">
-                <div class="exclamacion">
-                    <p id="p-exclamacion">!</p>
-                </div>
-                <p id="p-errores"></p>
-            </div>
             <section>
                 <div class="modal" id="modal">
                     <div class="modal-content">
@@ -143,34 +169,7 @@
             </section>
             <section class="feed">
                 <div class="container-feed">
-                    <div class="container-posts-anteriores">
-                        <!--{% for post in posts_amigos %}
-                        <div class="post-anterior">
-                            <div class="titulo-fecha">
-                                <p class="username-post"></p>
-                                <p class="title-post-anterior"><strong>{{ post.title }}</strong></p>
-                                <p class="fecha-post-anterior">{{ post.fecha }}</p>
-                            </div>
-                            <p class="contenido-post-anterior">{{ post.contenido }}</p>
-                            <div class="comentarios">
-
-                                <div class="comentarios-post-anterior">
-                                    <form action="" method="post" id="form-comentarios">
-                                        {% csrf_token %}
-                                        <input value="{{ form_comentarios }}" name="peticion" type="hidden">
-                                        <div id="boton_comentario-{{ post.id }}" class="boton-comentario" type="submit">
-                                            <img id="imagen_comentario-{{ post.id }}" class="imagen-comentario"
-                                                src="{% static 'img/comentario_op2.png' %}" alt="">
-                                        </div>
-                                    </form>
-                                    <div class="mensaje-comentarios">
-                                        <p>{{ post.comentarios }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}-->
-                    </div>
+                    <div class="container-posts-anteriores" id="contenedor-posts"></div>
             </section>
         </main>
     </div>
@@ -179,12 +178,181 @@
 <script src="{% static 'js/feed.js' %}"></script>
 <script>
 
+    function agregarNuevoPost(title, user, fecha, contenido, comentarios, avatar, id_post) {
+
+
+
+        var nuevoPostHTML = `
+
+    <div class="post-anterior" id="post_anterior-` + id_post + `">` +
+            `<div class="contenedor-general-post">` +
+            `<div class="contenedor-avatar-post">
+                <img src="` + avatar + `"` + `" class="miniatura-avatar" alt="">
+            </div>` +
+            `<div class="contenedor-post-anterior">` +
+            `<div class="titulo-fecha">` +
+            `<p class="user-post-anterior"><strong>` + user + `</strong></p>` +
+            `<p class="title-post-anterior"><strong>` + title + `</strong></p>` +
+            `<p class="fecha-post-anterior">` + fecha + `</p>` +
+            `</div>` +
+            `<p class="contenido-post-anterior">` + contenido + `</p>` +
+            `<div class="comentarios">` +
+            `<div class="comentarios-post-anterior">
+
+                <form action="" method="post" id="form-comentarios">
+                    {% csrf_token %}
+                <input value="{{ form_comentarios }}" name="peticion" type="hidden">` +
+
+            `<button id=` + `'boton_comentario-` + id_post + `'` + `class="boton-comentario">` +
+            `<img id=` + `'imagen_comentario-` + id_post + `'` + `class="imagen-comentario"
+            src="{% static 'img/comentario_op2.png' %}" alt="">
+        </button>
+            </form >
+
+        <div class="mensaje-comentarios">
+            <p>` + comentarios + `</p>
+        </div>` +
+
+            `</div > ` +
+            `</div > ` +
+            `</div > ` +
+            `</div>`;
+
+
+        $("#contenedor-posts").prepend(nuevoPostHTML);
+
+        comentarEventsListeners()
+
+    }
+
+
+    function agregarComentario(data) {
+
+        if (data.success == true) {
+
+            html_comentario = `
+                <div class="comentario">
+
+                <div class="container-general-comentario">
+
+                <div class="contenedor-avatar-comentario">
+                <img src="` + data.src_avatar + `"` + `class="miniatura-avatar " alt="">
+                </div> 
+
+                <div class="comentario-data">
+                <p class="fecha-comentario">` + data.fecha + `</p>  
+                <p class="contenido-comentario">
+                <strong class="strong-usuario-comentario">` + data.username + `:  ` + `</strong>`
+                + data.content +
+                `</p>
+                </div>
+
+                </div>` +
+
+                `</div>`
+
+
+            $("#container-comentario").prepend(html_comentario);
+
+            p_no_coments = document.getElementById('no-coments')
+            textarea_input = document.getElementById("textarea-comentario")
+
+            p_no_coments.textContent = ""
+            textarea_input.value = ""
+        }
+
+        else {
+            blurBackground(action = "unblur")
+            modal.style.display = 'none';
+            errorHandler(error = data.reason)
+        }
+    }
+
+
+    function cargarComentarios(data) {
+
+        document.getElementById('container-comentario').innerHTML = ""
+        id_post_input = document.getElementById('id_post_coment')
+
+        p_no_coments = document.getElementById('no-coments')
+
+
+        if (data.esDiccionario == true) {
+
+            var lista_comentarios = data.comentarios
+
+            p_no_coments.textContent = ""
+
+            Object.keys(lista_comentarios).forEach(function (clave) {
+
+                if (clave != 'id_post') {
+
+                    var usuario = lista_comentarios[clave][0];
+                    var contenido = lista_comentarios[clave][1];
+                    var fecha = lista_comentarios[clave][2];
+                    var src_avatar = lista_comentarios[clave][3];
+
+
+
+                    html_comentario = `
+<div class="comentario">
+
+<div class="container-general-comentario">
+
+<div class="contenedor-avatar-comentario">
+<img src="` + src_avatar + `"` + ` class="miniatura-avatar" alt="">
+</div> 
+
+<div class="comentario-data">
+<p class="fecha-comentario">` + fecha + `</p>  
+<p class="contenido-comentario">
+<strong class="strong-usuario-comentario">` + usuario + `:  ` + `</strong>`
+                        + contenido +
+                        `</p>
+</div>
+
+</div>` +
+
+                        `</div>`
+
+                    $("#container-comentario").prepend(html_comentario);
+                }
+
+            });
+
+        }
+        else {
+            p_no_coments.textContent = "No se encontraron comentarios en el post"
+
+        }
+
+        id_post_input.value = data.comentarios['id_post']
+    }
+
+
     var posts_amigos = {{ posts_amigos| safe}}
 
+    Object.keys(posts_amigos).forEach(function (clave) {
+
+        for (let i = 0; i < posts_amigos[clave].length; i++) {
+            var title = posts_amigos[clave][i][0];
+            var contenido = posts_amigos[clave][i][1];
+            var fecha = posts_amigos[clave][i][2];
+            var comentarios = posts_amigos[clave][i][3];
+            var avatar = posts_amigos[clave][i][4];
+            var id_post = posts_amigos[clave][i][5];
+
+            agregarNuevoPost(title = title, user = clave, fecha = fecha, contenido = contenido, comentarios = comentarios, avatar = avatar, id_post = id_post)
+
+        }
+
+
+    });
     // logica para agregar los posts a el feed
 
     errorHandler("{{ error }}")
     notificacionesAddEvent()
+    comentarEventsListeners()
 </script>
 
 </html>

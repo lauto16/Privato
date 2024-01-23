@@ -285,6 +285,17 @@ def getNotificaciones(user_actual):
     return lista_notificaciones
 
 
+def getUserByPostId(post_id):
+    try:
+        post = Post.objects.get(id=post_id)
+        id_usuario = post.id_usuario
+
+        return Usuario.objects.get(id=id_usuario)
+
+    except:
+        return None
+
+
 # AVATARES -----------------------------------------------------
 
 
@@ -607,12 +618,14 @@ def validacionesEliminarPost(id_post, user_actual):
         return False
 
 
-def getFriendsPosts(lista_amigos, user_actual):
+def getFriendsPosts(lista_amigos, user_actual, num_posts):
     """
-    Recopila en un dict los ultimos 3 posts de todos los amigos del usuario
+    Recopila en un dict los ultimos "int(num_posts)" posts de todos los amigos del usuario
     """
 
-    posts_amigos = {'success': True}
+    posts_amigos = {
+    }
+
     lista_posts_amigo_dict = []
 
     for amigo in lista_amigos:
@@ -628,16 +641,41 @@ def getFriendsPosts(lista_amigos, user_actual):
 
             user_amigo = Usuario.objects.get(id=id_amigo)
 
-            # cantidad de posts del amigo
-            for i in range(3):
-                try:
-                    lista_posts_amigo_dict.append(
-                        lista_posts_amigo[i].title)
-                except:
-                    pass
+            post_amigo_componentes = []
 
-            posts_amigos[user_amigo.username] = lista_posts_amigo_dict
-            lista_posts_amigo_dict = []
+            # cantidad de posts del amigo
+            if len(lista_posts_amigo) > 0:
+
+                for i in range(num_posts):
+                    try:
+
+                        post_amigo_componentes.append(
+                            lista_posts_amigo[i].title)
+
+                        post_amigo_componentes.append(
+                            lista_posts_amigo[i].contenido)
+
+                        post_amigo_componentes.append(
+                            formatFecha(lista_posts_amigo[i].fecha))
+
+                        post_amigo_componentes.append(
+                            lista_posts_amigo[i].comentarios)
+
+                        post_amigo_componentes.append(
+                            getAvatarImg(user_actual=user_amigo).src_imagen.url)
+
+                        post_amigo_componentes.append(
+                            lista_posts_amigo[i].id)
+
+                        lista_posts_amigo_dict.append(post_amigo_componentes)
+
+                        post_amigo_componentes = []
+
+                    except:
+                        pass
+
+                posts_amigos[user_amigo.username] = lista_posts_amigo_dict
+                lista_posts_amigo_dict = []
 
         except:
             pass

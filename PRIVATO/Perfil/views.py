@@ -272,40 +272,40 @@ def vista_persona(request):
                 contenido_comentario = escape(
                     form_comentar.cleaned_data['content_comentario'])
 
-            if validacionesComentar(user_actual=user_actual, user_buscado=user_buscado, id_post=id_post, action="persona") and validarInput(input=contenido_comentario):
+                if validacionesComentar(user_actual=user_actual, user_buscado=user_buscado, id_post=id_post, action="persona") and validarInput(input=contenido_comentario):
 
-                respuesta_crear_comentario, comentario = crearComentario(id_post=id_post, user=user_actual,
-                                                                         contenido=contenido_comentario)
-                if respuesta_crear_comentario:
+                    respuesta_crear_comentario, comentario = crearComentario(id_post=id_post, user=user_actual,
+                                                                             contenido=contenido_comentario)
+                    if respuesta_crear_comentario:
 
-                    response_data = {
-                        'success': True,
-                        'reason': None,
-                        'username': user_actual.username,
-                        'fecha': formatFecha(comentario.fecha),
-                        'content': escape(contenido_comentario),
-                        'src_avatar': getAvatarImg(user_actual).src_imagen.url
-                    }
+                        response_data = {
+                            'success': True,
+                            'reason': None,
+                            'username': user_actual.username,
+                            'fecha': formatFecha(comentario.fecha),
+                            'content': escape(contenido_comentario),
+                            'src_avatar': getAvatarImg(user_actual).src_imagen.url
+                        }
+
+                    else:
+                        response_data = {
+                            'success': False,
+                            'username': None,
+                            'fecha': None,
+                            'reason': "No se pudo crear el comentario",
+                            'content': ""
+                        }
 
                 else:
                     response_data = {
                         'success': False,
                         'username': None,
                         'fecha': None,
-                        'reason': "No se pudo crear el comentario",
+                        'reason': "No se pudo agregar el comentario",
                         'content': ""
                     }
 
-            else:
-                response_data = {
-                    'success': False,
-                    'username': None,
-                    'fecha': None,
-                    'reason': "No se pudo agregar el comentario",
-                    'content': ""
-                }
-
-            return JsonResponse(response_data)
+                return JsonResponse(response_data)
 
     form_comentar = Comentar()
 

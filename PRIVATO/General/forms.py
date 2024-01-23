@@ -27,10 +27,10 @@ class Posting(forms.Form):
 
 
 class Comentar(forms.Form):
-    content_comentario = forms.CharField(required=False, label="", max_length=952, widget=forms.Textarea(
+    content_comentario = forms.CharField(required=True, label="", max_length=952, widget=forms.Textarea(
         attrs={'placeholder': 'Agregar comentario', 'id': 'textarea-comentario', 'cols': "10", 'rows': "2"}))
 
 
 class Busqueda(forms.Form):
-    input_busqueda = forms.CharField(required=False, label="", max_length=952, widget=forms.TextInput(
-        attrs={'placeholder': 'Buscar perfil', 'id': 'textarea-comentario', 'class': "izquierda-nav-buscar"}))
+    input_busqueda = forms.CharField(required=True, label="", max_length=952, widget=forms.TextInput(
+        attrs={'placeholder': 'Buscar perfil', 'class': "izquierda-nav-buscar"}))

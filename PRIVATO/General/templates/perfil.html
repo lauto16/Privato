@@ -289,10 +289,10 @@
                                                     {% csrf_token %}
                                                     <input type="hidden" name="peticion"
                                                         value="{{ form_eliminar_post }}">
-                                                    <button class="boton-eliminar-post" id="eliminar_post-{{ post.id }}"
+                                                    <button class="boton-eliminar-post" id="eliminar_post-` + data.post_id.toString() + `"` + `"
                                                         type="submit">
                                                         <img class="imagen-eliminar-post"
-                                                            id="imagen_eliminar_post-{{ post.id }}"
+                                                            id="imagen_eliminar_post-` + data.post_id.toString() + `"` + `"
                                                             src="{% static 'img/eliminar.png' %}" alt="">
                                                     </button>
                                                 </form>

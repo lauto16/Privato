@@ -71,6 +71,8 @@ function enviarComentario(event) {
       }
     })
     .catch(error => {
+      blurBackground(action = "unblur")
+      modal.style.display = 'none'
       errorHandler(error = "No se pudo enviar el comentario")
     });
 
@@ -250,7 +252,7 @@ function eliminarPost(event) {
     .then(data => {
 
       if (data) {
-
+        console.log(data)
         eliminarHTMLPost(data)
 
       }
