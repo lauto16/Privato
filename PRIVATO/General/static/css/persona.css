@@ -71,6 +71,14 @@ body {
 
 /* AVATAR */
 
+.miniatura-avatar {
+    width: 30px;
+    aspect-ratio: 1;
+    border: 1px solid #9b9b9b;
+    padding: 1px;
+}
+
+
 .avatar-imagen {
     width: 90%;
     aspect-ratio: 1;
@@ -147,13 +155,12 @@ body {
 .container-posts {
     width: 100%;
     height: 100%;
-    margin-top: 20px;
+    margin-top: 50px;
     display: flex;
     flex-direction: column;
     font-size: 15px;
     margin-left: 10px;
 }
-
 
 .header-post {
     font-family: 'Silkscreen', sans-serif;
@@ -175,20 +182,41 @@ body {
     color: #f55d6a;
 }
 
+/* POSTS ANTERIORES */
+
 .posts-anteriores {
     width: 75%;
     margin-left: 20px;
     margin-right: 18px;
-    border-bottom: 1px solid #c4c3c3;
-    margin-top: 2px;
-    padding-bottom: 30px;
+    border-bottom: 0.1px solid #c4c3c3;
+    margin-top: 15px;
+    padding-bottom: 5px;
+
+}
+
+
+.contenedor-general-post {
+    display: inline-flex;
+    width: 100%;
+}
+
+.contenedor-post-anterior {
+    width: 100%;
+}
+
+.contenedor-avatar-post {
+    float: left;
+    margin-right: 10px;
 }
 
 .post-anterior {
-    margin-top: 20px;
+    margin-bottom: 20px;
     padding: 15px;
-    border: 1px solid #d6d6d6;
+    border: 1px solid #cfcdcd;
+    border-radius: 5px;
+    display: block;
 }
+
 
 .title-post-anterior,
 .contenido-post-anterior,
@@ -203,6 +231,7 @@ body {
 }
 
 .fecha-post-anterior {
+    font-family: 'Geologica', sans-serif;
     color: #a5a5a5;
     font-size: 13px;
     margin-top: 2px;
@@ -211,6 +240,8 @@ body {
 .title-post-anterior {
     font-size: 18px;
     color: #176134;
+    font-family: 'Geologica', sans-serif;
+
 }
 
 .contenido-post-anterior {
@@ -219,6 +250,7 @@ body {
     margin-bottom: 10px;
     font-size: 15px;
 }
+
 
 
 
@@ -347,10 +379,27 @@ body {
     background-color: #fff;
 }
 
+.container-general-comentario {
+    display: inline-flex;
+    width: 100%;
+    max-width: 100%;
+}
+
+.contenedor-avatar-comentario {
+    margin-top: 8px;
+    float: left;
+    margin-right: 10px;
+}
+
 #title-comentarios {
     font-family: 'Silkscreen', sans-serif;
     color: #038554;
 }
+
+.comentario-data {
+    max-width: 100%;
+}
+
 
 .modal-comentarios-content {
     background-color: #fff;
@@ -379,13 +428,13 @@ body {
 
 .fecha-comentario {
     margin-top: 3px;
-    margin-bottom: 3px;
+    margin-bottom: 2px;
     color: #9e9d9d;
 }
 
 
 .contenido-comentario {
-    margin-top: 5px;
+    margin-top: 2px;
     font-size: 14px;
     word-wrap: break-word;
 }
@@ -417,7 +466,6 @@ body {
 }
 
 .enviar-comentario {
-    display: inline-block;
     width: 100%;
     margin-top: 10px;
     margin-bottom: 20px;
@@ -427,7 +475,7 @@ body {
     font-family: 'Geologica', sans-serif;
     resize: none;
     height: auto;
-    width: 75%;
+    width: 70%;
     outline: none;
     padding: 5px;
     float: left;
@@ -467,7 +515,7 @@ body {
         height: 550px;
         position: fixed;
         left: 50%;
-        top: 42%;
+        top: 45%;
         transform: translate(-50%, -50%);
         max-height: 100%;
         overflow-y: auto;
@@ -478,4 +526,50 @@ body {
     .exclamacion {
         float: left;
     }
+
+    .contenido-post-anterior {
+        font-family: 'Geologica', sans-serif;
+        color: #353535;
+        margin-bottom: 10px;
+        font-size: 11px;
+    }
+
+    .fecha-post-anterior {
+        font-family: 'Geologica', sans-serif;
+        color: #a5a5a5;
+        font-size: 11px;
+        margin-top: 2px;
+    }
+
+    .title-post-anterior {
+        font-size: 13px;
+        color: #176134;
+        font-family: 'Geologica', sans-serif;
+
+    }
+
+    .contenido-comentario {
+        margin-top: 2px;
+        font-size: 11px;
+        word-wrap: break-word;
+    }
+
+    .strong-usuario-comentario {
+        color: #038554;
+        font-size: 13px;
+        margin-right: 4px;
+    }
+
+    .fecha-comentario {
+        margin-top: 3px;
+        margin-bottom: 2px;
+        color: #9e9d9d;
+        font-size: 10px;
+    }
+
+
+    .comentario-data {
+        max-width: 80%;
+    }
+
 }

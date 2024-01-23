@@ -17,9 +17,10 @@
         <p id="p-errores"></p>
     </div>
     <div class="modal-comentarios" id="modal-comentarios">
-        <span id="close-comentarios" class="close">&times;</span>
+
 
         <div class="modal-comentarios-content">
+            <span id="close-comentarios" class="close">&times;</span>
             <h2 id="title-comentarios">Comentarios</h2>
             <p id="no-coments"></p>
             <div class="container-comentario" id="container-comentario"></div>
@@ -90,39 +91,62 @@
                         <h1 class="header-post">Posts anteriores</h1>
                         <div id="contenedor-posts" class="container-posts-anteriores">
                             {% for post in posts %}
+
                             <div class="post-anterior" id="post_anterior-{{ post.id }}">
-                                <form action="" method="post" id="form-eliminar-post">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="peticion" value="{{ form_eliminar_post }}">
-                                    <button class="boton-eliminar-post" id="eliminar_post-{{ post.id }}" type="submit">
-                                        <img class="imagen-eliminar-post" id="imagen_eliminar_post-{{ post.id }}"
-                                            src="{% static 'img/eliminar.png' %}" alt="">
-                                    </button>
-                                </form>
-                                <div class="titulo-fecha">
-                                    <p class="title-post-anterior"><strong>{{ post.title }}</strong></p>
-                                    <p class="fecha-post-anterior">{{ post.fecha }}</p>
-                                </div>
-                                <p class="contenido-post-anterior">{{ post.contenido }}</p>
-                                <div class="comentarios">
-                                    <div class="comentarios-post-anterior">
+                                <div class="contenedor-general-post">
 
-                                        <form action="" method="post" id="form-comentarios">
-                                            {% csrf_token %}
+                                    <div class="contenedor-avatar-post">
+                                        <div class="avatar-post">
+                                            <img src="{{ avatar }}" class="miniatura-avatar" alt="">
+                                        </div>
+                                    </div>
 
-                                            <input value="{{ form_comentarios }}" name="peticion" type="hidden">
-                                            <button id="boton_comentario-{{ post.id }}" class="boton-comentario">
-                                                <img id="imagen_comentario-{{ post.id }}" class="imagen-comentario"
-                                                    src="{% static 'img/comentario_op2.png' %}" alt="">
-                                            </button>
-                                        </form>
+                                    <div class="contenedor-post-anterior">
 
-                                        <div class="mensaje-comentarios">
-                                            <p>{{ post.comentarios }}</p>
+                                        <div class="titulo-fecha">
+                                            <p class="title-post-anterior"><strong>{{ post.title }}</strong></p>
+                                            <p class="fecha-post-anterior">{{ post.fecha }}</p>
                                         </div>
 
+                                        <p class="contenido-post-anterior">{{ post.contenido }}</p>
+                                        <div class="comentarios">
+                                            <div class="eliminar-post">
+                                                <form action="" method="post" id="form-eliminar-post">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="peticion"
+                                                        value="{{ form_eliminar_post }}">
+                                                    <button class="boton-eliminar-post" id="eliminar_post-{{ post.id }}"
+                                                        type="submit">
+                                                        <img class="imagen-eliminar-post"
+                                                            id="imagen_eliminar_post-{{ post.id }}"
+                                                            src="{% static 'img/eliminar.png' %}" alt="">
+                                                    </button>
+                                                </form>
+                                            </div>
+                                            <div class="comentarios-post-anterior">
+
+                                                <form action="" method="post" id="form-comentarios">
+                                                    {% csrf_token %}
+
+                                                    <input value="{{ form_comentarios }}" name="peticion" type="hidden">
+                                                    <button id="boton_comentario-{{ post.id }}"
+                                                        class="boton-comentario">
+                                                        <img id="imagen_comentario-{{ post.id }}"
+                                                            class="imagen-comentario"
+                                                            src="{% static 'img/comentario_op2.png' %}" alt="">
+                                                    </button>
+                                                </form>
+
+                                                <div class="mensaje-comentarios">
+                                                    <p>{{ post.comentarios }}</p>
+                                                </div>
+
+                                            </div>
+                                        </div>
                                     </div>
+
                                 </div>
+
                             </div>
                             {% endfor %}
                         </div>
@@ -138,44 +162,162 @@
 
 <script>
 
+
+    function agregarComentario(data) {
+
+        if (data.success == true) {
+
+            html_comentario = `
+<div class="comentario">
+
+<div class="container-general-comentario">
+
+<div class="contenedor-avatar-comentario">
+<img src="` + data.src_avatar + `"` + `class="miniatura-avatar " alt="">
+</div> 
+
+<div class="comentario-data">
+<p class="fecha-comentario">` + data.fecha + `</p>  
+<p class="contenido-comentario">
+<strong class="strong-usuario-comentario">` + data.username + `:  ` + `</strong>`
+                + data.content +
+                `</p>
+</div>
+
+</div>` +
+
+                `</div>`
+
+
+            $("#container-comentario").prepend(html_comentario);
+
+            p_no_coments = document.getElementById('no-coments')
+            textarea_input = document.getElementById("textarea-comentario")
+
+            p_no_coments.textContent = ""
+            textarea_input.value = ""
+        }
+
+        else {
+            blurBackground(action = "unblur")
+            modal.style.display = 'none';
+            errorHandler(error = data.reason)
+        }
+    }
+
+
+    function cargarComentarios(data) {
+
+        document.getElementById('container-comentario').innerHTML = ""
+        id_post_input = document.getElementById('id_post_coment')
+
+        p_no_coments = document.getElementById('no-coments')
+
+
+        if (data.esDiccionario == true) {
+
+            var lista_comentarios = data.comentarios
+
+            p_no_coments.textContent = ""
+
+            Object.keys(lista_comentarios).forEach(function (clave) {
+
+                if (clave != 'id_post') {
+
+                    var usuario = lista_comentarios[clave][0];
+                    var contenido = lista_comentarios[clave][1];
+                    var fecha = lista_comentarios[clave][2];
+                    var src_avatar = lista_comentarios[clave][3];
+
+
+
+                    html_comentario = `
+<div class="comentario">
+
+<div class="container-general-comentario">
+
+<div class="contenedor-avatar-comentario">
+  <img src="` + src_avatar + `"` + ` class="miniatura-avatar" alt="">
+</div> 
+
+<div class="comentario-data">
+<p class="fecha-comentario">` + fecha + `</p>  
+<p class="contenido-comentario">
+<strong class="strong-usuario-comentario">` + usuario + `:  ` + `</strong>`
+                        + contenido +
+                        `</p>
+</div>
+
+</div>` +
+
+                        `</div>`
+
+                    $("#container-comentario").prepend(html_comentario);
+                }
+
+            });
+
+        }
+        else {
+            p_no_coments.textContent = "No se encontraron comentarios en el post"
+
+        }
+
+        id_post_input.value = data.comentarios['id_post']
+    }
+
+
     function agregarNuevoPost(data) {
 
         if (data.success == true) {
 
             var nuevoPostHTML = `
             <div class="post-anterior" id="post_anterior-` + data.post_id.toString() + `">` +
-                `<form action="" method="post" id="form-eliminar-post">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="peticion" value="{{ form_eliminar_post }}">
-                                    <button class="boton-eliminar-post" id="eliminar_post-` + data.post_id.toString() + `" type="submit">
-                                        <img class="imagen-eliminar-post" id="imagen_eliminar_post-` + data.post_id.toString() + `"
-                                            src="{% static 'img/eliminar.png' %}" alt="">
-                                    </button>
-                                </form>` +
+                `<div class="contenedor-general-post">` +
+                `<div class="contenedor-avatar-post">
+                        <img src="{{ avatar }}" class="miniatura-avatar" alt="">
+                    </div>` +
+                `<div class="contenedor-post-anterior">` +
                 `<div class="titulo-fecha">` +
                 `<p class="title-post-anterior"><strong>` + data.post_title + `</strong></p>` +
                 `<p class="fecha-post-anterior">` + data.post_fecha + `</p>` +
                 `</div>` +
                 `<p class="contenido-post-anterior">` + data.post_contenido + `</p>` +
                 `<div class="comentarios">` +
+                `<div class="eliminar-post">
+                                                <form action="" method="post" id="form-eliminar-post">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="peticion"
+                                                        value="{{ form_eliminar_post }}">
+                                                    <button class="boton-eliminar-post" id="eliminar_post-{{ post.id }}"
+                                                        type="submit">
+                                                        <img class="imagen-eliminar-post"
+                                                            id="imagen_eliminar_post-{{ post.id }}"
+                                                            src="{% static 'img/eliminar.png' %}" alt="">
+                                                    </button>
+                                                </form>
+                                            </div>` +
                 `<div class="comentarios-post-anterior">
 
-                    <form action="" method="post" id="form-comentarios">
-                        {% csrf_token %}
-                    <input value="{{ form_comentarios }}" name="peticion" type="hidden">` +
+                        <form action="" method="post" id="form-comentarios">
+                            {% csrf_token %}
+                        <input value="{{ form_comentarios }}" name="peticion" type="hidden">` +
 
                 `<button id=` + `'boton_comentario-` + data.post_id.toString() + `'` + `class="boton-comentario">` +
                 `<img id=` + `'imagen_comentario-` + data.post_id.toString() + `'` + `class="imagen-comentario"
-                src="{% static 'img/comentario_op2.png' %}" alt="">
-            </button>
-                </form >
+                    src="{% static 'img/comentario_op2.png' %}" alt="">
+                </button>
+                    </form >
 
-            <div class="mensaje-comentarios">
-                <p>` + data.post_comentarios.toString() + `</p>
-            </div>` +
+                <div class="mensaje-comentarios">
+                    <p>` + data.post_comentarios.toString() + `</p>
+                </div>` +
 
                 `</div > ` +
-                `</div > `;
+                `</div > ` +
+                `</div > ` +
+                `</div>`;
+
 
             $("#contenedor-posts").prepend(nuevoPostHTML);
             comentarEventsListeners()

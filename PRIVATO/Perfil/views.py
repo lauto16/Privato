@@ -2,7 +2,6 @@ from General.utils import (userSearcher,
                            getLastSearch,
                            getIdPosts,
                            getUser, getPosts,
-                           getAvatar, completarColores,
                            validacionesSeguimiento,
                            generarSeguimiento,
                            estadoUser,
@@ -20,7 +19,9 @@ from General.utils import (userSearcher,
                            crearPost,
                            validacionesEliminarPost,
                            eliminarPost,
-                           getAvatarImg
+                           getAvatarImg,
+                           tieneAvatar,
+                           addBusqueda
                            )
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -42,9 +43,9 @@ def vista_perfil(request):
     posts = cambiarFechaPost(getPosts(user_actual))
     ids_posts = json.dumps(getIdPosts(posts))
 
-    avatar_colores_string = getAvatar(user_actual)
+    tiene_avatar = tieneAvatar(user_actual)
 
-    if avatar_colores_string is None:
+    if not (tiene_avatar):
 
         return redirect('vista_avatar')
 
@@ -125,7 +126,8 @@ def vista_perfil(request):
                             'success': True,
                             'username': user_actual.username,
                             'fecha': formatFecha(comentario.fecha),
-                            'content': contenido_comentario
+                            'content': contenido_comentario,
+                            'src_avatar': getAvatarImg(user_actual).src_imagen.url
                         }
 
                     else:
@@ -189,7 +191,7 @@ def vista_perfil(request):
         'form_avatar': 'avatar',
         'form_comentarios': 'comentarios',
         'form_comentar': 'comentar',
-        'form_eliminar_post': 'eliminar_post'
+        'form_eliminar_post': 'eliminar_post',
     })
 
 
@@ -198,7 +200,6 @@ def vista_persona(request):
 
     error = ""
 
-    rango_avatar = range(1, 122)
     user_actual = getUser(request)
 
     posts = []
@@ -282,7 +283,8 @@ def vista_persona(request):
                         'reason': None,
                         'username': user_actual.username,
                         'fecha': formatFecha(comentario.fecha),
-                        'content': escape(contenido_comentario)
+                        'content': escape(contenido_comentario),
+                        'src_avatar': getAvatarImg(user_actual).src_imagen.url
                     }
 
                 else:
@@ -321,5 +323,5 @@ def vista_persona(request):
         'son_amigos': son_amigos,
         'form_agregar': 'agregar',
         'form_comentarios': 'comentarios',
-        'form_comentar': 'comentar'
+        'form_comentar': 'comentar',
     })

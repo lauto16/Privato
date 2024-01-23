@@ -1,8 +1,6 @@
 from .utils import (addBusqueda,
-                    completarColores,
                     userSearcher,
                     getUser,
-                    getAvatar,
                     getNotificaciones,
                     validacionesNotificacion,
                     generarAmistad,
@@ -11,7 +9,8 @@ from .utils import (addBusqueda,
                     updatePage,
                     getListaAmigos,
                     getFriendsPosts,
-                    getAvatarImg
+                    getAvatarImg,
+                    tieneAvatar
                     )
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -34,9 +33,9 @@ def vista_feed(request):
     posts_amigos = json.dumps(getFriendsPosts(lista_amigos, user_actual))
     notificaciones = getNotificaciones(user_actual)
 
-    avatar_colores_string = getAvatar(user_actual)
+    tiene_avatar = tieneAvatar(user_actual)
 
-    if avatar_colores_string is None:
+    if not (tiene_avatar):
 
         return redirect('vista_avatar')
 

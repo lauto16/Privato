@@ -55,8 +55,8 @@ def crearImg(array_colores, color_base, path):
 
         return True
 
-    except Exception as e:
-        return e
+    except:
+        return False
 
 
 def formatColores(string_colores):

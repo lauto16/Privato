@@ -1,5 +1,5 @@
 from General.models import Usuario
-from Avatares.models import Avatar, AvatarImg
+from Avatares.models import AvatarImg
 from Perfil.models import Post, Busqueda, Notificacion, Amistad, Seguimiento, Comentario
 
 
@@ -288,6 +288,14 @@ def getNotificaciones(user_actual):
 # AVATARES -----------------------------------------------------
 
 
+def tieneAvatar(user_actual):
+    try:
+        AvatarImg.objects.get(usuario=user_actual)
+        return True
+    except:
+        return False
+
+
 def getAvatarImg(user_actual):
     try:
         avatar = AvatarImg.objects.get(usuario=user_actual)
@@ -306,33 +314,6 @@ def crearAvatarImg(path, user_actual):
 
     except:
         pass
-
-
-def crearAvatar(user_actual, valores_comprimidos):
-    try:
-        Avatar.objects.create(
-            nombre_usuario=user_actual.username, array_colores=valores_comprimidos)
-        return True
-    except:
-        return False
-
-
-def getAvatar(user_actual):
-    try:
-        avatar = Avatar.objects.get(nombre_usuario=user_actual.username)
-        return avatar.array_colores
-
-    except:
-        return None
-
-
-def tieneAvatar(user_actual):
-    try:
-        actual_avatar = Avatar.objects.get(nombre_usuario=user_actual.username)
-        return True, actual_avatar
-
-    except:
-        return False, None
 
 
 def borrarFondo(lista):
@@ -524,13 +505,23 @@ def getComentarios(id_post):
         return comentarios_post_dict, False
 
     for i in range(len(comentarios_post)):
+
         dict_key = 'coment' + str(i)
+
+        try:
+            usuario_comentario = Usuario.objects.get(
+                username=comentarios_post[i].username)
+        except:
+            usuario_comentario = None
+
+        avatar = getAvatarImg(usuario_comentario).src_imagen.url
+
         comentarios_post_dict[dict_key] = [
 
             comentarios_post[i].username,
             comentarios_post[i].contenido,
-            formatFecha(comentarios_post[i].fecha)
-
+            formatFecha(comentarios_post[i].fecha),
+            avatar
         ]
 
     return comentarios_post_dict, True

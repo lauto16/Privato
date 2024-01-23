@@ -188,6 +188,7 @@ body {
 .container-navbar {
     float: right;
     max-height: 35px;
+    margin-right: 10px;
 }
 
 .navbar {

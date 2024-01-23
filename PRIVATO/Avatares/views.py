@@ -1,4 +1,3 @@
-from Avatares.models import Avatar
 from .img_generator import *
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -6,10 +5,7 @@ from General.utils import (borrarFondo,
                            comprimirColores,
                            comprobarValores,
                            getUser,
-                           tieneAvatar,
                            updatePage,
-                           getAvatar,
-                           crearAvatar,
                            crearAvatarImg
                            )
 from PRIVATO.settings import BASE_DIR
@@ -48,26 +44,15 @@ def vista_avatar(request):
 
                 try:
 
-                    respuesta_avatar, avatar_actual = tieneAvatar(user_actual)
+                    respuesta_crear_img = crearImg(array_colores=formatColores(valores_comprimidos), color_base=(
+                        hex_to_rgb('e9e7e7')), path=path_imgs_completo)
 
-                    if respuesta_avatar:
-                        avatar_actual.delete()
+                    if respuesta_crear_img:
 
-                    if crearAvatar(user_actual=user_actual, valores_comprimidos=valores_comprimidos):
+                        crearAvatarImg(
+                            path=path_imgs, user_actual=user_actual)
 
-                        lista_colores = getAvatar(user_actual=user_actual)
-
-                        respuesta_crear_img = crearImg(array_colores=formatColores(lista_colores), color_base=(
-                            hex_to_rgb('e9e7e7')), path=path_imgs_completo)
-
-                        if respuesta_crear_img:
-
-                            crearAvatarImg(
-                                path=path_imgs, user_actual=user_actual)
-
-                            return redirect('vista_perfil')
-
-                    error = "No se pudo crear el avatar, intentelo de nuevo"
+                        return redirect('vista_perfil')
 
                 except:
                     error = "No se pudo crear el avatar, intentelo de nuevo"

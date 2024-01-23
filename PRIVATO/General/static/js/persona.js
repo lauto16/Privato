@@ -73,35 +73,6 @@ function verComentarios(event) {
 }
 
 
-function agregarComentario(data) {
-
-  if (data.success == true) {
-
-    html_comentario = `
-    <div class="comentario">
-
-    <p class="fecha-comentario">` + data.fecha + `</p>  
-    <p class="contenido-comentario">
-    <strong class="strong-usuario-comentario">` + data.username + `:  ` + `</strong>`
-      + data.content +
-      `</p>
-    </div>`
-
-    $("#container-comentario").prepend(html_comentario);
-    p_no_coments = document.getElementById('no-coments')
-    textarea_input = document.getElementById("textarea-comentario")
-    p_no_coments.textContent = ""
-    textarea_input.value = ""
-  }
-
-  else {
-    blurBackground(action = "unblur")
-    modal.style.display = 'none';
-    errorHandler(error = data.reason)
-  }
-}
-
-
 function enviarComentario(event) {
 
   event.preventDefault()
@@ -148,54 +119,6 @@ function getCookie(name) {
     }
   }
   return cookieValue;
-}
-
-
-function cargarComentarios(data) {
-
-  document.getElementById('container-comentario').innerHTML = ""
-  id_post_input = document.getElementById('id_post_coment')
-
-  p_no_coments = document.getElementById('no-coments')
-
-
-  if (data.esDiccionario == true) {
-
-    var lista_comentarios = data.comentarios
-
-    p_no_coments.textContent = ""
-
-    Object.keys(lista_comentarios).forEach(function (clave) {
-
-      if (clave != 'id_post') {
-
-        var usuario = lista_comentarios[clave][0];
-        var contenido = lista_comentarios[clave][1];
-        var fecha = lista_comentarios[clave][2];
-
-        html_comentario = `
-        <div class="comentario">
-  
-        <p class="fecha-comentario">` + fecha + `</p>  
-        <p class="contenido-comentario">
-        <strong class="strong-usuario-comentario">` + usuario + `:  ` + `</strong>`
-          + contenido +
-          `</p>
-        </div>`
-
-        $("#container-comentario").prepend(html_comentario);
-      }
-
-    });
-
-  }
-  else {
-    p_no_coments.textContent = "No se encontraron comentarios en el post"
-
-  }
-
-  id_post_input.value = data.comentarios['id_post']
-
 }
 
 
