@@ -24,6 +24,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.http import JsonResponse
 from .forms import Busqueda, Comentar
+from .models import Activity
 from html import escape
 import json
 
@@ -208,13 +209,3 @@ def vista_feed(request):
         'form_comentar': 'comentar',
 
     })
-
-
-@login_required
-def vista_config(request):
-
-    user_actual = getUser(request)
-
-    updatePage(user_actual)
-
-    return render(request, 'config.html')
