@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'Avatares',
     'Perfil',
     'Auth',
+    'django_seed',
 ]
 
 MIDDLEWARE = [

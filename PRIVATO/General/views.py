@@ -192,8 +192,6 @@ def vista_feed(request):
     form_add_busqueda = Busqueda()
     form_add_comentario = Comentar()
 
-    print(posts_amigos)
-
     return render(request, "feed.html", {
         'avatar': avatar_img.src_imagen.url if avatar_img else '',
         'notificaciones': notificaciones,
